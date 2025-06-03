@@ -70,4 +70,16 @@ public class ConsultaController {
         consultaService.excluirConsulta(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ConsultaResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody ConsultaRequestDTO requestDTO) {
+        Paciente paciente = pacienteService.buscarPorId(requestDTO.getPacienteId())
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Paciente com ID " + requestDTO.getPacienteId() + " não encontrado"));
+
+        ProfissionalSaude profissional = profissionalService.buscarPorId(requestDTO.getProfissionalId())
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Profissional com ID " + requestDTO.getProfissionalId() + " não encontrado"));
+
+        Consulta consultaAtualizada = consultaService.atualizarConsulta(id, requestDTO, pacienteService);
+        return ResponseEntity.ok(consultaMapper.toResponseDTO(consultaAtualizada));
+    }
 }
