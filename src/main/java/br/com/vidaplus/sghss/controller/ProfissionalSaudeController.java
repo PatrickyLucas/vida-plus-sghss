@@ -1,8 +1,12 @@
 package br.com.vidaplus.sghss.controller;
 
+import br.com.vidaplus.sghss.dto.request.PacienteRequestDTO;
 import br.com.vidaplus.sghss.dto.request.ProfissionalSaudeRequestDTO;
+import br.com.vidaplus.sghss.dto.response.PacienteResponseDTO;
 import br.com.vidaplus.sghss.dto.response.ProfissionalSaudeResponseDTO;
+import br.com.vidaplus.sghss.mapper.PacienteMapper;
 import br.com.vidaplus.sghss.mapper.ProfissionalSaudeMapper;
+import br.com.vidaplus.sghss.model.Paciente;
 import br.com.vidaplus.sghss.model.ProfissionalSaude;
 import br.com.vidaplus.sghss.service.ProfissionalSaudeService;
 import jakarta.validation.Valid;
@@ -58,5 +62,11 @@ public class ProfissionalSaudeController {
     public ResponseEntity<Void> excluirProfissional(@PathVariable Long id) {
         profissionalSaudeService.excluirProfissional(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProfissionalSaudeResponseDTO> atualizarProfissionalSaude(@PathVariable Long id, @Valid @RequestBody ProfissionalSaudeRequestDTO requestDTO) {
+        ProfissionalSaude profissionalSaudeAtualizado = profissionalSaudeService.atualizarProfissionalSaude(id, requestDTO);
+        return ResponseEntity.ok(profissionalSaudeMapper.toResponseDTO(profissionalSaudeAtualizado));
     }
 }

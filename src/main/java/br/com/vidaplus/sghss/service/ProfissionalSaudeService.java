@@ -1,5 +1,9 @@
 package br.com.vidaplus.sghss.service;
 
+import br.com.vidaplus.sghss.dto.request.PacienteRequestDTO;
+import br.com.vidaplus.sghss.dto.request.ProfissionalSaudeRequestDTO;
+import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
+import br.com.vidaplus.sghss.model.Paciente;
 import br.com.vidaplus.sghss.model.ProfissionalSaude;
 import br.com.vidaplus.sghss.repository.ProfissionalSaudeRepository;
 import org.springframework.stereotype.Service;
@@ -30,5 +34,12 @@ public class ProfissionalSaudeService {
 
     public void excluirProfissional(Long id) {
         profissionalSaudeRepository.deleteById(id);
+    }
+
+    public ProfissionalSaude atualizarProfissionalSaude(Long id, ProfissionalSaudeRequestDTO dto) {
+        ProfissionalSaude profissionalSaude = profissionalSaudeRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Paciente não encontrado"));
+        profissionalSaude.setNome(dto.getNome());
+        return profissionalSaudeRepository.save(profissionalSaude);
     }
 }
