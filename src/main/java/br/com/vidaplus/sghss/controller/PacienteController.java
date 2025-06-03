@@ -50,4 +50,10 @@ public class PacienteController {
         pacienteService.excluirPaciente(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PacienteResponseDTO> atualizarPaciente(@PathVariable Long id, @Valid @RequestBody PacienteRequestDTO requestDTO) {
+        Paciente pacienteAtualizado = pacienteService.atualizarPaciente(id, requestDTO);
+        return ResponseEntity.ok(PacienteMapper.toResponseDTO(pacienteAtualizado));
+    }
 }

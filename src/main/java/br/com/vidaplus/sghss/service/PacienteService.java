@@ -1,5 +1,7 @@
 package br.com.vidaplus.sghss.service;
 
+import br.com.vidaplus.sghss.dto.request.PacienteRequestDTO;
+import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.model.Paciente;
 import br.com.vidaplus.sghss.repository.PacienteRepository;
 import org.springframework.stereotype.Service;
@@ -30,5 +32,14 @@ public class PacienteService {
 
     public void excluirPaciente(Long id) {
         pacienteRepository.deleteById(id);
+    }
+
+    public Paciente atualizarPaciente(Long id, PacienteRequestDTO dto) {
+        Paciente paciente = pacienteRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Paciente não encontrado"));
+        paciente.setNome(dto.getNome());
+        paciente.setDataNascimento(dto.getDataNascimento());
+        paciente.setHistoricoClinico(dto.getHistoricoClinico());
+        return pacienteRepository.save(paciente);
     }
 }
