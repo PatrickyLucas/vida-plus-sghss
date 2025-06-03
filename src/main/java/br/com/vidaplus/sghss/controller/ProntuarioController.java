@@ -64,4 +64,13 @@ public class ProntuarioController {
         prontuarioService.excluirProntuario(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProntuarioResponseDTO> atualizarProntuario(
+            @PathVariable Long id,
+            @Valid @RequestBody ProntuarioRequestDTO dto) {
+
+        Prontuario atualizado = prontuarioService.atualizarProntuario(id, dto);
+        return ResponseEntity.ok(ProntuarioMapper.toResponseDTO(atualizado));
+    }
 }
