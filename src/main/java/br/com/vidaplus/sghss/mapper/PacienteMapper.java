@@ -3,7 +3,9 @@ package br.com.vidaplus.sghss.mapper;
 import br.com.vidaplus.sghss.dto.request.PacienteRequestDTO;
 import br.com.vidaplus.sghss.dto.response.PacienteResponseDTO;
 import br.com.vidaplus.sghss.model.Paciente;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PacienteMapper {
 
     public static PacienteResponseDTO toResponseDTO(Paciente paciente) {

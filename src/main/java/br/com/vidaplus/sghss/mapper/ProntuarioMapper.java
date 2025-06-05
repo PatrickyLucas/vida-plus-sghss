@@ -4,7 +4,9 @@ import br.com.vidaplus.sghss.dto.request.ProntuarioRequestDTO;
 import br.com.vidaplus.sghss.dto.response.ProntuarioResponseDTO;
 import br.com.vidaplus.sghss.model.Paciente;
 import br.com.vidaplus.sghss.model.Prontuario;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProntuarioMapper {
 
     public static Prontuario toEntity(ProntuarioRequestDTO dto, Paciente paciente) {
