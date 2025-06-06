@@ -15,17 +15,30 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ *  Controller para autenticação e registro de usuários.
+ * Fornece endpoints para login e registro de novos usuários.
+ */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
+    /**
+     * Serviço de detalhes do usuário personalizado para autenticação.
+     */
     private final CustomUserDetailsService customUserDetailsService;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final UsuarioService usuarioService;
 
-
-
+    /**
+     * Construtor do AuthController.
+     *
+     * @param customUserDetailsService serviço de detalhes do usuário
+     * @param authenticationManager    gerenciador de autenticação
+     * @param jwtUtil                  utilitário JWT para geração de tokens
+     * @param usuarioService           serviço de usuário para operações relacionadas a usuários
+     */
     public AuthController(CustomUserDetailsService customUserDetailsService, AuthenticationManager authenticationManager, JwtUtil jwtUtil, UsuarioService usuarioService) {
         this.customUserDetailsService = customUserDetailsService;
         this.authenticationManager = authenticationManager;
@@ -33,6 +46,14 @@ public class AuthController {
         this.usuarioService = usuarioService;
     }
 
+    /**
+     * Endpoint para login de usuários.
+     * Recebe um objeto UsuarioDTO contendo username e password,
+     * autentica o usuário e retorna um JWT se a autenticação for bem-sucedida.
+     *
+     * @param usuarioDTO objeto contendo as credenciais do usuário
+     * @return ResponseEntity com o token JWT ou erro 401 se a autenticação falhar
+     */
     @PostMapping("/login")
     public ResponseEntity<JwtResponseDTO> login(@RequestBody UsuarioDTO usuarioDTO) {
         try {
@@ -51,9 +72,14 @@ public class AuthController {
         }
     }
 
-
-
-
+    /**
+     * Endpoint para registrar um novo usuário.
+     * Recebe um objeto UsuarioDTO contendo os dados do novo usuário,
+     * cria o usuário e retorna o objeto criado.
+     *
+     * @param usuarioDTO objeto contendo os dados do novo usuário
+     * @return ResponseEntity com o usuário criado
+     */
     @PostMapping("/registrar")
     public ResponseEntity<Usuario> registrarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
         Usuario novoUsuario = usuarioService.criarUsuario(

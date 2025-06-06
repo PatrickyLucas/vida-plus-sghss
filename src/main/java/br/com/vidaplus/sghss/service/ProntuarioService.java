@@ -8,32 +8,72 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Serviço responsável por gerenciar as operações relacionadas aos prontuários.
+ * Inclui métodos para buscar, salvar, excluir e atualizar prontuários.
+ */
 @Service
 public class ProntuarioService {
 
+    /**
+     * Repositório para acessar os dados dos prontuários.
+     */
     private final ProntuarioRepository prontuarioRepository;
 
+    /**
+     * Construtor que recebe o repositório de prontuários.
+     *
+     * @param prontuarioRepository Repositório de prontuários.
+     */
     public ProntuarioService(ProntuarioRepository prontuarioRepository) {
         this.prontuarioRepository = prontuarioRepository;
     }
 
+    /**
+     * Busca um prontuário pelo ID do paciente.
+     *
+     * @param pacienteId ID do paciente cujo prontuário será buscado.
+     * @return Um Optional contendo o prontuário, se encontrado.
+     */
     public Optional<Prontuario> buscarPorPacienteId(Long pacienteId) {
         return prontuarioRepository.findById(pacienteId);
     }
 
+    /**
+     * Salva um novo prontuário ou atualiza um existente.
+     *
+     * @param prontuario Prontuário a ser salvo.
+     * @return O prontuário salvo.
+     */
     public Prontuario salvarProntuario(Prontuario prontuario) {
         return prontuarioRepository.save(prontuario);
     }
 
+    /**
+     * Exclui um prontuário pelo ID.
+     *
+     * @param id ID do prontuário a ser excluído.
+     */
     public void excluirProntuario(Long id) {
         prontuarioRepository.deleteById(id);
     }
 
-    // 🔥 Método para listar todos os prontuários
+    /**
+     * Lista todos os prontuários cadastrados no sistema.
+     *
+     * @return Lista de prontuários.
+     */
     public List<Prontuario> listarTodos() {
         return prontuarioRepository.findAll();
     }
 
+    /**
+     * Atualiza um prontuário existente, concatenando novos registros ao anterior.
+     *
+     * @param id  ID do prontuário a ser atualizado.
+     * @param dto Dados do prontuário a serem atualizados.
+     * @return O prontuário atualizado.
+     */
     public Prontuario atualizarProntuario(Long id, ProntuarioRequestDTO dto) {
         Prontuario prontuario = prontuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Prontuário não encontrado"));
