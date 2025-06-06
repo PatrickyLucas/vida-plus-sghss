@@ -2,6 +2,7 @@ package br.com.vidaplus.sghss.service;
 
 import br.com.vidaplus.sghss.dto.request.ConsultaRequestDTO;
 import br.com.vidaplus.sghss.dto.request.PacienteRequestDTO;
+import br.com.vidaplus.sghss.exception.OperacaoNaoPermitidaException;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.model.Consulta;
 import br.com.vidaplus.sghss.model.Paciente;
@@ -85,6 +86,12 @@ public class ConsultaService {
     public Consulta atualizarConsulta(Long id, ConsultaRequestDTO dto, PacienteService pacienteService) {
         Consulta consulta = consultaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Consulta não encontrada"));
+
+        // Se já está concluída, não permite alteração
+        if ("Concluída".equals(consulta.getStatus())) {
+            throw new OperacaoNaoPermitidaException("Não é permitido alterar uma consulta já concluída.");
+        }
+
         // Buscar o paciente pelo ID
         Paciente paciente = pacienteService.buscarPorId(dto.getPacienteId())
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Paciente não encontrado"));

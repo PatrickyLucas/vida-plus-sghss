@@ -2,6 +2,7 @@ package br.com.vidaplus.sghss.controller;
 
 import br.com.vidaplus.sghss.dto.request.ConsultaRequestDTO;
 import br.com.vidaplus.sghss.dto.response.ConsultaResponseDTO;
+import br.com.vidaplus.sghss.exception.OperacaoNaoPermitidaException;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.mapper.ConsultaMapper;
 import br.com.vidaplus.sghss.model.Consulta;
@@ -114,6 +115,7 @@ public class ConsultaController {
      * @param requestDTO dados atualizados da consulta
      * @return ConsultaResponseDTO da consulta atualizada
      */
+    // ConsultaController.java
     @PutMapping("/{id}")
     public ResponseEntity<ConsultaResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody ConsultaRequestDTO requestDTO) {
         Paciente paciente = pacienteService.buscarPorId(requestDTO.getPacienteId())
@@ -123,6 +125,7 @@ public class ConsultaController {
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Profissional com ID " + requestDTO.getProfissionalId() + " não encontrado"));
 
         Consulta consultaAtualizada = consultaService.atualizarConsulta(id, requestDTO, pacienteService);
+
         return ResponseEntity.ok(consultaMapper.toResponseDTO(consultaAtualizada));
     }
 }

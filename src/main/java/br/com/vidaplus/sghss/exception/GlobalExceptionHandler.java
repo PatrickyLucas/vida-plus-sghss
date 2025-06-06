@@ -71,5 +71,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 
+    // Tratamento de exceção para operação não permitida
+    @ExceptionHandler(OperacaoNaoPermitidaException.class)
+    public ResponseEntity<Object> handleOperacaoNaoPermitida(OperacaoNaoPermitidaException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.FORBIDDEN.value());
+        body.put("erro", "Operação não permitida");
+        body.put("mensagem", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
+    }
+
 
 }
