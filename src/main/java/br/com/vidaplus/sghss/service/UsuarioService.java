@@ -1,5 +1,6 @@
 package br.com.vidaplus.sghss.service;
 
+import br.com.vidaplus.sghss.exception.UsuarioJaExisteException;
 import br.com.vidaplus.sghss.model.Usuario;
 import br.com.vidaplus.sghss.model.Role;
 import br.com.vidaplus.sghss.repository.UsuarioRepository;
@@ -51,7 +52,7 @@ public class UsuarioService {
      */
     public Usuario criarUsuario(String username, String password, String roleNome) {
         if (usuarioRepository.findByUsername(username).isPresent()) {
-            throw new RuntimeException("Usuário já existe no sistema!"); // 🔥 Evita duplicação!
+            throw new UsuarioJaExisteException("Usuário já existe no sistema!");
         }
 
         String senhaCriptografada = passwordEncoder.encode(password);

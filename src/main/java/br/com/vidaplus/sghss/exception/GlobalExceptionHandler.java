@@ -60,5 +60,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    // Tratamento de exceção para usuário já existente
+    @ExceptionHandler(UsuarioJaExisteException.class)
+    public ResponseEntity<Object> handleUsuarioJaExiste(UsuarioJaExisteException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.CONFLICT.value());
+        body.put("erro", "Usuário já existe");
+        body.put("mensagem", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    }
+
 
 }
