@@ -115,7 +115,6 @@ public class ConsultaController {
      * @param requestDTO dados atualizados da consulta
      * @return ConsultaResponseDTO da consulta atualizada
      */
-    // ConsultaController.java
     @PutMapping("/{id}")
     public ResponseEntity<ConsultaResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody ConsultaRequestDTO requestDTO) {
         Paciente paciente = pacienteService.buscarPorId(requestDTO.getPacienteId())

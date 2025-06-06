@@ -65,6 +65,9 @@ public class PacienteService {
      * @param id ID do paciente a ser excluído.
      */
     public void excluirPaciente(Long id) {
+        if (!pacienteRepository.existsById(id)) {
+            throw new RecursoNaoEncontradoException("Paciente não encontrado");
+        }
         pacienteRepository.deleteById(id);
     }
 
