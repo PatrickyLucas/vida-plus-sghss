@@ -1,6 +1,7 @@
 package br.com.vidaplus.sghss.service;
 
 import br.com.vidaplus.sghss.dto.request.PacienteRequestDTO;
+import br.com.vidaplus.sghss.exception.CpfJaCadastradoException;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.model.Paciente;
 import br.com.vidaplus.sghss.repository.PacienteRepository;
@@ -56,6 +57,9 @@ public class PacienteService {
      * @return O paciente salvo.
      */
     public Paciente salvarPaciente(Paciente paciente) {
+        if (pacienteRepository.findByCpf(paciente.getCpf()).isPresent()) {
+            throw new CpfJaCadastradoException("CPF já cadastrado no sistema!");
+        }
         return pacienteRepository.save(paciente);
     }
 

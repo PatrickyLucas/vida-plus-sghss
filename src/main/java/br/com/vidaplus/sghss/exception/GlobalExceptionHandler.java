@@ -82,4 +82,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
     }
 
+    // Tratamento de exceção para CPF já cadastrado
+    @ExceptionHandler(CpfJaCadastradoException.class)
+    public ResponseEntity<Object> handleCpfJaCadastrado(CpfJaCadastradoException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.CONFLICT.value());
+        body.put("erro", "CPF já cadastrado");
+        body.put("mensagem", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    }
+
 }
