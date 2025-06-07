@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProntuarioMapper {
 
-    public static Prontuario toEntity(ProntuarioRequestDTO dto, Paciente paciente) {
+    public Prontuario toEntity(ProntuarioRequestDTO dto, Paciente paciente) {
         Prontuario prontuario = new Prontuario();
         prontuario.setRegistros(dto.getRegistros());
         prontuario.setPaciente(paciente);
         return prontuario;
     }
 
-    public static ProntuarioResponseDTO toResponseDTO(Prontuario prontuario) {
+    public ProntuarioResponseDTO toResponseDTO(Prontuario prontuario) {
         return new ProntuarioResponseDTO(
                 prontuario.getId(),
                 prontuario.getRegistros(),

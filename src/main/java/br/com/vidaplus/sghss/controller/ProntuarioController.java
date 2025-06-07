@@ -28,6 +28,7 @@ public class ProntuarioController {
 
     private final ProntuarioService prontuarioService;
     private final PacienteService pacienteService;
+    private final ProntuarioMapper prontuarioMapper;
 
     /**
      * Construtor do ProntuarioController.
@@ -35,9 +36,10 @@ public class ProntuarioController {
      * @param prontuarioService serviço de prontuário
      * @param pacienteService serviço de paciente
      */
-    public ProntuarioController(ProntuarioService prontuarioService, PacienteService pacienteService) {
+    public ProntuarioController(ProntuarioService prontuarioService, PacienteService pacienteService, ProntuarioMapper prontuarioMapper) {
         this.prontuarioService = prontuarioService;
         this.pacienteService = pacienteService;
+        this.prontuarioMapper = prontuarioMapper;
     }
 
     /**
@@ -49,7 +51,7 @@ public class ProntuarioController {
     public ResponseEntity<List<ProntuarioResponseDTO>> listarProntuarios() {
         List<Prontuario> prontuarios = prontuarioService.listarTodos();
         List<ProntuarioResponseDTO> resposta = prontuarios.stream()
-                .map(ProntuarioMapper::toResponseDTO)
+                .map(prontuarioMapper::toResponseDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(resposta);
     }
@@ -64,7 +66,7 @@ public class ProntuarioController {
     public ResponseEntity<ProntuarioResponseDTO> buscarPorPacienteId(@PathVariable Long pacienteId) {
         Optional<Prontuario> prontuario = prontuarioService.buscarPorPacienteId(pacienteId);
         return prontuario
-                .map(ProntuarioMapper::toResponseDTO)
+                .map(prontuarioMapper::toResponseDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -80,9 +82,9 @@ public class ProntuarioController {
         Paciente paciente = pacienteService.buscarPorId(dto.getPacienteId())
                 .orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
 
-        Prontuario prontuario = ProntuarioMapper.toEntity(dto, paciente);
+        Prontuario prontuario = prontuarioMapper.toEntity(dto, paciente);
         Prontuario salvo = prontuarioService.salvarProntuario(prontuario);
-        ProntuarioResponseDTO resposta = ProntuarioMapper.toResponseDTO(salvo);
+        ProntuarioResponseDTO resposta = prontuarioMapper.toResponseDTO(salvo);
 
         return ResponseEntity.ok(resposta);
     }
@@ -112,6 +114,6 @@ public class ProntuarioController {
             @Valid @RequestBody ProntuarioRequestDTO dto) {
 
         Prontuario atualizado = prontuarioService.atualizarProntuario(id, dto);
-        return ResponseEntity.ok(ProntuarioMapper.toResponseDTO(atualizado));
+        return ResponseEntity.ok(prontuarioMapper.toResponseDTO(atualizado));
     }
 }
