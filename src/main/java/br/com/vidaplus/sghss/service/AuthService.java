@@ -1,5 +1,7 @@
 package br.com.vidaplus.sghss.service;
 
+import br.com.vidaplus.sghss.dto.response.JwtResponseDTO;
+import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.model.Usuario;
 import br.com.vidaplus.sghss.repository.UsuarioRepository;
 import br.com.vidaplus.sghss.security.JwtUtil;
@@ -67,5 +69,12 @@ public class AuthService {
         }
 
         return Optional.empty();
+    }
+    public JwtResponseDTO login(String username, String password) {
+        Optional<String> tokenOpt = autenticarUsuario(username, password);
+        if (tokenOpt.isEmpty()) {
+            throw new RecursoNaoEncontradoException("Usuário ou senha inválidos");
+        }
+        return new JwtResponseDTO(tokenOpt.get());
     }
 }

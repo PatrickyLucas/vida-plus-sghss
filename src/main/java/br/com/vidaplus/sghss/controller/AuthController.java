@@ -3,6 +3,7 @@ package br.com.vidaplus.sghss.controller;
 
 import br.com.vidaplus.sghss.dto.response.JwtResponseDTO;
 import br.com.vidaplus.sghss.dto.UsuarioDTO;
+import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.model.Usuario;
 import br.com.vidaplus.sghss.service.CustomUserDetailsService;
 import br.com.vidaplus.sghss.security.JwtUtil;
@@ -30,6 +31,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final UsuarioService usuarioService;
+    private final AuthService authService;
 
     /**
      * Construtor do AuthController.
@@ -39,11 +41,12 @@ public class AuthController {
      * @param jwtUtil                  utilitário JWT para geração de tokens
      * @param usuarioService           serviço de usuário para operações relacionadas a usuários
      */
-    public AuthController(CustomUserDetailsService customUserDetailsService, AuthenticationManager authenticationManager, JwtUtil jwtUtil, UsuarioService usuarioService) {
+    public AuthController(CustomUserDetailsService customUserDetailsService, AuthenticationManager authenticationManager, JwtUtil jwtUtil, UsuarioService usuarioService, AuthService authService) {
         this.customUserDetailsService = customUserDetailsService;
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.usuarioService = usuarioService;
+        this.authService = authService;
     }
 
     /**
@@ -57,17 +60,9 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<JwtResponseDTO> login(@RequestBody UsuarioDTO usuarioDTO) {
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            usuarioDTO.getUsername(),
-                            usuarioDTO.getPassword()
-                    )
-            );
-            // Recupera o UserDetails pelo username
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(usuarioDTO.getUsername());
-            String token = jwtUtil.generateToken(userDetails);
-            return ResponseEntity.ok(new JwtResponseDTO(token));
-        } catch (Exception e) {
+            JwtResponseDTO jwt = authService.login(usuarioDTO.getUsername(), usuarioDTO.getPassword());
+            return ResponseEntity.ok(jwt);
+        } catch (RecursoNaoEncontradoException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
