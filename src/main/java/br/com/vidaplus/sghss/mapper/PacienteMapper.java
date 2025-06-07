@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PacienteMapper {
 
-    public static PacienteResponseDTO toResponseDTO(Paciente paciente) {
+    public PacienteResponseDTO toResponseDTO(Paciente paciente) {
         PacienteResponseDTO dto = new PacienteResponseDTO();
         dto.setId(paciente.getId());
         dto.setNome(paciente.getNome());
@@ -18,7 +18,7 @@ public class PacienteMapper {
         return dto;
     }
 
-    public static Paciente toEntity(PacienteRequestDTO dto) {
+    public Paciente toEntity(PacienteRequestDTO dto) {
         Paciente paciente = new Paciente();
         paciente.setNome(dto.getNome());
         paciente.setCpf(dto.getCpf());
