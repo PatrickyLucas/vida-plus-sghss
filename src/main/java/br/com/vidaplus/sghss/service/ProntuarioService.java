@@ -2,6 +2,7 @@ package br.com.vidaplus.sghss.service;
 
 import br.com.vidaplus.sghss.dto.request.ProntuarioRequestDTO;
 import br.com.vidaplus.sghss.exception.ProntuarioJaExisteException;
+import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.model.Prontuario;
 import br.com.vidaplus.sghss.repository.ProntuarioRepository;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,10 @@ public class ProntuarioService {
      * @return Um Optional contendo o prontuário, se encontrado.
      */
     public Optional<Prontuario> buscarPorPacienteId(Long pacienteId) {
+        // Verifica se o prontuário existe para o paciente
+        if (!prontuarioRepository.existsById(pacienteId)) {
+            throw new RecursoNaoEncontradoException("Prontuário não encontrado para o paciente com ID: " + pacienteId);
+        }
         return prontuarioRepository.findById(pacienteId);
     }
 
@@ -85,7 +90,7 @@ public class ProntuarioService {
      */
     public Prontuario atualizarProntuario(Long id, ProntuarioRequestDTO dto) {
         Prontuario prontuario = prontuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Prontuário não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Prontuário não encontrado"));
 
        // Concatena o novo registro ao anterior, separando por uma linha
         String registroAnterior = prontuario.getRegistros();

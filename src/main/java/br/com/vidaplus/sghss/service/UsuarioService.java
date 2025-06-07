@@ -1,5 +1,6 @@
 package br.com.vidaplus.sghss.service;
 
+import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.exception.UsuarioJaExisteException;
 import br.com.vidaplus.sghss.model.Usuario;
 import br.com.vidaplus.sghss.model.Role;
@@ -56,7 +57,7 @@ public class UsuarioService {
         }
 
         String senhaCriptografada = passwordEncoder.encode(password);
-        Role role = roleRepository.findByNome(roleNome).orElseThrow(() -> new RuntimeException("Role não encontrada" + roleNome));
+        Role role = roleRepository.findByNome(roleNome).orElseThrow(() -> new RecursoNaoEncontradoException("Role não encontrada" + roleNome));
 
         Usuario usuario = new Usuario(username, senhaCriptografada);
         usuario.setRoles(Set.of(role));
