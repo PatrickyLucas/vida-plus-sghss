@@ -1,9 +1,20 @@
 package br.com.vidaplus.sghss.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class UsuarioDTO {
+    @NotBlank(message = "O nome de usuário é obrigatório")
+    @Size(min = 4, max = 50, message = "O nome de usuário deve ter entre 4 e 50 caracteres")
     private String username;
+
+    @NotBlank(message = "A senha é obrigatória")
+    @Size(min = 6, message = "A senha deve ter pelo menos 6 caracteres")
     private String password;
+
+    @NotBlank(message = "O nome do papel é obrigatório")
     private String roleNome;
+
 
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
