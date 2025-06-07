@@ -1,7 +1,9 @@
 package br.com.vidaplus.sghss.exception;
 
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,8 +39,8 @@ public class GlobalExceptionHandler {
 
         Map<String, String> erros = ex.getBindingResult().getFieldErrors().stream()
                 .collect(Collectors.toMap(
-                        fieldError -> fieldError.getField(),
-                        fieldError -> fieldError.getDefaultMessage(),
+                        FieldError::getField,
+                        DefaultMessageSourceResolvable::getDefaultMessage,
                         (mensagem1, mensagem2) -> mensagem1 // se houver campos duplicados
                 ));
 

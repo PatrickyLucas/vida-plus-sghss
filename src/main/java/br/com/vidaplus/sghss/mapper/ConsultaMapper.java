@@ -24,7 +24,7 @@ public class ConsultaMapper {
     }
 
     // Converte um DTO de requisição, paciente e profissional em uma entidade Consulta
-    public static Consulta toEntity(ConsultaRequestDTO dto, Paciente paciente, ProfissionalSaude profissional) {
+    public Consulta toEntity(ConsultaRequestDTO dto, Paciente paciente, ProfissionalSaude profissional) {
         Consulta consulta = new Consulta();
         consulta.setStatus(dto.getStatus());
         consulta.setData(dto.getData());
@@ -34,7 +34,7 @@ public class ConsultaMapper {
     }
 
     // Converte apenas o DTO de requisição em uma entidade Consulta (sem paciente e profissional)
-    public static Consulta toEntity(ConsultaRequestDTO dto) {
+    public  Consulta toEntity(ConsultaRequestDTO dto) {
         Consulta consulta = new Consulta();
         consulta.setStatus(dto.getStatus());
         consulta.setData(dto.getData());
