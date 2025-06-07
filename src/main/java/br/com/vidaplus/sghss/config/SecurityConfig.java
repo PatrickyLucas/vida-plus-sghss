@@ -19,10 +19,24 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Configuração de segurança da aplicação.
+ * Define as regras de autenticação e autorização, além de configurar o filtro JWT.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    /**
+     * Configura o filtro de segurança da aplicação.
+     *
+     * @param http               Configuração de segurança HTTP.
+     * @param authProvider       Provedor de autenticação personalizado.
+     * @param jwtUtil            Utilitário JWT para manipulação de tokens.
+     * @param userDetailsService Serviço de detalhes do usuário.
+     * @return Configuração do filtro de segurança.
+     * @throws Exception Se ocorrer um erro ao configurar a segurança.
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, DaoAuthenticationProvider authProvider, JwtUtil jwtUtil, UserDetailsService userDetailsService) throws Exception {
         return http
@@ -43,7 +57,12 @@ public class SecurityConfig {
                 .build();
     }
 
-
+    /**
+     * Configura o provedor de autenticação personalizado.
+     *
+     * @param customUserDetailsService Serviço de detalhes do usuário personalizado.
+     * @return Provedor de autenticação configurado.
+     */
     @Bean
     public DaoAuthenticationProvider authenticationProvider(CustomUserDetailsService customUserDetailsService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -52,11 +71,23 @@ public class SecurityConfig {
         return authProvider;
     }
 
+    /**
+     * Configura o gerenciador de autenticação.
+     *
+     * @param authenticationConfiguration Configuração de autenticação.
+     * @return Gerenciador de autenticação configurado.
+     * @throws Exception Se ocorrer um erro ao configurar o gerenciador de autenticação.
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    /**
+     * Configura o codificador de senhas.
+     *
+     * @return Codificador de senhas configurado.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
