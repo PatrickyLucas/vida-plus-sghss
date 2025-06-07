@@ -1,6 +1,7 @@
 package br.com.vidaplus.sghss.service;
 
 import br.com.vidaplus.sghss.dto.request.ProntuarioRequestDTO;
+import br.com.vidaplus.sghss.exception.ProntuarioJaExisteException;
 import br.com.vidaplus.sghss.model.Prontuario;
 import br.com.vidaplus.sghss.repository.ProntuarioRepository;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,14 @@ public class ProntuarioService {
      * @return O prontuário salvo.
      */
     public Prontuario salvarProntuario(Prontuario prontuario) {
+        // Verifica se já existe um prontuário para o paciente
+        Optional<Prontuario> prontuarioExistente = prontuarioRepository.findById(prontuario.getPaciente().getId());
+        if (prontuarioExistente.isPresent()) {
+            // Se já existir, lança uma exceção
+            throw new ProntuarioJaExisteException("Prontuário já existe para o paciente com ID: " + prontuario.getPaciente().getId());
+
+        }
+        // Salva o prontuário
         return prontuarioRepository.save(prontuario);
     }
 
