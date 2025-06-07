@@ -22,8 +22,8 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.NOT_FOUND.value());
-        body.put("erro", "Recurso não encontrado");
-        body.put("mensagem", ex.getMessage());
+        body.put("error", "Recurso não encontrado");
+        body.put("message", ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("erro", "Erro de validação");
+        body.put("error", "Erro de validação");
 
         Map<String, String> erros = ex.getBindingResult().getFieldErrors().stream()
                 .collect(Collectors.toMap(
@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
                         (mensagem1, mensagem2) -> mensagem1 // se houver campos duplicados
                 ));
 
-        body.put("mensagens", erros);
+        body.put("message", erros);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
@@ -68,8 +68,8 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.CONFLICT.value());
-        body.put("erro", "Usuário já existe");
-        body.put("mensagem", ex.getMessage());
+        body.put("error", "Usuário já existe");
+        body.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 
@@ -79,8 +79,8 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.FORBIDDEN.value());
-        body.put("erro", "Operação não permitida");
-        body.put("mensagem", ex.getMessage());
+        body.put("error", "Operação não permitida");
+        body.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
     }
 
@@ -90,8 +90,8 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.CONFLICT.value());
-        body.put("erro", "CPF já cadastrado");
-        body.put("mensagem", ex.getMessage());
+        body.put("error", "CPF já cadastrado");
+        body.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 
@@ -101,8 +101,8 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.CONFLICT.value());
-        body.put("erro", "Prontuário já cadastrado");
-        body.put("mensagem", ex.getMessage());
+        body.put("error", "Prontuário já cadastrado");
+        body.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
 
     }
