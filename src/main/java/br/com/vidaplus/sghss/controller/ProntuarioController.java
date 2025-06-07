@@ -1,7 +1,10 @@
 package br.com.vidaplus.sghss.controller;
 
+import br.com.vidaplus.sghss.dto.request.PacienteRequestDTO;
 import br.com.vidaplus.sghss.dto.request.ProntuarioRequestDTO;
+import br.com.vidaplus.sghss.dto.response.PacienteResponseDTO;
 import br.com.vidaplus.sghss.dto.response.ProntuarioResponseDTO;
+import br.com.vidaplus.sghss.mapper.PacienteMapper;
 import br.com.vidaplus.sghss.mapper.ProntuarioMapper;
 import br.com.vidaplus.sghss.model.Paciente;
 import br.com.vidaplus.sghss.model.Prontuario;
@@ -11,7 +14,9 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,17 +34,21 @@ public class ProntuarioController {
     private final ProntuarioService prontuarioService;
     private final PacienteService pacienteService;
     private final ProntuarioMapper prontuarioMapper;
+    private final PacienteMapper pacienteMapper;
 
     /**
-     * Construtor do ProntuarioController.
+     * Construtor que recebe os serviços e mappers necessários.
      *
-     * @param prontuarioService serviço de prontuário
-     * @param pacienteService serviço de paciente
+     * @param prontuarioService Serviço de prontuários
+     * @param pacienteService Serviço de pacientes
+     * @param prontuarioMapper Mapper para conversão de Prontuario
+     * @param pacienteMapper Mapper para conversão de Paciente
      */
-    public ProntuarioController(ProntuarioService prontuarioService, PacienteService pacienteService, ProntuarioMapper prontuarioMapper) {
+    public ProntuarioController(ProntuarioService prontuarioService, PacienteService pacienteService, ProntuarioMapper prontuarioMapper, PacienteMapper pacienteMapper) {
         this.prontuarioService = prontuarioService;
         this.pacienteService = pacienteService;
         this.prontuarioMapper = prontuarioMapper;
+        this.pacienteMapper = pacienteMapper;
     }
 
     /**
@@ -74,19 +83,23 @@ public class ProntuarioController {
     /**
      * Cria um novo prontuário.
      *
-     * @param dto dados do prontuário
+     * @param requestDTO dados do prontuário a ser criado
      * @return ProntuarioResponseDTO criado
      */
     @PostMapping
-    public ResponseEntity<ProntuarioResponseDTO> salvarProntuario(@Valid @RequestBody ProntuarioRequestDTO dto) {
-        Paciente paciente = pacienteService.buscarPorId(dto.getPacienteId())
-                .orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
+    public ResponseEntity<PacienteResponseDTO> salvarPaciente(@Valid @RequestBody PacienteRequestDTO requestDTO) {
+        Paciente paciente = pacienteMapper.toEntity(requestDTO);
+        Paciente salvo = pacienteService.salvarPaciente(paciente);
+        PacienteResponseDTO responseDTO = pacienteMapper.toResponseDTO(salvo);
 
-        Prontuario prontuario = prontuarioMapper.toEntity(dto, paciente);
-        Prontuario salvo = prontuarioService.salvarProntuario(prontuario);
-        ProntuarioResponseDTO resposta = prontuarioMapper.toResponseDTO(salvo);
+        // Cria o prontuário associado ao paciente
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(salvo.getId())
+                .toUri();
 
-        return ResponseEntity.ok(resposta);
+        return ResponseEntity.created(location).body(responseDTO);
     }
 
     /**
