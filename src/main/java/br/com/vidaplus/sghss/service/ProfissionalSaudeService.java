@@ -1,12 +1,15 @@
 package br.com.vidaplus.sghss.service;
 
+import br.com.vidaplus.sghss.dto.UsuarioDTO;
 import br.com.vidaplus.sghss.dto.request.PacienteRequestDTO;
 import br.com.vidaplus.sghss.dto.request.ProfissionalSaudeRequestDTO;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.model.Paciente;
 import br.com.vidaplus.sghss.model.ProfissionalSaude;
+import br.com.vidaplus.sghss.model.Usuario;
 import br.com.vidaplus.sghss.repository.ProfissionalSaudeRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,14 +25,16 @@ public class ProfissionalSaudeService {
      * Repositório para acessar os dados dos profissionais de saúde.
      */
     private final ProfissionalSaudeRepository profissionalSaudeRepository;
+    private final UsuarioService usuarioService;
 
     /**
      * Construtor que recebe o repositório de profissionais de saúde.
      *
      * @param profissionalSaudeRepository Repositório de profissionais de saúde.
      */
-    public ProfissionalSaudeService(ProfissionalSaudeRepository profissionalSaudeRepository) {
+    public ProfissionalSaudeService(ProfissionalSaudeRepository profissionalSaudeRepository, UsuarioService usuarioService) {
         this.profissionalSaudeRepository = profissionalSaudeRepository;
+        this.usuarioService = usuarioService;
     }
 
     /**
@@ -82,5 +87,24 @@ public class ProfissionalSaudeService {
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Paciente não encontrado"));
         profissionalSaude.setNome(dto.getNome());
         return profissionalSaudeRepository.save(profissionalSaude);
+    }
+
+    @Transactional
+    public ProfissionalSaude criarProfissionalComUsuario(ProfissionalSaudeRequestDTO profissionalDTO, UsuarioDTO usuarioDTO) {
+        // Cria o usuário com role MEDICO
+        Usuario usuario = usuarioService.criarUsuario(
+                usuarioDTO.getUsername(),
+                usuarioDTO.getPassword(),
+                "MEDICO"
+        );
+
+        // Cria o profissional e associa o usuário
+        ProfissionalSaude profissional = new ProfissionalSaude();
+        profissional.setNome(profissionalDTO.getNome());
+        profissional.setEspecialidade(profissionalDTO.getEspecialidade());
+        profissional.setRegistroProfissional(profissionalDTO.getRegistroProfissional());
+        profissional.setUsuario(usuario);
+
+        return profissionalSaudeRepository.save(profissional);
     }
 }

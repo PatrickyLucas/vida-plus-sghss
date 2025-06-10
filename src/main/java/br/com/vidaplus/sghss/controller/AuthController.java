@@ -2,18 +2,20 @@ package br.com.vidaplus.sghss.controller;
 
 
 import br.com.vidaplus.sghss.dto.request.PacienteComUsuarioRequestDTO;
+import br.com.vidaplus.sghss.dto.request.ProfissionalSaudeComUsuarioRequestDTO;
 import br.com.vidaplus.sghss.dto.response.JwtResponseDTO;
 import br.com.vidaplus.sghss.dto.UsuarioDTO;
 import br.com.vidaplus.sghss.dto.response.PacienteResponseDTO;
+import br.com.vidaplus.sghss.dto.response.ProfissionalSaudeResponseDTO;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.mapper.PacienteMapper;
+import br.com.vidaplus.sghss.mapper.ProfissionalSaudeMapper;
 import br.com.vidaplus.sghss.model.Paciente;
+import br.com.vidaplus.sghss.model.ProfissionalSaude;
 import br.com.vidaplus.sghss.model.Usuario;
-import br.com.vidaplus.sghss.service.CustomUserDetailsService;
+import br.com.vidaplus.sghss.service.*;
 import br.com.vidaplus.sghss.security.JwtUtil;
-import br.com.vidaplus.sghss.service.AuthService;
-import br.com.vidaplus.sghss.service.PacienteService;
-import br.com.vidaplus.sghss.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,6 +41,8 @@ public class AuthController {
     private final AuthService authService;
     private final PacienteService pacienteService;
     private final PacienteMapper pacienteMapper;
+    private final ProfissionalSaudeService profissionalSaudeService;
+    private final ProfissionalSaudeMapper profissionalSaudeMapper;
 
     /**
      * Construtor do AuthController.
@@ -48,7 +52,7 @@ public class AuthController {
      * @param jwtUtil                  utilitário JWT para geração de tokens
      * @param usuarioService           serviço de usuário para operações relacionadas a usuários
      */
-    public AuthController(CustomUserDetailsService customUserDetailsService, AuthenticationManager authenticationManager, JwtUtil jwtUtil, UsuarioService usuarioService, AuthService authService, PacienteService pacienteService, PacienteMapper pacienteMapper) {
+    public AuthController(CustomUserDetailsService customUserDetailsService, AuthenticationManager authenticationManager, JwtUtil jwtUtil, UsuarioService usuarioService, AuthService authService, PacienteService pacienteService, PacienteMapper pacienteMapper, ProfissionalSaudeService profissionalSaudeService, ProfissionalSaudeMapper profissionalSaudeMapper) {
         this.customUserDetailsService = customUserDetailsService;
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
@@ -56,6 +60,8 @@ public class AuthController {
         this.authService = authService;
         this.pacienteService = pacienteService;
         this.pacienteMapper = pacienteMapper;
+        this.profissionalSaudeService = profissionalSaudeService;
+        this.profissionalSaudeMapper = profissionalSaudeMapper;
     }
 
     /**
@@ -102,5 +108,15 @@ public class AuthController {
         );
         // Use o mapper para retornar o DTO de resposta
         return ResponseEntity.ok(pacienteMapper.toResponseDTO(paciente));
+    }
+
+    @PostMapping("/registrar-profissional")
+    public ResponseEntity<ProfissionalSaudeResponseDTO> registrarProfissionalComUsuario(
+            @RequestBody @Valid ProfissionalSaudeComUsuarioRequestDTO requestDTO) {
+        ProfissionalSaude profissional = profissionalSaudeService.criarProfissionalComUsuario(
+                requestDTO.getProfissional(),
+                requestDTO.getUsuario()
+        );
+        return ResponseEntity.ok(profissionalSaudeMapper.toResponseDTO(profissional));
     }
 }

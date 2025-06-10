@@ -47,7 +47,6 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()
-                        .requestMatchers("/api/prontuarios/**").hasAnyRole("MEDICO", "ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/pacientes/**").hasAnyRole("ADMIN", "MEDICO")
                         .requestMatchers(HttpMethod.GET, "/api/pacientes").hasAnyRole("ADMIN", "MEDICO")
                         .requestMatchers(HttpMethod.GET, "/api/pacientes/**").hasAnyRole("ADMIN", "MEDICO", "PACIENTE")
@@ -55,6 +54,15 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/consultas/**").hasAnyRole("ADMIN", "MEDICO")
                         .requestMatchers(HttpMethod.GET, "/api/consultas").hasAnyRole("ADMIN", "MEDICO")
                         .requestMatchers(HttpMethod.GET, "/api/consultas/**").hasAnyRole("ADMIN", "MEDICO", "PACIENTE")
+                        .requestMatchers(HttpMethod.DELETE, "/api/consultas/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/profissionais/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/profissionais").hasAnyRole("ADMIN", "MEDICO")
+                        .requestMatchers(HttpMethod.GET, "/api/profissionais/**").hasAnyRole("ADMIN", "MEDICO", "PACIENTE")
+                        .requestMatchers(HttpMethod.DELETE, "/api/profissionais/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/prontuarios/**").hasAnyRole("ADMIN","MEDICO")
+                        .requestMatchers(HttpMethod.GET, "/api/prontuarios").hasAnyRole("ADMIN", "MEDICO")
+                        .requestMatchers(HttpMethod.GET, "/api/prontuarios/**").hasAnyRole("ADMIN", "MEDICO", "PACIENTE")
+                        .requestMatchers(HttpMethod.DELETE, "/api/prontuarios/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class) // 🔥 Adicionando o filtro JWT!
