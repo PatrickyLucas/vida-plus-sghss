@@ -21,7 +21,7 @@ public class AuditoriaAspect {
         this.auditoriaRepository = auditoriaRepository;
     }
 
-    @AfterReturning("execution(* br.com.vidaplus.sghss.service.*.*(..))")
+    @AfterReturning("execution(* br.com.vidaplus.sghss.service.*.*(..)) && !execution(* br.com.vidaplus.sghss.service.CustomUserDetailsService.loadUserByUsername(..))")
     public void auditar(JoinPoint joinPoint) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String usuario = (authentication != null && authentication.getName() != null) ? authentication.getName() : "ANÔNIMO";
