@@ -4,6 +4,7 @@ import br.com.vidaplus.sghss.dto.request.PacienteComUsuarioRequestDTO;
 import br.com.vidaplus.sghss.dto.request.PacienteRequestDTO;
 import br.com.vidaplus.sghss.dto.response.PacienteResponseDTO;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
+import br.com.vidaplus.sghss.exception.UsuarioSemPermissaoException;
 import br.com.vidaplus.sghss.mapper.PacienteMapper;
 import br.com.vidaplus.sghss.model.Paciente;
 import br.com.vidaplus.sghss.service.PacienteService;
@@ -45,6 +46,13 @@ public class PacienteController {
      */
     @GetMapping
     public ResponseEntity<List<PacienteResponseDTO>> listarTodos() {
+        // Verifica se o usuário é ADMIN ou MEDICO
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdminOuMedico = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_MEDICO"));
+        if (!isAdminOuMedico) {
+            throw new UsuarioSemPermissaoException("Você não tem permissão para acessar esta lista.");
+        }
         List<Paciente> pacientes = pacienteService.listarTodos();
         List<PacienteResponseDTO> dtos = pacientes.stream()
                 .map(pacienteMapper::toResponseDTO)
@@ -71,7 +79,7 @@ public class PacienteController {
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_MEDICO"));
 
         if (!isAdminOuMedico && !paciente.getUsuario().getUsername().equals(username)) {
-            return ResponseEntity.status(403).build();
+            throw new UsuarioSemPermissaoException("Você não tem permissão para acessar este recurso.");
         }
 
         return ResponseEntity.ok(pacienteMapper.toResponseDTO(paciente));

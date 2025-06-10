@@ -48,7 +48,7 @@ public class SecurityConfig {
                                 "/v3/api-docs/**"
                         ).permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/pacientes/**").hasAnyRole("ADMIN", "MEDICO")
-                        .requestMatchers(HttpMethod.GET, "/api/pacientes").hasAnyRole("ADMIN", "MEDICO")
+                        .requestMatchers(HttpMethod.GET, "/api/pacientes").hasAnyRole("ADMIN", "MEDICO", "PACIENTE")
                         .requestMatchers(HttpMethod.GET, "/api/pacientes/**").hasAnyRole("ADMIN", "MEDICO", "PACIENTE")
                         .requestMatchers(HttpMethod.DELETE, "/api/pacientes/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/consultas/**").hasAnyRole("ADMIN", "MEDICO")

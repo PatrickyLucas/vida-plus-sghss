@@ -106,4 +106,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
 
     }
+
+    // Tratamento de exceção para erro de autenticação
+    @ExceptionHandler(UsuarioSemPermissaoException.class)
+    public ResponseEntity<Object> handleUsuarioSemPermissao(UsuarioSemPermissaoException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.FORBIDDEN.value());
+        body.put("error", "Usuário sem permissão");
+        body.put("message", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
+    }
 }
