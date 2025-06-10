@@ -32,4 +32,8 @@ public class Paciente {
     @JsonProperty("historicoClinico")
     @Column(columnDefinition = "TEXT", nullable = false)
     private String historicoClinico;
+
+    @OneToOne
+    @JoinColumn(name = "usuario_id", unique = true)
+    private Usuario usuario;
 }

@@ -1,11 +1,14 @@
 package br.com.vidaplus.sghss.service;
 
+import br.com.vidaplus.sghss.dto.UsuarioDTO;
 import br.com.vidaplus.sghss.dto.request.PacienteRequestDTO;
 import br.com.vidaplus.sghss.exception.CpfJaCadastradoException;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.model.Paciente;
+import br.com.vidaplus.sghss.model.Usuario;
 import br.com.vidaplus.sghss.repository.PacienteRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,14 +24,16 @@ public class PacienteService {
      * Repositório para acessar os dados dos pacientes.
      */
     private final PacienteRepository pacienteRepository;
+    private final UsuarioService usuarioService;
 
     /**
      * Construtor que recebe o repositório de pacientes.
      *
      * @param pacienteRepository Repositório de pacientes.
      */
-    public PacienteService(PacienteRepository pacienteRepository) {
+    public PacienteService(PacienteRepository pacienteRepository, UsuarioService usuarioService) {
         this.pacienteRepository = pacienteRepository;
+        this.usuarioService = usuarioService;
     }
 
     /**
@@ -88,6 +93,31 @@ public class PacienteService {
         paciente.setNome(dto.getNome());
         paciente.setDataNascimento(dto.getDataNascimento());
         paciente.setHistoricoClinico(dto.getHistoricoClinico());
+        return pacienteRepository.save(paciente);
+    }
+
+    @Transactional
+    public Paciente criarPacienteComUsuario(PacienteRequestDTO pacienteDTO, UsuarioDTO usuarioDTO) {
+        // Valida se o CPF já está cadastrado
+        if (pacienteRepository.findByCpf(pacienteDTO.getCpf()).isPresent()) {
+            throw new CpfJaCadastradoException("CPF já cadastrado no sistema!");
+        }
+
+        // Cria o usuário com role PACIENTE
+        Usuario usuario = usuarioService.criarUsuario(
+                usuarioDTO.getUsername(),
+                usuarioDTO.getPassword(),
+                "PACIENTE"
+        );
+
+        // Cria o paciente e associa o usuário
+        Paciente paciente = new Paciente();
+        paciente.setNome(pacienteDTO.getNome());
+        paciente.setCpf(pacienteDTO.getCpf());
+        paciente.setDataNascimento(pacienteDTO.getDataNascimento());
+        paciente.setHistoricoClinico(pacienteDTO.getHistoricoClinico());
+        paciente.setUsuario(usuario);
+
         return pacienteRepository.save(paciente);
     }
 }

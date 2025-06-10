@@ -25,4 +25,8 @@ public class ProfissionalSaude {
     @JsonProperty("registroProfissional")
     @Column(unique = true, nullable = false, length = 20)
     private String registroProfissional;
+
+    @OneToOne
+    @JoinColumn(name = "usuario_id", unique = true)
+    private Usuario usuario;
 }

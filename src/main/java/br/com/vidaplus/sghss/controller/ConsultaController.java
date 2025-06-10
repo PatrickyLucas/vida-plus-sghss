@@ -13,6 +13,8 @@ import br.com.vidaplus.sghss.service.PacienteService;
 import br.com.vidaplus.sghss.service.ProfissionalSaudeService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -69,10 +71,20 @@ public class ConsultaController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<ConsultaResponseDTO> buscarPorId(@PathVariable Long id) {
-        return consultaService.buscarPorId(id)
-                .map(consultaMapper::toResponseDTO)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        Consulta consulta = consultaService.buscarPorId(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Consulta não encontrada"));
+
+        boolean isAdminOuMedico = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_MEDICO"));
+
+        if (!isAdminOuMedico && !consulta.getPaciente().getUsuario().getUsername().equals(username)) {
+            return ResponseEntity.status(403).build();
+        }
+
+        return ResponseEntity.ok(consultaMapper.toResponseDTO(consulta));
     }
 
     /**

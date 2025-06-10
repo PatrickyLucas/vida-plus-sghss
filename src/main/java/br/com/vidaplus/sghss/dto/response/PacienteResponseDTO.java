@@ -14,4 +14,5 @@ public class PacienteResponseDTO {
     private String cpf;
     private LocalDate dataNascimento;
     private String historicoClinico;
+    private String username;
 }

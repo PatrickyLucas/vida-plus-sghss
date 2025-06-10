@@ -2,6 +2,7 @@ package br.com.vidaplus.sghss.controller;
 
 import br.com.vidaplus.sghss.dto.request.ProntuarioRequestDTO;
 import br.com.vidaplus.sghss.dto.response.ProntuarioResponseDTO;
+import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.mapper.ProntuarioMapper;
 import br.com.vidaplus.sghss.model.Paciente;
 import br.com.vidaplus.sghss.model.Prontuario;
@@ -10,6 +11,8 @@ import br.com.vidaplus.sghss.service.ProntuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -64,11 +67,20 @@ public class ProntuarioController {
      */
     @GetMapping("/{pacienteId}")
     public ResponseEntity<ProntuarioResponseDTO> buscarPorPacienteId(@PathVariable Long pacienteId) {
-        Optional<Prontuario> prontuario = prontuarioService.buscarPorPacienteId(pacienteId);
-        return prontuario
-                .map(prontuarioMapper::toResponseDTO)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        Prontuario prontuario = prontuarioService.buscarPorPacienteId(pacienteId)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Prontuário não encontrado"));
+
+        boolean isAdminOuMedico = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_MEDICO"));
+
+        if (!isAdminOuMedico && !prontuario.getPaciente().getUsuario().getUsername().equals(username)) {
+            return ResponseEntity.status(403).build();
+        }
+
+        return ResponseEntity.ok(prontuarioMapper.toResponseDTO(prontuario));
     }
 
     /**

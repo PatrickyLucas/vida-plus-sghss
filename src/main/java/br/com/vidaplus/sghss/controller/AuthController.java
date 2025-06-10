@@ -1,13 +1,18 @@
 package br.com.vidaplus.sghss.controller;
 
 
+import br.com.vidaplus.sghss.dto.request.PacienteComUsuarioRequestDTO;
 import br.com.vidaplus.sghss.dto.response.JwtResponseDTO;
 import br.com.vidaplus.sghss.dto.UsuarioDTO;
+import br.com.vidaplus.sghss.dto.response.PacienteResponseDTO;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
+import br.com.vidaplus.sghss.mapper.PacienteMapper;
+import br.com.vidaplus.sghss.model.Paciente;
 import br.com.vidaplus.sghss.model.Usuario;
 import br.com.vidaplus.sghss.service.CustomUserDetailsService;
 import br.com.vidaplus.sghss.security.JwtUtil;
 import br.com.vidaplus.sghss.service.AuthService;
+import br.com.vidaplus.sghss.service.PacienteService;
 import br.com.vidaplus.sghss.service.UsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +37,8 @@ public class AuthController {
     private final JwtUtil jwtUtil;
     private final UsuarioService usuarioService;
     private final AuthService authService;
+    private final PacienteService pacienteService;
+    private final PacienteMapper pacienteMapper;
 
     /**
      * Construtor do AuthController.
@@ -41,12 +48,14 @@ public class AuthController {
      * @param jwtUtil                  utilitário JWT para geração de tokens
      * @param usuarioService           serviço de usuário para operações relacionadas a usuários
      */
-    public AuthController(CustomUserDetailsService customUserDetailsService, AuthenticationManager authenticationManager, JwtUtil jwtUtil, UsuarioService usuarioService, AuthService authService) {
+    public AuthController(CustomUserDetailsService customUserDetailsService, AuthenticationManager authenticationManager, JwtUtil jwtUtil, UsuarioService usuarioService, AuthService authService, PacienteService pacienteService, PacienteMapper pacienteMapper) {
         this.customUserDetailsService = customUserDetailsService;
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.usuarioService = usuarioService;
         this.authService = authService;
+        this.pacienteService = pacienteService;
+        this.pacienteMapper = pacienteMapper;
     }
 
     /**
@@ -83,5 +92,15 @@ public class AuthController {
                 usuarioDTO.getRoleNome()
         );
         return ResponseEntity.ok(novoUsuario);
+    }
+
+    @PostMapping("/registrar-paciente")
+    public ResponseEntity<PacienteResponseDTO> registrarPaciente(@RequestBody PacienteComUsuarioRequestDTO requestDTO) {
+        Paciente paciente = pacienteService.criarPacienteComUsuario(
+                requestDTO.getPaciente(),
+                requestDTO.getUsuario()
+        );
+        // Use o mapper para retornar o DTO de resposta
+        return ResponseEntity.ok(pacienteMapper.toResponseDTO(paciente));
     }
 }

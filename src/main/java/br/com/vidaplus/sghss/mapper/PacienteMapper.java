@@ -15,6 +15,9 @@ public class PacienteMapper {
         dto.setCpf(paciente.getCpf());
         dto.setDataNascimento(paciente.getDataNascimento());
         dto.setHistoricoClinico(paciente.getHistoricoClinico());
+        if (paciente.getUsuario() != null) {
+            dto.setUsername(paciente.getUsuario().getUsername());
+        }
         return dto;
     }
 

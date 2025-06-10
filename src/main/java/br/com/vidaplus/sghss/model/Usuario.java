@@ -70,6 +70,5 @@ public class Usuario implements UserDetails {
     public Usuario(String username, String password) {
         this.username = username;
         this.password = password;
-        this.roles = roles;
     }
 }

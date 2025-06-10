@@ -49,8 +49,12 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers("/api/prontuarios/**").hasAnyRole("MEDICO", "ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/pacientes/**").hasAnyRole("ADMIN", "MEDICO")
+                        .requestMatchers(HttpMethod.GET, "/api/pacientes").hasAnyRole("ADMIN", "MEDICO")
                         .requestMatchers(HttpMethod.GET, "/api/pacientes/**").hasAnyRole("ADMIN", "MEDICO", "PACIENTE")
                         .requestMatchers(HttpMethod.DELETE, "/api/pacientes/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/consultas/**").hasAnyRole("ADMIN", "MEDICO")
+                        .requestMatchers(HttpMethod.GET, "/api/consultas").hasAnyRole("ADMIN", "MEDICO")
+                        .requestMatchers(HttpMethod.GET, "/api/consultas/**").hasAnyRole("ADMIN", "MEDICO", "PACIENTE")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class) // 🔥 Adicionando o filtro JWT!

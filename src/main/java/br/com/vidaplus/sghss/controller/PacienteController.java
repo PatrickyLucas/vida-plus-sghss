@@ -1,12 +1,16 @@
 package br.com.vidaplus.sghss.controller;
 
+import br.com.vidaplus.sghss.dto.request.PacienteComUsuarioRequestDTO;
 import br.com.vidaplus.sghss.dto.request.PacienteRequestDTO;
 import br.com.vidaplus.sghss.dto.response.PacienteResponseDTO;
+import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.mapper.PacienteMapper;
 import br.com.vidaplus.sghss.model.Paciente;
 import br.com.vidaplus.sghss.service.PacienteService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,9 +60,21 @@ public class PacienteController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<PacienteResponseDTO> buscarPorId(@PathVariable Long id) {
-        return pacienteService.buscarPorId(id)
-                .map(paciente -> ResponseEntity.ok(pacienteMapper.toResponseDTO(paciente)))
-                .orElse(ResponseEntity.notFound().build());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        Paciente paciente = pacienteService.buscarPorId(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Paciente não encontrado"));
+
+        // Só permite se for ADMIN/MEDICO ou o próprio paciente
+        boolean isAdminOuMedico = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_MEDICO"));
+
+        if (!isAdminOuMedico && !paciente.getUsuario().getUsername().equals(username)) {
+            return ResponseEntity.status(403).build();
+        }
+
+        return ResponseEntity.ok(pacienteMapper.toResponseDTO(paciente));
     }
 
     /**
@@ -68,10 +84,12 @@ public class PacienteController {
      * @return PacienteResponseDTO do paciente criado
      */
     @PostMapping
-    public ResponseEntity<PacienteResponseDTO> salvarPaciente(@Valid @RequestBody PacienteRequestDTO requestDTO) {
-        Paciente paciente = pacienteMapper.toEntity(requestDTO);
-        Paciente salvo = pacienteService.salvarPaciente(paciente);
-        return ResponseEntity.ok(pacienteMapper.toResponseDTO(salvo));
+    public ResponseEntity<PacienteResponseDTO> salvarPaciente(@Valid @RequestBody PacienteComUsuarioRequestDTO requestDTO) {
+        Paciente paciente = pacienteService.criarPacienteComUsuario(
+                requestDTO.getPaciente(),
+                requestDTO.getUsuario()
+        );
+        return ResponseEntity.ok(pacienteMapper.toResponseDTO(paciente));
     }
 
     /**
