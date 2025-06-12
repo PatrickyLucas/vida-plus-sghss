@@ -3,11 +3,18 @@ package br.com.vidaplus.sghss.mapper;
 import br.com.vidaplus.sghss.dto.response.AuditoriaResponseDTO;
 import br.com.vidaplus.sghss.model.Auditoria;
 
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-
+/**
+ * Mapper para converter entre Auditoria e AuditoriaResponseDTO.
+ * Utilizado para transformar dados de auditoria em um formato adequado para resposta HTTP.
+ */
 public class AuditoriaMapper {
 
+    /**
+     * Converte uma entidade Auditoria para um DTO de resposta AuditoriaResponseDTO.
+     *
+     * @param auditoria a entidade Auditoria a ser convertida
+     * @return um DTO de resposta contendo os dados da auditoria
+     */
     public static AuditoriaResponseDTO toDTO(Auditoria auditoria) {
         String rawAcao = auditoria.getAcao();
         String entidade = extrairEntidade(rawAcao);
@@ -24,7 +31,13 @@ public class AuditoriaMapper {
         return dto;
     }
 
-
+    /**
+     * Extrai a entidade e o método da ação registrada na auditoria.
+     * A ação é esperada no formato "EntidadeService.metodo()".
+     *
+     * @param acao a ação registrada na auditoria
+     * @return um DTO de resposta contendo os dados da auditoria
+     */
     private static String extrairEntidade(String acao) {
         if (acao == null) return "";
         String[] partes = acao.split("\\.");
@@ -34,6 +47,13 @@ public class AuditoriaMapper {
         return acao;
     }
 
+    /**
+     * Extrai o método da ação registrada na auditoria.
+     * A ação é esperada no formato "EntidadeService.metodo()".
+     *
+     * @param acao a ação registrada na auditoria
+     * @return o nome do método extraído da ação
+     */
     private static String extrairMetodo(String acao) {
         if (acao == null) return "";
         String[] partes = acao.split("\\.");
@@ -47,6 +67,13 @@ public class AuditoriaMapper {
         return acao;
     }
 
+    /**
+     * Limpa e formata os detalhes da auditoria, removendo informações sensíveis e normalizando o formato.
+     *
+     * @param detalhes os detalhes da auditoria a serem limpos
+     * @param metodo o nome do método para aplicar regras específicas de limpeza
+     * @return uma string formatada com os detalhes limpos
+     */
     private static String limparDetalhes(String detalhes, String metodo) {
         if (detalhes == null || detalhes.trim().isEmpty()) return "[]";
 
@@ -86,12 +113,28 @@ public class AuditoriaMapper {
         return "[" + String.join(", ", args) + "]";
     }
 
+    /**
+     * Formata o nome do usuário para exibição.
+     * Se o usuário for nulo ou vazio, retorna "ANÔNIMO".
+     * Se o usuário for "anonymousUser", também retorna "ANÔNIMO".
+     * Caso contrário, capitaliza o nome do usuário.
+     *
+     * @param usuario o nome do usuário a ser formatado
+     * @return o nome do usuário formatado
+     */
     private static String formatarUsuario(String usuario) {
         if (usuario == null || usuario.trim().isEmpty()) return "ANÔNIMO";
         if (usuario.equalsIgnoreCase("anonymousUser")) return "ANÔNIMO";
         return capitalize(usuario);
     }
 
+    /**
+     * Capitaliza a primeira letra de uma string e coloca o restante em minúsculas.
+     * Se a string tiver apenas um caractere, retorna em maiúsculo.
+     *
+     * @param texto a string a ser capitalizada
+     * @return a string com a primeira letra em maiúsculo e o restante em minúsculas
+     */
     private static String capitalize(String texto) {
         if (texto.length() <= 1) return texto.toUpperCase();
         return texto.substring(0, 1).toUpperCase() + texto.substring(1).toLowerCase();
