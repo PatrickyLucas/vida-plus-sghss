@@ -16,9 +16,10 @@ import org.springframework.context.annotation.Configuration;
 public class OpenApiConfig {
 
     /**
-     * Cria uma instância do OpenAPI configurada com informações da API e esquema de segurança.
+     * Método que cria a configuração do OpenAPI.
+     * Define o título, versão e descrição da API, além de configurar o esquema de segurança.
      *
-     * @return uma instância de OpenAPI configurada
+     * @return OpenAPI configurado
      */
     @Bean
     public OpenAPI customOpenAPI() {

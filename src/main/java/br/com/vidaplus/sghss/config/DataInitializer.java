@@ -8,9 +8,19 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
 
+/**
+ * Classe de configuração para inicializar os dados do banco de dados.
+ * Esta classe é responsável por criar as roles padrão no banco de dados
+ * quando a aplicação é iniciada.
+ */
 @Configuration
 public class DataInitializer {
 
+    /**
+     * Método que inicializa as roles padrão no banco de dados.
+     * @param roleRepository
+     * @return
+     */
     @Bean
     public CommandLineRunner initRoles(RoleRepository roleRepository) {
         return args -> {

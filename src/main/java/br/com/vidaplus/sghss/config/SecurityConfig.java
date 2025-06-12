@@ -33,9 +33,9 @@ public class SecurityConfig {
      * @param http               Configuração de segurança HTTP.
      * @param authProvider       Provedor de autenticação personalizado.
      * @param jwtUtil            Utilitário JWT para manipulação de tokens.
-     * @param userDetailsService Serviço de detalhes do usuário.
-     * @return Configuração do filtro de segurança.
-     * @throws Exception Se ocorrer um erro ao configurar a segurança.
+     * @param userDetailsService Serviço de detalhes do usuário personalizado.
+     * @return Filtro de segurança configurado.
+     * @throws Exception Se ocorrer um erro ao configurar o filtro de segurança.
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, DaoAuthenticationProvider authProvider, JwtUtil jwtUtil, UserDetailsService userDetailsService) throws Exception {
@@ -72,7 +72,7 @@ public class SecurityConfig {
     }
 
     /**
-     * Configura o provedor de autenticação personalizado.
+     * Configura o provedor de autenticação.
      *
      * @param customUserDetailsService Serviço de detalhes do usuário personalizado.
      * @return Provedor de autenticação configurado.
