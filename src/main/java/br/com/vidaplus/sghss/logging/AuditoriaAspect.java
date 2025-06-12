@@ -11,16 +11,35 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+/**
+ * Aspecto para auditoria de ações executadas nos serviços do sistema.
+ * Registra informações sobre o usuário, ação executada e detalhes dos parâmetros.
+ */
 @Aspect
 @Component
 public class AuditoriaAspect {
 
+    /**
+     * Repositório para persistência das informações de auditoria.
+     */
     private final AuditoriaRepository auditoriaRepository;
 
+    /**
+     * Construtor para injeção de dependência do repositório de auditoria.
+     *
+     * @param auditoriaRepository Repositório para persistência das informações de auditoria.
+     */
     public AuditoriaAspect(AuditoriaRepository auditoriaRepository) {
         this.auditoriaRepository = auditoriaRepository;
     }
 
+    /**
+     * Método que intercepta a execução de métodos nos serviços do sistema,
+     * exceto o método de carregamento de usuário.
+     * Registra informações de auditoria após a execução do método.
+     *
+     * @param joinPoint Ponto de junção que contém informações sobre o método executado.
+     */
     @AfterReturning("execution(* br.com.vidaplus.sghss.service.*.*(..)) && !execution(* br.com.vidaplus.sghss.service.CustomUserDetailsService.loadUserByUsername(..))")
     public void auditar(JoinPoint joinPoint) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
