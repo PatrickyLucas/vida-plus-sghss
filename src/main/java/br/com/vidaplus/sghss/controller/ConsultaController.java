@@ -2,7 +2,6 @@ package br.com.vidaplus.sghss.controller;
 
 import br.com.vidaplus.sghss.dto.request.ConsultaRequestDTO;
 import br.com.vidaplus.sghss.dto.response.ConsultaResponseDTO;
-import br.com.vidaplus.sghss.exception.OperacaoNaoPermitidaException;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.mapper.ConsultaMapper;
 import br.com.vidaplus.sghss.model.Consulta;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 /**
  * Controlador REST para operações relacionadas a Consultas.
  * Disponibiliza endpoints para listar, buscar, criar, atualizar e excluir consultas.
@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/consultas")
 public class ConsultaController {
+
     /**
      * Serviço de Consulta utilizado para as operações CRUD.
      */
@@ -38,9 +39,9 @@ public class ConsultaController {
      * Construtor do ConsultaController.
      *
      * @param consultaService serviço de consulta
-     * @param pacienteService  serviço de paciente
+     * @param pacienteService serviço de paciente
      * @param profissionalService serviço de profissional de saúde
-     * @param consultaMapper   mapeador para conversão entre entidades e DTOs
+     * @param consultaMapper mapeador para conversão entre entidades e DTOs
      */
     public ConsultaController(ConsultaService consultaService, PacienteService pacienteService, ProfissionalSaudeService profissionalService, ConsultaMapper consultaMapper) {
         this.consultaService = consultaService;
@@ -66,8 +67,8 @@ public class ConsultaController {
     /**
      * Busca uma consulta pelo ID.
      *
-     * @param id ID da consulta
-     * @return ConsultaResponseDTO ou 404 Not Found se não encontrado
+     * @param id ID da consulta a ser buscada
+     * @return ConsultaResponseDTO da consulta encontrada
      */
     @GetMapping("/{id}")
     public ResponseEntity<ConsultaResponseDTO> buscarPorId(@PathVariable Long id) {
@@ -123,7 +124,7 @@ public class ConsultaController {
     /**
      * Atualiza uma consulta existente.
      *
-     * @param id         ID da consulta a ser atualizada
+     * @param id ID da consulta a ser atualizada
      * @param requestDTO dados atualizados da consulta
      * @return ConsultaResponseDTO da consulta atualizada
      */

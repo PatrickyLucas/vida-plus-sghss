@@ -1,12 +1,8 @@
 package br.com.vidaplus.sghss.controller;
 
-import br.com.vidaplus.sghss.dto.request.PacienteRequestDTO;
 import br.com.vidaplus.sghss.dto.request.ProfissionalSaudeRequestDTO;
-import br.com.vidaplus.sghss.dto.response.PacienteResponseDTO;
 import br.com.vidaplus.sghss.dto.response.ProfissionalSaudeResponseDTO;
-import br.com.vidaplus.sghss.mapper.PacienteMapper;
 import br.com.vidaplus.sghss.mapper.ProfissionalSaudeMapper;
-import br.com.vidaplus.sghss.model.Paciente;
 import br.com.vidaplus.sghss.model.ProfissionalSaude;
 import br.com.vidaplus.sghss.service.ProfissionalSaudeService;
 import jakarta.validation.Valid;
@@ -15,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 /**
  * Controlador REST para operações relacionadas a Profissionais de Saúde.
  * Disponibiliza endpoints para listar, buscar, criar, atualizar e excluir profissionais de saúde.
@@ -33,14 +30,13 @@ public class ProfissionalSaudeController {
      * Construtor do ProfissionalSaudeController.
      *
      * @param profissionalSaudeService serviço de profissional de saúde
-     * @param profissionalSaudeMapper   mapeador para conversão entre entidades e DTOs
+     * @param profissionalSaudeMapper mapeador para conversão entre entidades e DTOs
      */
     public ProfissionalSaudeController(ProfissionalSaudeService profissionalSaudeService,
                                        ProfissionalSaudeMapper profissionalSaudeMapper) {
         this.profissionalSaudeService = profissionalSaudeService;
         this.profissionalSaudeMapper = profissionalSaudeMapper;
     }
-
     /**
      * Lista todos os profissionais de saúde.
      *
@@ -55,12 +51,11 @@ public class ProfissionalSaudeController {
 
         return ResponseEntity.ok(response);
     }
-
     /**
      * Busca um profissional de saúde pelo ID.
      *
-     * @param id ID do profissional de saúde
-     * @return ProfissionalSaudeResponseDTO ou 404 Not Found se não encontrado
+     * @param id ID do profissional de saúde a ser buscado
+     * @return ProfissionalSaudeResponseDTO do profissional encontrado ou 404 Not Found se não existir
      */
     @GetMapping("/{id}")
     public ResponseEntity<ProfissionalSaudeResponseDTO> buscarPorId(@PathVariable Long id) {
@@ -69,11 +64,10 @@ public class ProfissionalSaudeController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
     /**
      * Cria um novo profissional de saúde.
      *
-     * @param dto dados do profissional de saúde a serem criados
+     * @param dto dados do profissional de saúde a ser criado
      * @return ProfissionalSaudeResponseDTO do profissional criado
      */
     @PostMapping
@@ -86,25 +80,23 @@ public class ProfissionalSaudeController {
 
         return ResponseEntity.ok(response);
     }
-
     /**
      * Exclui um profissional de saúde pelo ID.
      *
      * @param id ID do profissional de saúde a ser excluído
-     * @return 204 No Content se excluído com sucesso
+     * @return ResponseEntity com status 204 No Content se a exclusão for bem-sucedida
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluirProfissional(@PathVariable Long id) {
         profissionalSaudeService.excluirProfissional(id);
         return ResponseEntity.noContent().build();
     }
-
     /**
      * Atualiza um profissional de saúde existente.
      *
      * @param id ID do profissional de saúde a ser atualizado
      * @param requestDTO dados atualizados do profissional de saúde
-     * @return ProfissionalSaudeResponseDTO atualizado
+     * @return ProfissionalSaudeResponseDTO do profissional atualizado
      */
     @PutMapping("/{id}")
     public ResponseEntity<ProfissionalSaudeResponseDTO> atualizarProfissionalSaude(@PathVariable Long id, @Valid @RequestBody ProfissionalSaudeRequestDTO requestDTO) {

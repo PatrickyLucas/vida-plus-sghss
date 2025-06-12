@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/pacientes")
 public class PacienteController {
+
     /**
      * Serviço de Paciente utilizado para as operações CRUD.
      */
@@ -33,12 +34,12 @@ public class PacienteController {
      * Construtor do PacienteController.
      *
      * @param pacienteService serviço de paciente
+     * @param pacienteMapper mapeador para conversão entre entidades e DTOs
      */
     public PacienteController(PacienteService pacienteService, PacienteMapper pacienteMapper) {
         this.pacienteService = pacienteService;
         this.pacienteMapper = pacienteMapper;
     }
-
     /**
      * Lista todos os pacientes.
      *
@@ -59,12 +60,11 @@ public class PacienteController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
     }
-
     /**
      * Busca um paciente pelo ID.
      *
-     * @param id ID do paciente
-     * @return PacienteResponseDTO ou 404 Not Found se não encontrado
+     * @param id ID do paciente a ser buscado
+     * @return PacienteResponseDTO do paciente encontrado
      */
     @GetMapping("/{id}")
     public ResponseEntity<PacienteResponseDTO> buscarPorId(@PathVariable Long id) {
@@ -84,11 +84,10 @@ public class PacienteController {
 
         return ResponseEntity.ok(pacienteMapper.toResponseDTO(paciente));
     }
-
     /**
-     * Cria um novo paciente.
+     * Cria um novo paciente com usuário associado.
      *
-     * @param requestDTO dados do paciente a serem criados
+     * @param requestDTO dados do paciente e usuário a serem criados
      * @return PacienteResponseDTO do paciente criado
      */
     @PostMapping
@@ -99,19 +98,17 @@ public class PacienteController {
         );
         return ResponseEntity.ok(pacienteMapper.toResponseDTO(paciente));
     }
-
     /**
      * Exclui um paciente pelo ID.
      *
      * @param id ID do paciente a ser excluído
-     * @return 204 No Content se excluído com sucesso
+     * @return ResponseEntity com status 204 No Content
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluirPaciente(@PathVariable Long id) {
         pacienteService.excluirPaciente(id);
         return ResponseEntity.noContent().build();
     }
-
     /**
      * Atualiza um paciente existente.
      *

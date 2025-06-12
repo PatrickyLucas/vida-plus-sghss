@@ -16,13 +16,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
  * Controlador REST para operações relacionadas a Prontuários.
  * Disponibiliza endpoints para listar, buscar, criar, atualizar e excluir prontuários.
- * Apenas usuários com papel MEDICO ou ADMIN podem acessar.
  */
 @RestController
 @RequestMapping("/api/prontuarios")
@@ -38,13 +36,13 @@ public class ProntuarioController {
      *
      * @param prontuarioService serviço de prontuário
      * @param pacienteService serviço de paciente
+     * @param prontuarioMapper mapeador para conversão entre entidades e DTOs
      */
     public ProntuarioController(ProntuarioService prontuarioService, PacienteService pacienteService, ProntuarioMapper prontuarioMapper) {
         this.prontuarioService = prontuarioService;
         this.pacienteService = pacienteService;
         this.prontuarioMapper = prontuarioMapper;
     }
-
     /**
      * Lista todos os prontuários.
      *
@@ -58,12 +56,11 @@ public class ProntuarioController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(resposta);
     }
-
     /**
      * Busca um prontuário pelo ID do paciente.
      *
      * @param pacienteId ID do paciente
-     * @return ProntuarioResponseDTO correspondente ou 404 se não encontrado
+     * @return ProntuarioResponseDTO do prontuário encontrado ou 404 Not Found se não existir
      */
     @GetMapping("/{pacienteId}")
     public ResponseEntity<ProntuarioResponseDTO> buscarPorPacienteId(@PathVariable Long pacienteId) {
@@ -82,12 +79,11 @@ public class ProntuarioController {
 
         return ResponseEntity.ok(prontuarioMapper.toResponseDTO(prontuario));
     }
-
     /**
      * Cria um novo prontuário.
      *
-     * @param dto dados do prontuário
-     * @return ProntuarioResponseDTO criado
+     * @param dto dados do prontuário a ser criado
+     * @return ProntuarioResponseDTO do prontuário criado
      */
     @PostMapping
     public ResponseEntity<ProntuarioResponseDTO> salvarProntuario(@Valid @RequestBody ProntuarioRequestDTO dto) {
@@ -100,25 +96,23 @@ public class ProntuarioController {
 
         return ResponseEntity.ok(resposta);
     }
-
     /**
      * Exclui um prontuário pelo ID.
      *
-     * @param id ID do prontuário
-     * @return resposta sem conteúdo
+     * @param id ID do prontuário a ser excluído
+     * @return ResponseEntity com status 204 No Content se a exclusão for bem-sucedida
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluirProntuario(@PathVariable Long id) {
         prontuarioService.excluirProntuario(id);
         return ResponseEntity.noContent().build();
     }
-
     /**
      * Atualiza um prontuário existente.
      *
-     * @param id  ID do prontuário
-     * @param dto dados atualizados do prontuário
-     * @return ProntuarioResponseDTO atualizado
+     * @param id ID do prontuário a ser atualizado
+     * @param dto dados do prontuário a serem atualizados
+     * @return ProntuarioResponseDTO do prontuário atualizado
      */
     @PutMapping("/{id}")
     public ResponseEntity<ProntuarioResponseDTO> atualizarProntuario(
