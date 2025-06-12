@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
  * Configuração do OpenAPI para a documentação da API do Sistema de Gestão Hospitalar.
  * Define o título, versão e descrição da API, além de configurar o esquema de segurança
  * para autenticação via JWT.
+ *
+ * @author Patricky Lucas
  */
 @Configuration
 public class OpenApiConfig {

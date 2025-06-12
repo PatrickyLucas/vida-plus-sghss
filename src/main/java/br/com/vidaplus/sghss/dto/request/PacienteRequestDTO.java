@@ -10,6 +10,8 @@ import java.time.LocalDate;
 /**
  * Classe DTO para requisição de criação ou atualização de um Paciente.
  * Contém validações para os campos obrigatórios e formatos específicos.
+ *
+ * @author Patricky Lucas
  */
 public class PacienteRequestDTO {
 

@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 /**
  * DTO para requisição de consulta médica.
  * Contém informações sobre o paciente, profissional de saúde, data e status da consulta.
+ *
+ * @author Patricky Lucas
  */
 public class ConsultaRequestDTO {
 

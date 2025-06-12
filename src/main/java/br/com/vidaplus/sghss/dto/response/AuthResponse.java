@@ -7,6 +7,8 @@ import lombok.Getter;
 /**
  * Data Transfer Object (DTO) para representar a resposta de autenticação.
  * Contém o token JWT gerado após a autenticação bem-sucedida.
+ *
+ * @author Patricky Lucas
  */
 public class AuthResponse {
     private String token;

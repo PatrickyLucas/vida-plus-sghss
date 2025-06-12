@@ -21,6 +21,8 @@ import java.util.stream.Collectors;
 /**
  * Controlador REST para operações relacionadas a Prontuários.
  * Disponibiliza endpoints para listar, buscar, criar, atualizar e excluir prontuários.
+ *
+ * @author Patricky Lucas
  */
 @RestController
 @RequestMapping("/api/prontuarios")

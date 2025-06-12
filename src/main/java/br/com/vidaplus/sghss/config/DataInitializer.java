@@ -12,6 +12,8 @@ import java.util.Arrays;
  * Classe de configuração para inicializar os dados do banco de dados.
  * Esta classe é responsável por criar as roles padrão no banco de dados
  * quando a aplicação é iniciada.
+ *
+ * @author Patricky Lucas
  */
 @Configuration
 public class DataInitializer {

@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 /**
  * Controlador REST para operações relacionadas a Consultas.
  * Disponibiliza endpoints para listar, buscar, criar, atualizar e excluir consultas.
+ *
+ * @author Patricky Lucas
  */
 @RestController
 @RequestMapping("/api/consultas")

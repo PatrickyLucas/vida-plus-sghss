@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.*;
 /**
  *  Controller para autenticação e registro de usuários.
  * Fornece endpoints para login e registro de novos usuários.
+ *
+ * @author Patricky Lucas
  */
 @RestController
 @RequestMapping("/api/auth")

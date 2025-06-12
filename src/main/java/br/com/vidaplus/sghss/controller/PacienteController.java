@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 /**
  * Controlador REST para operações relacionadas a Pacientes.
  * Disponibiliza endpoints para listar, buscar, criar, atualizar e excluir pacientes.
+ *
+ * @author Patricky Lucas
  */
 @RestController
 @RequestMapping("/api/pacientes")

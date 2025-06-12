@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 /**
  * Data Transfer Object (DTO) para representar a resposta de uma consulta.
  * Contém informações sobre a consulta, como ID, status, data, paciente e profissional envolvidos.
+ *
+ * @author Patricky Lucas
  */
 public class ConsultaResponseDTO {
 

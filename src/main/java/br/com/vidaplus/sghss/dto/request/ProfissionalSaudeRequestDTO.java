@@ -7,6 +7,8 @@ import lombok.Setter;
 
 /**
  * DTO para requisição de Profissional de Saúde.
+ *
+ * @author Patricky Lucas
  */
 @Getter
 @Setter

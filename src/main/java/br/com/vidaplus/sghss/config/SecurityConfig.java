@@ -22,6 +22,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 /**
  * Configuração de segurança da aplicação.
  * Define as regras de autenticação e autorização, além de configurar o filtro JWT.
+ * Esta classe é responsável por proteger os endpoints da API,
+ * permitindo acesso apenas a usuários autenticados e autorizados.
+ *
+ * @author Patricky Lucas
  */
 @Configuration
 @EnableWebSecurity

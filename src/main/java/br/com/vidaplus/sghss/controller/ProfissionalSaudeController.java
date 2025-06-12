@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 /**
  * Controlador REST para operações relacionadas a Profissionais de Saúde.
  * Disponibiliza endpoints para listar, buscar, criar, atualizar e excluir profissionais de saúde.
+ *
+ * @author Patricky Lucas
  */
 @RestController
 @RequestMapping("/api/profissionais")

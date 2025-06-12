@@ -7,7 +7,7 @@ import lombok.Setter;
 /**
  * Classe DTO para representar a resposta do prontuário.
  *
- * @author VidaPlus
+ * @author Patricky Lucas
  */
 @Getter
 @Setter

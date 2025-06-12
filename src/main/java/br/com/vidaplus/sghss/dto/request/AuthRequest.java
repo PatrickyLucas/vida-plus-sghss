@@ -6,6 +6,8 @@ import lombok.Setter;
 /**
  * DTO para requisição de autenticação.
  * Contém informações de usuário e senha.
+ *
+ * @author Patricky Lucas
  */
 @Getter
 @Setter

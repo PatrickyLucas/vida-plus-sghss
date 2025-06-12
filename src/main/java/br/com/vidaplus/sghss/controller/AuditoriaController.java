@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 /**
  * Controlador REST para operações relacionadas a Auditoria.
  * Disponibiliza endpoints para listar e buscar auditorias por usuário.
+ *
+ * @author Patricky Lucas
  */
 @RestController
 @RequestMapping("/api/auditoria")

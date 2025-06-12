@@ -6,6 +6,8 @@ import lombok.Setter;
 
 /**
  * DTO para requisição de Paciente com informações de usuário.
+ *
+ * @author Patricky Lucas
  */
 @Getter
 @Setter

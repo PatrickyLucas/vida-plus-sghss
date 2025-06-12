@@ -3,6 +3,8 @@ package br.com.vidaplus.sghss.dto.response;
 /**
  * Data Transfer Object (DTO) para representar a resposta de autenticação JWT.
  * Contém o token JWT gerado após a autenticação bem-sucedida.
+ *
+ * @author Patricky Lucas
  */
 public class JwtResponseDTO {
     private String token;

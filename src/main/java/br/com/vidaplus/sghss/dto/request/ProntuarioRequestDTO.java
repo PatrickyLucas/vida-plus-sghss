@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 /**
  * DTO para requisição de prontuário.
  * Contém informações sobre o paciente e os registros médicos.
+ *
+ * @author Patricky Lucas
  */
 public class ProntuarioRequestDTO {
 

@@ -9,6 +9,8 @@ import java.time.LocalDate;
  * Data Transfer Object (DTO) para representar a resposta de um paciente.
  * Contém informações básicas como ID, nome, CPF, data de nascimento,
  * histórico clínico e nome de usuário.
+ *
+ * @author Patricky Lucas
  */
 @Getter
 @Setter

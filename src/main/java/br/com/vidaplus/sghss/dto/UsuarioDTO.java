@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Size;
 /**
  * Data Transfer Object (DTO) para representar um usuário no sistema.
  * Este DTO é usado para transferir dados de entrada e saída relacionados a usuários.
+ *
+ * @author Patricky Lucas
  */
 public class UsuarioDTO {
     @NotBlank(message = "O nome de usuário é obrigatório")
