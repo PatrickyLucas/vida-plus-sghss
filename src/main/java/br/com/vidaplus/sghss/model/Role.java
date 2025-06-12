@@ -1,8 +1,11 @@
 package br.com.vidaplus.sghss.model;
 
 import jakarta.persistence.*;
-import lombok.*;
 
+/**
+ * Classe que representa um papel (role) no sistema.
+ * Cada papel tem um nome único.
+ */
 @Entity
 @Table(name = "roles")
 public class Role {

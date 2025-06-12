@@ -8,6 +8,11 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+/**
+ * Classe que representa uma consulta médica no sistema.
+ * Cada consulta está associada a um paciente e a um profissional de saúde,
+ * e contém informações sobre a data e o status da consulta.
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

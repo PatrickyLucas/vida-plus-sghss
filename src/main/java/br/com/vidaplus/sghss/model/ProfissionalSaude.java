@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * Classe que representa um profissional de saúde no sistema.
+ * Cada profissional tem um nome, especialidade, registro profissional e está associado a um usuário.
+ */
 @Entity
 @Table(name = "profissionais")
 @Getter @Setter

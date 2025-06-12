@@ -7,6 +7,10 @@ import lombok.*;
 
 import java.time.LocalDate;
 
+/**
+ * Classe que representa um paciente no sistema.
+ * Contém informações pessoais, histórico clínico e associação com um usuário.
+ */
 @Entity
 @Table(name = "pacientes")
 @Getter @Setter

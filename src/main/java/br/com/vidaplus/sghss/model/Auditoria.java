@@ -6,6 +6,10 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * Classe que representa uma auditoria no sistema.
+ * Registra ações realizadas por usuários, incluindo detalhes e data/hora da ação.
+ */
 @Entity
 @Table(name = "auditoria")
 @Getter

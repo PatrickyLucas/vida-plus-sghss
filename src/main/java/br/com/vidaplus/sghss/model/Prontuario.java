@@ -8,6 +8,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+/**
+ * Classe que representa o prontuário de um paciente.
+ * Contém informações sobre os registros médicos e a última atualização.
+ */
 @Entity
 @Table(name = "prontuarios")
 @EntityListeners(AuditingEntityListener.class) // Habilita auditoria
