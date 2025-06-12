@@ -17,8 +17,17 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Filtro de autenticação JWT que intercepta requisições HTTP
+ * para verificar e validar tokens JWT, configurando o contexto de segurança.
+ *
+ * @author Patricky Lucas
+ */
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    /**
+     * Utilitário para manipulação de tokens JWT.
+     */
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
 
@@ -27,6 +36,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * Método que executa a lógica de filtragem para autenticação JWT.
+     * Verifica o cabeçalho Authorization, extrai o token, valida e configura
+     * o contexto de segurança com as informações do usuário.
+     *
+     * @param request  A requisição HTTP recebida.
+     * @param response A resposta HTTP a ser enviada.
+     * @param chain    A cadeia de filtros para continuar o processamento da requisição.
+     * @throws ServletException Se ocorrer um erro durante o processamento do filtro.
+     * @throws IOException      Se ocorrer um erro de I/O durante o processamento do filtro.
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
