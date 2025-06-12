@@ -6,6 +6,8 @@ import br.com.vidaplus.sghss.model.Auditoria;
 /**
  * Mapper para converter entre Auditoria e AuditoriaResponseDTO.
  * Utilizado para transformar dados de auditoria em um formato adequado para resposta HTTP.
+ *
+ * @author Patricky Lucas
  */
 public class AuditoriaMapper {
 

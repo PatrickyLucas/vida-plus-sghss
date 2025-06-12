@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 /**
  * Mapper para converter entre DTOs de profissional de saúde e entidades de profissional de saúde.
  * Utilizado para transformar dados entre a camada de apresentação e a camada de persistência.
+ *
+ * @author Patricky Lucas
  */
 @Component
 public class ProfissionalSaudeMapper {

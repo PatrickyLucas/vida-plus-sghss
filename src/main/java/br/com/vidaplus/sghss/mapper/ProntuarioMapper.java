@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 /**
  * Mapper para converter entre DTOs de prontuário e entidades de prontuário.
  * Utilizado para transformar dados entre a camada de apresentação e a camada de persistência.
+ *
+ * @author Patricky Lucas
  */
 @Component
 public class ProntuarioMapper {

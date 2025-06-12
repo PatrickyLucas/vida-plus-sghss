@@ -10,6 +10,7 @@ import java.util.Optional;
  * Repository interface para a entidade Paciente.
  * Esta interface estende JpaRepository, fornecendo métodos
  * para operações CRUD e consultas personalizadas.
+ *
  * @author Patricky Lucas
  */
 @Repository

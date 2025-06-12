@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 /**
  * Classe que representa o prontuário de um paciente.
  * Contém informações sobre os registros médicos e a última atualização.
+ *
+ * @author Patricky Lucas
  */
 @Entity
 @Table(name = "prontuarios")

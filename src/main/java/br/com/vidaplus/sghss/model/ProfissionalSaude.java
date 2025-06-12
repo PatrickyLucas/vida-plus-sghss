@@ -7,6 +7,8 @@ import lombok.*;
 /**
  * Classe que representa um profissional de saúde no sistema.
  * Cada profissional tem um nome, especialidade, registro profissional e está associado a um usuário.
+ *
+ * @author Patricky Lucas
  */
 @Entity
 @Table(name = "profissionais")

@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 /**
  * Classe que representa um usuário do sistema.
  * Implementa UserDetails para integração com o Spring Security.
+ *
+ * @author Patricky Lucas
  */
 @Entity
 @Table(name = "usuarios")

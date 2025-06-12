@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 /**
  * Aspecto para auditoria de ações executadas nos serviços do sistema.
  * Registra informações sobre o usuário, ação executada e detalhes dos parâmetros.
+ *
+ * @author Patricky Lucas
  */
 @Aspect
 @Component

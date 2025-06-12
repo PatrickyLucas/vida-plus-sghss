@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 /**
  * Classe que representa um papel (role) no sistema.
  * Cada papel tem um nome único.
+ *
+ * @author Patricky Lucas
  */
 @Entity
 @Table(name = "roles")

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
  * Repository interface para a entidade Consulta.
  * Esta interface estende JpaRepository, fornecendo métodos
  * para operações CRUD e consultas personalizadas.
+ *
  * @author Patricky Lucas
  */
 @Repository

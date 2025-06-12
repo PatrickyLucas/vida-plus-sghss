@@ -9,6 +9,7 @@ import java.util.List;
  * Repository interface para a entidade Auditoria.
  * Esta interface estende JpaRepository, fornecendo métodos
  * para operações CRUD e consultas personalizadas.
+ *
  * @author Patricky Lucas
  */
 public interface AuditoriaRepository extends JpaRepository<Auditoria, Long> {
