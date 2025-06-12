@@ -7,6 +7,10 @@ import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDate;
 
+/**
+ * Classe DTO para requisição de criação ou atualização de um Paciente.
+ * Contém validações para os campos obrigatórios e formatos específicos.
+ */
 public class PacienteRequestDTO {
 
     @NotBlank(message = "Nome é obrigatório")

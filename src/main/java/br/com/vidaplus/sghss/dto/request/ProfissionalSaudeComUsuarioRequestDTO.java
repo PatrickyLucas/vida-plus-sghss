@@ -5,6 +5,9 @@ import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * DTO para requisição de Profissional de Saúde com informações de usuário.
+ */
 @Getter @Setter
 public class ProfissionalSaudeComUsuarioRequestDTO {
     @Valid

@@ -6,6 +6,10 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
+/**
+ * DTO para requisição de consulta médica.
+ * Contém informações sobre o paciente, profissional de saúde, data e status da consulta.
+ */
 public class ConsultaRequestDTO {
 
     @NotNull(message = "O ID do paciente é obrigatório")

@@ -3,6 +3,10 @@ package br.com.vidaplus.sghss.dto.request;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * DTO para requisição de autenticação.
+ * Contém informações de usuário e senha.
+ */
 @Getter
 @Setter
 public class AuthRequest {

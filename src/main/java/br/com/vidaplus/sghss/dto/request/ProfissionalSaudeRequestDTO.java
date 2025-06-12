@@ -5,6 +5,9 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * DTO para requisição de Profissional de Saúde.
+ */
 @Getter
 @Setter
 public class ProfissionalSaudeRequestDTO {

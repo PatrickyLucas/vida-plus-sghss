@@ -2,6 +2,10 @@ package br.com.vidaplus.sghss.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 
+/**
+ * DTO para requisição de prontuário.
+ * Contém informações sobre o paciente e os registros médicos.
+ */
 public class ProntuarioRequestDTO {
 
     @NotNull
