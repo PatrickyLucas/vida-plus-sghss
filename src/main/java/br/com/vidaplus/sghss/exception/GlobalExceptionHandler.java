@@ -13,6 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Classe para tratamento global de exceções na aplicação.
+ * Captura e processa exceções lançadas em qualquer parte da aplicação,
+ * retornando respostas apropriadas ao cliente.
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
