@@ -4,6 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Classe DTO para representar a resposta do prontuário.
+ *
+ * @author VidaPlus
+ */
 @Getter
 @Setter
 @AllArgsConstructor

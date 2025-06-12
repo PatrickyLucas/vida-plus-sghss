@@ -3,6 +3,10 @@ package br.com.vidaplus.sghss.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+/**
+ * Data Transfer Object (DTO) para representar um usuário no sistema.
+ * Este DTO é usado para transferir dados de entrada e saída relacionados a usuários.
+ */
 public class UsuarioDTO {
     @NotBlank(message = "O nome de usuário é obrigatório")
     @Size(min = 4, max = 50, message = "O nome de usuário deve ter entre 4 e 50 caracteres")

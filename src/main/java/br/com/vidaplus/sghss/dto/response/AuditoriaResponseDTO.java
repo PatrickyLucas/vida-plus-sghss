@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 
+/**
+ * Data Transfer Object (DTO) para representar a resposta de auditoria.
+ * Contém informações sobre a ação realizada, o usuário, a entidade afetada,
+ * detalhes da ação e a data e hora em que ocorreu.
+ */
 public class AuditoriaResponseDTO {
     private Long id;
     private String usuario;

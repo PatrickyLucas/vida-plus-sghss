@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Data Transfer Object (DTO) para representar a resposta de um profissional de saúde.
+ * Contém informações básicas como ID, nome, especialidade e registro profissional.
+ */
 @Getter
 @Setter
 @AllArgsConstructor
