@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/auditoria")
+@RequestMapping("/api/auditoria")
 public class AuditoriaController {
 
     private final AuditoriaRepository auditoriaRepository;
@@ -28,4 +28,15 @@ public class AuditoriaController {
                 .map(AuditoriaMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    //metodo para buscar auditorias por nome de usuario
+    @GetMapping("/usuario/{usuario}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<AuditoriaResponseDTO> buscarPorUsuario(@PathVariable String usuario) {
+        return auditoriaRepository.findByUsuario(usuario)
+                .stream()
+                .map(AuditoriaMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
 }

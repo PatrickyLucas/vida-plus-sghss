@@ -86,13 +86,6 @@ public class AuditoriaMapper {
         return "[" + String.join(", ", args) + "]";
     }
 
-    private static String formatarDataHora(java.time.LocalDateTime dataHora) {
-        if (dataHora == null) return "";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
-        return dataHora.format(formatter);
-    }
-
-
     private static String formatarUsuario(String usuario) {
         if (usuario == null || usuario.trim().isEmpty()) return "ANÔNIMO";
         if (usuario.equalsIgnoreCase("anonymousUser")) return "ANÔNIMO";

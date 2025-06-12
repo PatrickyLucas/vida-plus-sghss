@@ -63,6 +63,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/prontuarios").hasAnyRole("ADMIN", "MEDICO")
                         .requestMatchers(HttpMethod.GET, "/api/prontuarios/**").hasAnyRole("ADMIN", "MEDICO", "PACIENTE")
                         .requestMatchers(HttpMethod.DELETE, "/api/prontuarios/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/auditoria").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/auditoria/usuario/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class) // 🔥 Adicionando o filtro JWT!
