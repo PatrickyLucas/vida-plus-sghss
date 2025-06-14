@@ -15,12 +15,25 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Testes unitários para o serviço de profissionais de saúde.
+ * Este serviço é responsável por gerenciar as operações relacionadas a profissionais de saúde,
+ * incluindo listagem, busca, salvamento, exclusão e atualização de profissionais.
+ *
+ * @author Patricky Lucas
+ */
 class ProfissionalSaudeServiceTest {
 
+    /**
+     * Mocks necessários para o serviço de profissionais de saúde.
+     */
     private ProfissionalSaudeRepository profissionalSaudeRepository;
     private UsuarioService usuarioService;
     private ProfissionalSaudeService profissionalSaudeService;
 
+    /**
+     * Configuração inicial dos mocks antes de cada teste.
+     */
     @BeforeEach
     void setUp() {
         profissionalSaudeRepository = mock(ProfissionalSaudeRepository.class);
@@ -28,6 +41,9 @@ class ProfissionalSaudeServiceTest {
         profissionalSaudeService = new ProfissionalSaudeService(profissionalSaudeRepository, usuarioService);
     }
 
+    /**
+     * Testa a listagem de todos os profissionais de saúde, verificando se retorna uma lista não vazia.
+     */
     @Test
     void listarTodos_deveRetornarListaDeProfissionais() {
         ProfissionalSaude profissional = new ProfissionalSaude();
@@ -36,6 +52,10 @@ class ProfissionalSaudeServiceTest {
         assertEquals(1, profissionais.size());
     }
 
+    /**
+     * Testa a busca de um profissional de saúde por ID, verificando se retorna o profissional correto quando encontrado,
+     * e vazio quando não encontrado.
+     */
     @Test
     void buscarPorId_deveRetornarProfissionalQuandoEncontrado() {
         ProfissionalSaude profissional = new ProfissionalSaude();
@@ -44,6 +64,9 @@ class ProfissionalSaudeServiceTest {
         assertTrue(resultado.isPresent());
     }
 
+    /**
+     * Testa a busca de um profissional de saúde por ID, verificando se retorna vazio quando o profissional não é encontrado.
+     */
     @Test
     void buscarPorId_deveRetornarVazioQuandoNaoEncontrado() {
         when(profissionalSaudeRepository.findById(1L)).thenReturn(Optional.empty());
@@ -51,6 +74,9 @@ class ProfissionalSaudeServiceTest {
         assertFalse(resultado.isPresent());
     }
 
+    /**
+     * Testa salvamento de um profissional de saúde, verificando se o profissional é salvo corretamente.
+     */
     @Test
     void salvarProfissional_deveSalvarProfissional() {
         ProfissionalSaude profissional = new ProfissionalSaude();
@@ -59,12 +85,19 @@ class ProfissionalSaudeServiceTest {
         assertEquals(profissional, salvo);
     }
 
+    /**
+     * Testa a exclusão de um profissional de saúde, verificando se o método deleteById é chamado corretamente.
+     */
     @Test
     void excluirProfissional_deveExcluirProfissional() {
         profissionalSaudeService.excluirProfissional(1L);
         verify(profissionalSaudeRepository).deleteById(1L);
     }
 
+    /**
+     * Testa a atualização de um profissional de saúde, verificando se o profissional é atualizado corretamente
+     * quando existe.
+     */
     @Test
     void atualizarProfissionalSaude_deveAtualizarQuandoExiste() {
         ProfissionalSaude profissional = new ProfissionalSaude();
@@ -79,6 +112,9 @@ class ProfissionalSaudeServiceTest {
         assertEquals("Novo Nome", atualizado.getNome());
     }
 
+    /**
+     * Testa a atualização de um profissional de saúde, verificando se lança uma exceção quando o profissional não existe.
+     */
     @Test
     void atualizarProfissionalSaude_deveLancarExcecaoQuandoNaoExiste() {
         ProfissionalSaudeRequestDTO dto = new ProfissionalSaudeRequestDTO();
@@ -86,6 +122,10 @@ class ProfissionalSaudeServiceTest {
         assertThrows(RecursoNaoEncontradoException.class, () -> profissionalSaudeService.atualizarProfissionalSaude(1L, dto));
     }
 
+    /**
+     * Testa a criação de um profissional de saúde com usuário, verificando se o profissional é salvo corretamente.
+     * Este teste simula a criação de um profissional com um usuário associado.
+     */
     @Test
     void criarProfissionalComUsuario_deveCriarProfissionalComUsuario() {
         ProfissionalSaudeRequestDTO profissionalDTO = new ProfissionalSaudeRequestDTO();
