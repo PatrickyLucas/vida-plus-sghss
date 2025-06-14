@@ -1,4 +1,4 @@
-![VidaPlus Banner](https://raw.githubusercontent.com/PatrickyLucas/vida-plus-sghss/tree/main/src/docs/Monograma.png)
+<!-- ![VidaPlus Banner](https://raw.githubusercontent.com/PatrickyLucas/vida-plus-sghss/tree/main/src/docs/Monograma.png) -->
 
 # 🏥 VidaPlus SGHSS - Sistema de Gestão Hospitalar e Serviços de Saúde
 
