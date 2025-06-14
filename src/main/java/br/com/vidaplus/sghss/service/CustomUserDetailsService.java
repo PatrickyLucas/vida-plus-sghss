@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 /**
  * Serviço personalizado para carregar detalhes do usuário.
  * Implementa a interface UserDetailsService do Spring Security.
+ *
+ * @author Patricky Lucas
  */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

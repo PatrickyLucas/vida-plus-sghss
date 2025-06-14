@@ -17,6 +17,8 @@ import java.util.Set;
 /**
  * Serviço responsável por gerenciar as operações relacionadas aos usuários.
  * Inclui métodos para criar usuários, buscar por nome de usuário e atribuir papéis.
+ *
+ * @author Patricky Lucas
  */
 @Service
 public class UsuarioService {

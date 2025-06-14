@@ -17,6 +17,8 @@ import java.util.Optional;
 /**
  * Serviço responsável por gerenciar as operações relacionadas aos profissionais de saúde.
  * Inclui métodos para listar, buscar, salvar, excluir e atualizar profissionais de saúde.
+ *
+ * @author Patricky Lucas
  */
 @Service
 public class ProfissionalSaudeService {

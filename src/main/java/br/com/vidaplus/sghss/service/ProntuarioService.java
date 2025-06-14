@@ -13,6 +13,8 @@ import java.util.Optional;
 /**
  * Serviço responsável por gerenciar as operações relacionadas aos prontuários.
  * Inclui métodos para buscar, salvar, excluir e atualizar prontuários.
+ *
+ * @author Patricky Lucas
  */
 @Service
 public class ProntuarioService {

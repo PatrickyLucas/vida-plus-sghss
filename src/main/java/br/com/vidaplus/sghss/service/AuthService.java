@@ -15,6 +15,8 @@ import java.util.Optional;
 /**
  * Serviço de autenticação que lida com o registro e autenticação de usuários.
  * Utiliza o repositório de usuários, utilitário JWT e codificador de senhas.
+ *
+ * @author Patricky Lucas
  */
 @Service
 public class AuthService {

@@ -16,6 +16,8 @@ import java.util.Optional;
 /**
  * Serviço para gerenciar consultas médicas.
  * Permite listar, buscar, salvar, atualizar e excluir consultas.
+ *
+ * @author Patricky Lucas
  */
 @Service
 public class ConsultaService {

@@ -16,6 +16,8 @@ import java.util.Optional;
 /**
  * Serviço responsável por gerenciar as operações relacionadas aos pacientes.
  * Inclui métodos para listar, buscar, salvar, excluir e atualizar pacientes.
+ *
+ * @author Patricky Lucas
  */
 @Service
 public class PacienteService {
