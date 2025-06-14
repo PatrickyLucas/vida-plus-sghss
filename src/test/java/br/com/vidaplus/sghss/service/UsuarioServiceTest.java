@@ -17,13 +17,26 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Testes unitários para o serviço de usuários.
+ * Este serviço é responsável por gerenciar as operações relacionadas a usuários,
+ * incluindo criação, busca e verificação de existência de usuários.
+ *
+ * @author Patricky Lucas
+ */
 class UsuarioServiceTest {
 
+    /**
+     * Mocks necessários para o serviço de usuários.
+     */
     private UsuarioRepository usuarioRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
     private UsuarioService usuarioService;
 
+    /**
+     * Configuração inicial dos mocks antes de cada teste.
+     */
     @BeforeEach
     void setUp() {
         usuarioRepository = mock(UsuarioRepository.class);
@@ -32,6 +45,10 @@ class UsuarioServiceTest {
         usuarioService = new UsuarioService(usuarioRepository, roleRepository, passwordEncoder);
     }
 
+    /**
+     * Testa a criação de um usuário, verificando se o usuário é criado corretamente
+     * quando não existe.
+     */
     @Test
     void criarUsuario_deveCriarUsuarioQuandoNaoExiste() {
         when(usuarioRepository.findByUsername("user")).thenReturn(Optional.empty());
@@ -49,6 +66,9 @@ class UsuarioServiceTest {
         assertTrue(usuario.getRoles().contains(role));
     }
 
+    /**
+     * Testa a criação de um usuário, verificando se lança uma exceção quando o usuário já existe.
+     */
     @Test
     void criarUsuario_deveLancarExcecaoQuandoUsuarioJaExiste() {
         when(usuarioRepository.findByUsername("user")).thenReturn(Optional.of(new Usuario()));
@@ -57,6 +77,9 @@ class UsuarioServiceTest {
                 usuarioService.criarUsuario("user", "senha", "ADMIN"));
     }
 
+    /**
+     * Testa a criação de um usuário, verificando se lança uma exceção quando o papel (role) não existe.
+     */
     @Test
     void criarUsuario_deveLancarExcecaoQuandoRoleNaoExiste() {
         when(usuarioRepository.findByUsername("user")).thenReturn(Optional.empty());
@@ -66,6 +89,10 @@ class UsuarioServiceTest {
                 usuarioService.criarUsuario("user", "senha", "ADMIN"));
     }
 
+    /**
+     * Testa a busca de um usuário por username, verificando se retorna o usuário correto quando encontrado,
+     * ou um Optional vazio quando não encontrado.
+     */
     @Test
     void buscarPorUsername_deveRetornarUsuarioQuandoEncontrado() {
         Usuario usuario = new Usuario("user", "senha");
@@ -77,6 +104,9 @@ class UsuarioServiceTest {
         assertEquals("user", resultado.get().getUsername());
     }
 
+    /**
+     * Testa a busca de um usuário por username, verificando se retorna vazio quando o usuário não é encontrado.
+     */
     @Test
     void buscarPorUsername_deveRetornarVazioQuandoNaoEncontrado() {
         when(usuarioRepository.findByUsername("user")).thenReturn(Optional.empty());
