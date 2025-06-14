@@ -1,31 +1,28 @@
+![VidaPlus Banner](https://raw.githubusercontent.com/PatrickyLucas/vida-plus-sghss/tree/main/src/docs/Monograma.png)
+
 # 🏥 VidaPlus SGHSS - Sistema de Gestão Hospitalar e Serviços de Saúde
 
-Sistema completo de gestão hospitalar desenvolvido como parte do Projeto Multidisciplinar da Uninter, com ênfase em desenvolvimento backend utilizando Java + Spring Boot. O sistema oferece funcionalidades para gerenciar pacientes, profissionais de saúde, consultas, prontuários e autenticação com segurança baseada em JWT.
+[![Java](https://img.shields.io/badge/Java-17+-red.svg?style=flat&logo=java)](https://www.java.com)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen?style=flat&logo=spring)](https://spring.io/projects/spring-boot)
+[![MySQL](https://img.shields.io/badge/MySQL-Database-blue?logo=mysql)](https://www.mysql.com)
+[![JWT](https://img.shields.io/badge/Auth-JWT-orange)](https://jwt.io)
+[![Build](https://img.shields.io/badge/Build-Maven-blue)](https://maven.apache.org)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+Sistema completo para gestão de hospitais, clínicas e profissionais de saúde, com controle de pacientes, prontuários, consultas, usuários e auditoria de ações.
+
+> 🔧 Desenvolvido como parte do **Projeto Multidisciplinar da Uninter**, com ênfase em **desenvolvimento backend** utilizando **Java + Spring Boot**.
 
 ---
 
 ## 🚀 Funcionalidades
 
-- ✅ **Gestão de Pacientes**  
-  Cadastro, listagem, atualização e exclusão.
-
-- ✅ **Gestão de Profissionais de Saúde**  
-  Cadastro, listagem, atualização e exclusão.
-
-- ✅ **Gestão de Prontuários**  
-  Criação, consulta, atualização e exclusão de registros médicos.
-
-- ✅ **Gestão de Consultas**  
-  Agendamento, visualização e gerenciamento de consultas.
-
-- 🔐 **Autenticação e Autorização**  
-  Login seguro com JWT e controle de acesso baseado em papéis: `ADMIN`, `MEDICO`, `PACIENTE`.
-
-- 📋 **Validação de Dados**  
-  Validações robustas nos DTOs para garantir integridade dos dados.
-
-- 📘 **Documentação da API**  
-  Disponível via Swagger/OpenAPI para facilitar testes e integração.
+- Cadastro e autenticação de usuários (roles: `ADMIN`, `MEDICO`, `PACIENTE`)
+- Gerenciamento de pacientes, profissionais de saúde e consultas
+- Prontuário eletrônico do paciente
+- Auditoria de ações (logs de operações sensíveis)
+- Segurança com JWT e Spring Security
+- Validações robustas e tratamento de exceções
 
 ---
 
@@ -33,78 +30,150 @@ Sistema completo de gestão hospitalar desenvolvido como parte do Projeto Multid
 
 - Java 17+
 - Spring Boot
-- Spring Security + JWT
-- Spring Data JPA + Hibernate
+- Spring Data JPA (Hibernate)
+- Spring Security (JWT)
+- MySQL
 - Lombok
-- Swagger / OpenAPI
-- Banco de Dados Relacional MySQL
+- JUnit 5 & Mockito
 
 ---
 
-## 🧪 Como Executar o Projeto
+## 📦 Instalação
 
-### 1. Clone o repositório
+### 1. Clone o repositório:
 
 ```bash
 git clone https://github.com/PatrickyLucas/vida-plus-sghss.git
 cd vida-plus-sghss
 ```
 
-### 2. Configure o banco de dados
+### 2. Configure o banco de dados:
 
-Edite o arquivo `src/main/resources/application.properties` com as credenciais corretas do seu banco de dados.
+- MySQL rodando localmente
+- Verifique e edite o arquivo: `src/main/resources/application.properties`
+- Usuário padrão: `root`
+- Senha padrão: `root`
+- O banco será criado automaticamente com:
+  ```
+  spring.jpa.hibernate.ddl-auto=create-drop
+  ```
 
-### 3. Compile e execute o projeto
-
-Com Maven:
+### 3. Build e execução:
 
 ```bash
-./mvnw spring-boot:run
+ mvn spring-boot:run
 ```
 
-### 4. Acesse a documentação da API
+Ou rode a classe `SghssApplication` diretamente pela sua IDE.
 
-Abra no navegador:
+---
 
-```
-http://localhost:8085/swagger-ui/index.html
+## 🔐 Autenticação
+
+O sistema utiliza **JWT** para autenticação.
+
+- Para acessar endpoints protegidos:
+  - Faça login via `POST /api/auth/login`
+  - Utilize o token retornado no header:
+
+```http
+Authorization: Bearer <seu_token>
 ```
 
 ---
 
-## 🧱 Estrutura do Projeto
+## 📚 Exemplos de Endpoints
 
-```
-├── controller/         # Endpoints REST
-├── service/            # Regras de negócio
-├── model/              # Entidades JPA
-├── repository/         # Interfaces de acesso a dados
-├── dto/                # DTOs de entrada e saída
-├── exception/          # Tratamento global de exceções
-├── security/           # Configuração de segurança (JWT)
+### 🔑 Autenticação
+
+**Login**  
+`POST /api/auth/login`
+
+```json
+{
+  "username": "admin",
+  "password": "senha123"
+}
 ```
 
 ---
 
-## 🔐 Segurança
+### 👨‍⚕️ Pacientes
 
-- Autenticação baseada em **JWT**
-- Controle de acesso por **papéis**
-- Endpoints protegidos conforme o perfil do usuário
+**Listar pacientes**  
+`GET /api/pacientes`
+
+**Criar paciente**  
+`POST /api/pacientes`
+
+```json
+{
+  "nome": "João Silva",
+  "cpf": "12345678901",
+  "dataNascimento": "1990-01-01",
+  "historicoClinico": "Sem alergias"
+}
+```
 
 ---
 
-## 🤝 Contribuição
+### 📁 Prontuários
 
-Contribuições são bem-vindas!  
-Sinta-se à vontade para abrir **issues** ou enviar um **pull request** com melhorias.
+**Buscar prontuário por paciente**  
+`GET /api/prontuarios/{pacienteId}`
+
+---
+
+### 📅 Consultas
+
+**Agendar consulta**  
+`POST /api/consultas`
+
+```json
+{
+  "pacienteId": 1,
+  "profissionalId": 2,
+  "data": "2024-07-01T10:00:00",
+  "status": "AGENDADA"
+}
+```
+
+---
+
+## 🧪 Testes
+
+Execute os testes unitários com:
+
+```bash
+ mvn test
+```
+
+---
+
+## 📝 Auditoria
+
+Todas as ações sensíveis são registradas na **tabela de auditoria**, contendo:
+
+- Usuário
+- Ação realizada
+- Detalhes da operação
+- Data e hora
+
+---
+
+## 👤 Autor
+
+**Patricky Lucas**
+
+[![GitHub](https://img.shields.io/badge/GitHub-@PatrickyLucas-181717?logo=github)](https://github.com/PatrickyLucas)
 
 ---
 
 ## 📄 Licença
 
-Este projeto está licenciado sob os termos da **Licença MIT**.
+Este projeto está sob a licença **MIT**.  
+Consulte o arquivo [`LICENSE`](./LICENSE) para mais detalhes.
 
 ---
 
-Desenvolvido com ❤️ por Patricky Lucas de Freitas
+<p align="center"><em>Dúvidas ou sugestões? Abra uma issue ou entre em contato!</em></p>
