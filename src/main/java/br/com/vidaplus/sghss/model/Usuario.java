@@ -1,6 +1,10 @@
 package br.com.vidaplus.sghss.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +22,9 @@ import java.util.stream.Collectors;
  */
 @Entity
 @Table(name = "usuarios")
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Usuario implements UserDetails {
 
     @Id
@@ -35,15 +42,6 @@ public class Usuario implements UserDetails {
     )
     private Set<Role> roles = new HashSet<>();
 
-    // Adicionando os Getters
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
@@ -51,25 +49,6 @@ public class Usuario implements UserDetails {
                 .collect(Collectors.toList());
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public Usuario() {
-        // construtor padrão exigido pelo Hibernate
-    }
 
     public Usuario(String username, String password) {
         this.username = username;
