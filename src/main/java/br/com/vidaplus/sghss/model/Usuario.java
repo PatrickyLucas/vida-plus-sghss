@@ -27,7 +27,7 @@ public class Usuario implements UserDetails {
     private String username;
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER) // 🔥 Garante que roles sejam carregadas automaticamente
+    @ManyToMany(fetch = FetchType.EAGER) // Garante que roles sejam carregadas automaticamente
     @JoinTable(
             name = "usuario_roles",
             joinColumns = @JoinColumn(name = "usuario_id"),
@@ -35,7 +35,7 @@ public class Usuario implements UserDetails {
     )
     private Set<Role> roles = new HashSet<>();
 
-    // ✅ Adicionando os Getters
+    // Adicionando os Getters
     public String getUsername() {
         return username;
     }
