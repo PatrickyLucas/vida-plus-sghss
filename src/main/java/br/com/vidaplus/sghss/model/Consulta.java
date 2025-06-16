@@ -45,12 +45,4 @@ public class Consulta {
     @Column(nullable = false, length = 20)
     private String status; // Agendada, Concluída, Cancelada
 
-
-    public Consulta(String status, Long id, Paciente paciente, ProfissionalSaude profissional, LocalDateTime data) {
-        this.status = status;
-        this.id = id;
-        this.paciente = paciente;
-        this.profissional = profissional;
-        this.data = data;
-    }
 }
