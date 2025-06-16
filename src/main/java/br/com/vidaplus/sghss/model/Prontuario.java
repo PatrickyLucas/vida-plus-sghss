@@ -40,9 +40,4 @@ public class Prontuario {
     @Column(name = "ultima_atualizacao")
     private LocalDateTime ultimaAtualizacao;
 
-    public Prontuario(Long id, String registros, Paciente paciente) {
-        this.id = id;
-        this.registros = registros;
-        this.paciente = paciente;
-    }
 }
