@@ -13,7 +13,8 @@ import lombok.*;
 @Entity
 @Table(name = "profissionais")
 @Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProfissionalSaude {
 
     @Id

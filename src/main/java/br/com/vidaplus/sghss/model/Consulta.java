@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
  *
  * @author Patricky Lucas
  */
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

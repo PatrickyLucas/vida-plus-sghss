@@ -16,8 +16,7 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "auditoria")
-@Getter
-@Setter
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Auditoria {

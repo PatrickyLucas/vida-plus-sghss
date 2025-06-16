@@ -17,8 +17,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "prontuarios")
 @EntityListeners(AuditingEntityListener.class) // Habilita auditoria
-@Getter
-@Setter
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Prontuario {
