@@ -2,6 +2,7 @@ package br.com.vidaplus.sghss.mapper;
 
 import br.com.vidaplus.sghss.dto.response.AuditoriaResponseDTO;
 import br.com.vidaplus.sghss.model.Auditoria;
+import org.springframework.stereotype.Component;
 
 /**
  * Mapper para converter entre Auditoria e AuditoriaResponseDTO.
@@ -9,6 +10,7 @@ import br.com.vidaplus.sghss.model.Auditoria;
  *
  * @author Patricky Lucas
  */
+@Component
 public class AuditoriaMapper {
 
     /**
