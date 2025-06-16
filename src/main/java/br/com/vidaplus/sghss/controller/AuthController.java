@@ -34,9 +34,7 @@ public class AuthController {
     /**
      * Serviço de detalhes do usuário personalizado para autenticação.
      */
-    private final CustomUserDetailsService customUserDetailsService;
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
+
     private final UsuarioService usuarioService;
     private final AuthService authService;
     private final PacienteService pacienteService;
@@ -53,9 +51,6 @@ public class AuthController {
      * @param usuarioService           serviço de usuário para operações relacionadas a usuários
      */
     public AuthController(CustomUserDetailsService customUserDetailsService, AuthenticationManager authenticationManager, JwtUtil jwtUtil, UsuarioService usuarioService, AuthService authService, PacienteService pacienteService, PacienteMapper pacienteMapper, ProfissionalSaudeService profissionalSaudeService, ProfissionalSaudeMapper profissionalSaudeMapper) {
-        this.customUserDetailsService = customUserDetailsService;
-        this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
         this.usuarioService = usuarioService;
         this.authService = authService;
         this.pacienteService = pacienteService;
@@ -90,7 +85,7 @@ public class AuthController {
      * @param usuarioDTO objeto contendo os dados do novo usuário
      * @return ResponseEntity com o usuário criado
      */
-    @PostMapping("/registrar")
+    @PostMapping("/registrar-admin")
     public ResponseEntity<Usuario> registrarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
         Usuario novoUsuario = usuarioService.criarUsuario(
                 usuarioDTO.getUsername(),
@@ -106,7 +101,6 @@ public class AuthController {
                 requestDTO.getPaciente(),
                 requestDTO.getUsuario()
         );
-        // Use o mapper para retornar o DTO de resposta
         return ResponseEntity.ok(pacienteMapper.toResponseDTO(paciente));
     }
 
