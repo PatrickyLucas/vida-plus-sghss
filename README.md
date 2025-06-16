@@ -161,6 +161,16 @@ Todas as ações sensíveis são registradas na **tabela de auditoria**, contend
 
 ---
 
+## 📖 Documentação da API (Swagger)
+
+A documentação completa dos endpoints REST está disponível via Swagger:
+
+🔗 [http://localhost:8085/swagger-ui/index.html](http://localhost:8085/swagger-ui/index.html)
+
+Use essa interface para explorar, testar e entender todos os recursos da API.
+
+---
+
 ## 👤 Autor
 
 **Patricky Lucas**
