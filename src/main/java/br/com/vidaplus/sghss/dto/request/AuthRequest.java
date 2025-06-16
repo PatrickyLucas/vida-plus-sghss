@@ -1,6 +1,8 @@
 package br.com.vidaplus.sghss.dto.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -9,19 +11,12 @@ import lombok.Setter;
  *
  * @author Patricky Lucas
  */
-@Getter
-@Setter
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class AuthRequest {
     private String username;
     private String password;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 
 
 }
