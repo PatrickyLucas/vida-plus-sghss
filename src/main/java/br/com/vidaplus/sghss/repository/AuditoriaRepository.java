@@ -2,6 +2,7 @@ package br.com.vidaplus.sghss.repository;
 
 import br.com.vidaplus.sghss.model.Auditoria;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
  *
  * @author Patricky Lucas
  */
+@Repository
 public interface AuditoriaRepository extends JpaRepository<Auditoria, Long> {
     // Método para buscar auditorias por nome de usuário
     List<Auditoria> findByUsuario(String userName);
