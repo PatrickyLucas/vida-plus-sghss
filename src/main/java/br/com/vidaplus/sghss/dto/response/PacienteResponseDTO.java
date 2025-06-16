@@ -1,6 +1,8 @@
 package br.com.vidaplus.sghss.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -12,8 +14,9 @@ import java.time.LocalDate;
  *
  * @author Patricky Lucas
  */
-@Getter
-@Setter
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PacienteResponseDTO {
 
     private Long id;

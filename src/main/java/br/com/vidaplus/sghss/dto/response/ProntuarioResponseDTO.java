@@ -2,6 +2,7 @@ package br.com.vidaplus.sghss.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -9,13 +10,13 @@ import lombok.Setter;
  *
  * @author Patricky Lucas
  */
-@Getter
-@Setter
+@Getter @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class ProntuarioResponseDTO {
 
     private Long id;
-    private String registros; // agora é string novamente
+    private String registros;
     private Long pacienteId;
     private String pacienteNome;
 }

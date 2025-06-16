@@ -2,7 +2,9 @@ package br.com.vidaplus.sghss.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -10,8 +12,9 @@ import lombok.Setter;
  *
  * @author Patricky Lucas
  */
-@Getter
-@Setter
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProfissionalSaudeRequestDTO {
 
     @NotBlank(message = "Nome é obrigatório")

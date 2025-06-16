@@ -1,8 +1,9 @@
 package br.com.vidaplus.sghss.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-@Getter
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Data Transfer Object (DTO) para representar a resposta de autenticação.
@@ -10,15 +11,11 @@ import lombok.Getter;
  *
  * @author Patricky Lucas
  */
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class AuthResponse {
     private String token;
 
-    /**
-     * Construtor para criar uma instância de AuthResponse com o token fornecido.
-     *
-     * @param token o token JWT gerado após a autenticação
-     */
-    public AuthResponse(String token) {
-        this.token = token;
-    }
+
 }

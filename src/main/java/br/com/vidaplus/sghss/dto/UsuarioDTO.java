@@ -2,6 +2,10 @@ package br.com.vidaplus.sghss.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Data Transfer Object (DTO) para representar um usuário no sistema.
@@ -9,6 +13,9 @@ import jakarta.validation.constraints.Size;
  *
  * @author Patricky Lucas
  */
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UsuarioDTO {
     @NotBlank(message = "O nome de usuário é obrigatório")
     @Size(min = 4, max = 50, message = "O nome de usuário deve ter entre 4 e 50 caracteres")
@@ -21,13 +28,4 @@ public class UsuarioDTO {
     @NotBlank(message = "O nome do papel é obrigatório")
     private String roleNome;
 
-
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
-
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-
-    public String getRoleNome() { return roleNome; }
-    public void setRoleNome(String roleNome) { this.roleNome = roleNome; }
 }

@@ -1,7 +1,9 @@
 package br.com.vidaplus.sghss.dto.request;
 
 import br.com.vidaplus.sghss.dto.UsuarioDTO;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -9,8 +11,9 @@ import lombok.Setter;
  *
  * @author Patricky Lucas
  */
-@Getter
-@Setter
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PacienteComUsuarioRequestDTO {
     private PacienteRequestDTO paciente;
     private UsuarioDTO usuario;
