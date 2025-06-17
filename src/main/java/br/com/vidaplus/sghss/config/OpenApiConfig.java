@@ -33,7 +33,7 @@ public class OpenApiConfig {
                         .title("VidaPlus SGHSS API")
                         .version("1.0")
                         .description("API desenvolvida para o Projeto Multidisciplinar da Uninter do curso de Análise e Desenvolvimento de Sistemas como parte do Sistema de Gestão Hospitalar e Serviços de Saúde (SGHSS) da plataforma VidaPlus. " +
-                                "Fornece uma interface RESTfull para operações críticas, incluindo autenticação com JWT, gerenciamento de usuários com controle de acesso baseado em papéis (RBAC), cadastro e manutenção de entidades como pacientes, profissionais de saúde, consultas, prontuários eletrônicos e auditorias. " +
+                                "Fornece uma interface RESTful para operações críticas, incluindo autenticação com JWT, gerenciamento de usuários com controle de acesso baseado em papéis (RBAC), cadastro e manutenção de entidades como pacientes, profissionais de saúde, consultas, prontuários eletrônicos e auditorias. " +
                                 "Projetada com foco em segurança, escalabilidade e conformidade com requisitos de sistemas hospitalares modernos.")
                         .contact(new Contact()
                             .name("Patricky Lucas")
