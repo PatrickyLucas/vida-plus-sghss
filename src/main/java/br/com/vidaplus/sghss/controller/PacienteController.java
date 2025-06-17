@@ -8,6 +8,8 @@ import br.com.vidaplus.sghss.exception.UsuarioSemPermissaoException;
 import br.com.vidaplus.sghss.mapper.PacienteMapper;
 import br.com.vidaplus.sghss.model.Paciente;
 import br.com.vidaplus.sghss.service.PacienteService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/api/pacientes")
+@Tag(name = "Pacientes", description = "Operações relacionadas a Pacientes")
 public class PacienteController {
 
     /**
@@ -48,6 +51,11 @@ public class PacienteController {
      * @return lista de PacienteResponseDTO
      */
     @GetMapping
+    @Operation(
+            summary = "Listar Pacientes",
+            description = "Lista todos os pacientes registrados no sistema. " +
+                    "Apenas usuários com permissão ADMIN ou MEDICO podem acessar este endpoint."
+    )
     public ResponseEntity<List<PacienteResponseDTO>> listarTodos() {
         // Verifica se o usuário é ADMIN ou MEDICO
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -69,6 +77,11 @@ public class PacienteController {
      * @return PacienteResponseDTO do paciente encontrado
      */
     @GetMapping("/{id}")
+    @Operation(
+            summary = "Buscar Paciente por ID",
+            description = "Busca um paciente pelo ID fornecido. " +
+                    "Permite acesso apenas para usuários ADMIN, MEDICO ou o próprio paciente."
+    )
     public ResponseEntity<PacienteResponseDTO> buscarPorId(@PathVariable Long id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
@@ -93,6 +106,11 @@ public class PacienteController {
      * @return PacienteResponseDTO do paciente criado
      */
     @PostMapping
+    @Operation(
+            summary = "Criar Paciente",
+            description = "Cria um novo paciente com um usuário associado. " +
+                    "O paciente deve fornecer os dados pessoais e o usuário."
+    )
     public ResponseEntity<PacienteResponseDTO> salvarPaciente(@Valid @RequestBody PacienteComUsuarioRequestDTO requestDTO) {
         Paciente paciente = pacienteService.criarPacienteComUsuario(
                 requestDTO.getPaciente(),
@@ -107,6 +125,11 @@ public class PacienteController {
      * @return ResponseEntity com status 204 No Content
      */
     @DeleteMapping("/{id}")
+    @Operation(
+            summary = "Excluir Paciente",
+            description = "Exclui um paciente pelo ID fornecido. " +
+                    "Permite acesso apenas para usuários ADMIN."
+    )
     public ResponseEntity<Void> excluirPaciente(@PathVariable Long id) {
         pacienteService.excluirPaciente(id);
         return ResponseEntity.noContent().build();
@@ -119,6 +142,11 @@ public class PacienteController {
      * @return PacienteResponseDTO do paciente atualizado
      */
     @PutMapping("/{id}")
+@Operation(
+            summary = "Atualizar Paciente",
+            description = "Atualiza um paciente existente com os dados fornecidos. " +
+                    "Permite acesso apenas para usuários ADMIN."
+    )
     public ResponseEntity<PacienteResponseDTO> atualizarPaciente(@PathVariable Long id, @Valid @RequestBody PacienteRequestDTO requestDTO) {
         Paciente pacienteAtualizado = pacienteService.atualizarPaciente(id, requestDTO);
         return ResponseEntity.ok(pacienteMapper.toResponseDTO(pacienteAtualizado));
