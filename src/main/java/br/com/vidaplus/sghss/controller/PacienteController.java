@@ -139,6 +139,17 @@ public class PacienteController {
                     "Permite acesso apenas para usuários ADMIN."
     )
     public ResponseEntity<Void> excluirPaciente(@PathVariable Long id) {
+        // Verifica se o usuário é ADMIN
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        if (!isAdmin) {
+            throw new UsuarioSemPermissaoException("Você não tem permissão para excluir pacientes.");
+        }
+        // Verifica se o paciente existe antes de tentar excluir
+        if (!pacienteService.existePorId(id)) {
+            throw new RecursoNaoEncontradoException("Paciente com ID " + id + " não encontrado.");
+        }
         pacienteService.excluirPaciente(id);
         return ResponseEntity.noContent().build();
     }

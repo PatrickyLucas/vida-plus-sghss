@@ -122,4 +122,8 @@ public class PacienteService {
 
         return pacienteRepository.save(paciente);
     }
+
+    public boolean existePorId(Long id) {
+        return pacienteRepository.existsById(id);
+    }
 }
