@@ -15,6 +15,8 @@ import br.com.vidaplus.sghss.model.ProfissionalSaude;
 import br.com.vidaplus.sghss.model.Usuario;
 import br.com.vidaplus.sghss.service.*;
 import br.com.vidaplus.sghss.security.JwtUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "Autenticação", description = "Operações de autenticação e registro de usuários")
 public class AuthController {
 
     /**
@@ -68,6 +71,11 @@ public class AuthController {
      * @return ResponseEntity com o token JWT ou erro 401 se a autenticação falhar
      */
     @PostMapping("/login")
+    @Operation(
+            summary = "Login de Usuário",
+            description = "Realiza o login do usuário e retorna um token JWT. " +
+                    "Se as credenciais estiverem incorretas, retorna erro 401."
+    )
     public ResponseEntity<JwtResponseDTO> login(@RequestBody UsuarioDTO usuarioDTO) {
         try {
             JwtResponseDTO jwt = authService.login(usuarioDTO.getUsername(), usuarioDTO.getPassword());
@@ -86,6 +94,11 @@ public class AuthController {
      * @return ResponseEntity com o usuário criado
      */
     @PostMapping("/registrar-admin")
+    @Operation(
+            summary = "Registrar Usuário",
+            description = "Registra um novo usuário no sistema. " +
+                    "O usuário deve fornecer um nome de usuário, senha e role."
+    )
     public ResponseEntity<Usuario> registrarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
         Usuario novoUsuario = usuarioService.criarUsuario(
                 usuarioDTO.getUsername(),
@@ -95,7 +108,20 @@ public class AuthController {
         return ResponseEntity.ok(novoUsuario);
     }
 
+    /**
+     * Endpoint para registrar um novo paciente com usuário.
+     * Recebe um objeto PacienteComUsuarioRequestDTO contendo os dados do paciente e do usuário,
+     * cria o paciente e o usuário associado, e retorna o objeto PacienteResponseDTO criado.
+     *
+     * @param requestDTO objeto contendo os dados do paciente e do usuário
+     * @return ResponseEntity com o paciente criado
+     */
     @PostMapping("/registrar-paciente")
+    @Operation(
+            summary = "Registrar Paciente",
+            description = "Registra um novo paciente com um usuário associado. " +
+                    "O paciente deve fornecer os dados pessoais e o usuário."
+    )
     public ResponseEntity<PacienteResponseDTO> registrarPaciente(@RequestBody PacienteComUsuarioRequestDTO requestDTO) {
         Paciente paciente = pacienteService.criarPacienteComUsuario(
                 requestDTO.getPaciente(),
@@ -104,7 +130,20 @@ public class AuthController {
         return ResponseEntity.ok(pacienteMapper.toResponseDTO(paciente));
     }
 
+    /**
+     * Endpoint para registrar um novo profissional de saúde com usuário.
+     * Recebe um objeto ProfissionalSaudeComUsuarioRequestDTO contendo os dados do profissional e do usuário,
+     * cria o profissional e o usuário associado, e retorna o objeto ProfissionalSaudeResponseDTO criado.
+     *
+     * @param requestDTO objeto contendo os dados do profissional e do usuário
+     * @return ResponseEntity com o profissional criado
+     */
     @PostMapping("/registrar-profissional")
+    @Operation(
+            summary = "Registrar Profissional de Saúde",
+            description = "Registra um novo profissional de saúde com um usuário associado. " +
+                    "O profissional deve fornecer os dados pessoais e o usuário."
+    )
     public ResponseEntity<ProfissionalSaudeResponseDTO> registrarProfissionalComUsuario(
             @RequestBody @Valid ProfissionalSaudeComUsuarioRequestDTO requestDTO) {
         ProfissionalSaude profissional = profissionalSaudeService.criarProfissionalComUsuario(
