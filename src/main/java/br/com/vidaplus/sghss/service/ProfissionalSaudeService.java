@@ -109,4 +109,8 @@ public class ProfissionalSaudeService {
 
         return profissionalSaudeRepository.save(profissional);
     }
+
+    public boolean existePorId(Long id) {
+        return profissionalSaudeRepository.existsById(id);
+    }
 }

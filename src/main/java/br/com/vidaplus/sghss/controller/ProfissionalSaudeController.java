@@ -118,6 +118,10 @@ public class ProfissionalSaudeController {
                     "Retorna 204 No Content se a exclusão for bem-sucedida."
     )
     public ResponseEntity<Void> excluirProfissional(@PathVariable Long id) {
+        // Verifica se o profissional existe antes de tentar excluir
+        if (!profissionalSaudeService.existePorId(id)) {
+            throw new RecursoNaoEncontradoException("Profissional de saúde com ID " + id + " não encontrado.");
+        }
         profissionalSaudeService.excluirProfissional(id);
         return ResponseEntity.noContent().build();
     }
