@@ -10,6 +10,8 @@ import br.com.vidaplus.sghss.model.ProfissionalSaude;
 import br.com.vidaplus.sghss.service.ConsultaService;
 import br.com.vidaplus.sghss.service.PacienteService;
 import br.com.vidaplus.sghss.service.ProfissionalSaudeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/api/consultas")
+@Tag(name = "Consultas", description = "Operações relacionadas a Consultas")
 public class ConsultaController {
 
     /**
@@ -58,6 +61,10 @@ public class ConsultaController {
      * @return lista de ConsultaResponseDTO
      */
     @GetMapping
+    @Operation(
+            summary = "Listar Consultas",
+            description = "Lista todas as consultas registradas no sistema."
+    )
     public ResponseEntity<List<ConsultaResponseDTO>> listarTodas() {
         List<Consulta> consultas = consultaService.listarTodas();
         List<ConsultaResponseDTO> resposta = consultas.stream()
@@ -73,6 +80,11 @@ public class ConsultaController {
      * @return ConsultaResponseDTO da consulta encontrada
      */
     @GetMapping("/{id}")
+    @Operation(
+            summary = "Buscar Consulta por ID",
+            description = "Busca uma consulta pelo ID fornecido. " +
+                    "Retorna 403 Forbidden se o usuário não for o paciente ou um profissional autorizado."
+    )
     public ResponseEntity<ConsultaResponseDTO> buscarPorId(@PathVariable Long id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
@@ -97,6 +109,11 @@ public class ConsultaController {
      * @return ConsultaResponseDTO da consulta criada
      */
     @PostMapping
+    @Operation(
+            summary = "Criar Consulta",
+            description = "Cria uma nova consulta com os dados fornecidos. " +
+                    "O paciente e o profissional de saúde devem existir no sistema."
+    )
     public ResponseEntity<ConsultaResponseDTO> salvar(@Valid @RequestBody ConsultaRequestDTO requestDTO) {
         Paciente paciente = pacienteService.buscarPorId(requestDTO.getPacienteId())
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Paciente com ID " + requestDTO.getPacienteId() + " não encontrado"));
@@ -118,6 +135,11 @@ public class ConsultaController {
      * @return 204 No Content se excluído com sucesso
      */
     @DeleteMapping("/{id}")
+    @Operation(
+            summary = "Excluir Consulta",
+            description = "Exclui uma consulta pelo ID fornecido. " +
+                    "Retorna 204 No Content se a exclusão for bem-sucedida."
+    )
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         consultaService.excluirConsulta(id);
         return ResponseEntity.noContent().build();
@@ -131,6 +153,11 @@ public class ConsultaController {
      * @return ConsultaResponseDTO da consulta atualizada
      */
     @PutMapping("/{id}")
+    @Operation(
+            summary = "Atualizar Consulta",
+            description = "Atualiza uma consulta existente com os dados fornecidos. " +
+                    "O paciente e o profissional de saúde devem existir no sistema."
+    )
     public ResponseEntity<ConsultaResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody ConsultaRequestDTO requestDTO) {
         Paciente paciente = pacienteService.buscarPorId(requestDTO.getPacienteId())
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Paciente com ID " + requestDTO.getPacienteId() + " não encontrado"));
