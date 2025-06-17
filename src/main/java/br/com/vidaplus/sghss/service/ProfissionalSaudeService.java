@@ -86,7 +86,7 @@ public class ProfissionalSaudeService {
      */
     public ProfissionalSaude atualizarProfissionalSaude(Long id, ProfissionalSaudeRequestDTO dto) {
         ProfissionalSaude profissionalSaude = profissionalSaudeRepository.findById(id)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Paciente não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Profissional de Saúde não encontrado"));
         profissionalSaude.setNome(dto.getNome());
         return profissionalSaudeRepository.save(profissionalSaude);
     }
