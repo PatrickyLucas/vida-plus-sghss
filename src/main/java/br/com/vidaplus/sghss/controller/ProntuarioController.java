@@ -3,6 +3,7 @@ package br.com.vidaplus.sghss.controller;
 import br.com.vidaplus.sghss.dto.request.ProntuarioRequestDTO;
 import br.com.vidaplus.sghss.dto.response.ProntuarioResponseDTO;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
+import br.com.vidaplus.sghss.exception.UsuarioSemPermissaoException;
 import br.com.vidaplus.sghss.mapper.ProntuarioMapper;
 import br.com.vidaplus.sghss.model.Paciente;
 import br.com.vidaplus.sghss.model.Prontuario;
@@ -89,7 +90,8 @@ public class ProntuarioController {
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_MEDICO"));
 
         if (!isAdminOuMedico && !prontuario.getPaciente().getUsuario().getUsername().equals(username)) {
-            return ResponseEntity.status(403).build();
+            // retorna uma exceção se o usuário não for ADMIN, MEDICO ou o paciente associado ao prontuário
+            throw new UsuarioSemPermissaoException("Usuário não tem permissão para acessar este prontuário");
         }
 
         return ResponseEntity.ok(prontuarioMapper.toResponseDTO(prontuario));
