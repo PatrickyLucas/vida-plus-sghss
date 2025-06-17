@@ -3,6 +3,7 @@ package br.com.vidaplus.sghss.controller;
 import br.com.vidaplus.sghss.dto.request.ConsultaRequestDTO;
 import br.com.vidaplus.sghss.dto.response.ConsultaResponseDTO;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
+import br.com.vidaplus.sghss.exception.UsuarioSemPermissaoException;
 import br.com.vidaplus.sghss.mapper.ConsultaMapper;
 import br.com.vidaplus.sghss.model.Consulta;
 import br.com.vidaplus.sghss.model.Paciente;
@@ -63,13 +64,25 @@ public class ConsultaController {
     @GetMapping
     @Operation(
             summary = "Listar Consultas",
-            description = "Lista todas as consultas registradas no sistema."
+            description = "Lista todas as consultas registradas no sistema." +
+                    " Apenas usuários com permissão ADMIN ou MEDICO podem acessar esta lista."
     )
     public ResponseEntity<List<ConsultaResponseDTO>> listarTodas() {
         List<Consulta> consultas = consultaService.listarTodas();
         List<ConsultaResponseDTO> resposta = consultas.stream()
                 .map(consultaMapper::toResponseDTO)
                 .collect(Collectors.toList());
+        // Lança uma exceção se não houver consultas
+        if (resposta.isEmpty()) {
+            throw new RecursoNaoEncontradoException("Nenhuma consulta encontrada");
+        }
+        // Verifica se o usuário é ADMIN ou MEDICO
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdminOuMedico = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_MEDICO"));
+        if (!isAdminOuMedico) {
+            throw new UsuarioSemPermissaoException("Você não tem permissão para acessar esta lista.");
+        }
         return ResponseEntity.ok(resposta);
     }
 
@@ -83,7 +96,8 @@ public class ConsultaController {
     @Operation(
             summary = "Buscar Consulta por ID",
             description = "Busca uma consulta pelo ID fornecido. " +
-                    "Retorna 403 Forbidden se o usuário não for o paciente ou um profissional autorizado."
+                    "Retorna uma exceção se a consulta não for encontrada." +
+                    " Apenas usuários com permissão ADMIN, MEDICO ou o próprio paciente podem acessar esta consulta."
     )
     public ResponseEntity<ConsultaResponseDTO> buscarPorId(@PathVariable Long id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -96,9 +110,8 @@ public class ConsultaController {
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_MEDICO"));
 
         if (!isAdminOuMedico && !consulta.getPaciente().getUsuario().getUsername().equals(username)) {
-            return ResponseEntity.status(403).build();
+            throw new UsuarioSemPermissaoException("Você não tem permissão para acessar esta consulta.");
         }
-
         return ResponseEntity.ok(consultaMapper.toResponseDTO(consulta));
     }
 
@@ -112,7 +125,8 @@ public class ConsultaController {
     @Operation(
             summary = "Criar Consulta",
             description = "Cria uma nova consulta com os dados fornecidos. " +
-                    "O paciente e o profissional de saúde devem existir no sistema."
+                    "O paciente e o profissional de saúde devem existir no sistema." +
+                    "Apenas usuários com permissão ADMIN ou MEDICO podem criar consultas."
     )
     public ResponseEntity<ConsultaResponseDTO> salvar(@Valid @RequestBody ConsultaRequestDTO requestDTO) {
         Paciente paciente = pacienteService.buscarPorId(requestDTO.getPacienteId())
@@ -124,7 +138,17 @@ public class ConsultaController {
         Consulta novaConsulta = consultaMapper.toEntity(requestDTO, paciente, profissional);
         Consulta consultaSalva = consultaService.salvarConsulta(novaConsulta);
         ConsultaResponseDTO resposta = consultaMapper.toResponseDTO(consultaSalva);
-
+        // Verifica se o usuário é ADMIN ou MEDICO
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdminOuMedico = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_MEDICO"));
+        if (!isAdminOuMedico) {
+            throw new UsuarioSemPermissaoException("Você não tem permissão para criar uma consulta.");
+        }
+        // Lança uma exceção se a consulta não for criada corretamente
+        if (resposta == null) {
+            throw new RecursoNaoEncontradoException("Erro ao criar consulta. Verifique os dados fornecidos.");
+        }
         return ResponseEntity.ok(resposta);
     }
 
@@ -156,7 +180,9 @@ public class ConsultaController {
     @Operation(
             summary = "Atualizar Consulta",
             description = "Atualiza uma consulta existente com os dados fornecidos. " +
-                    "O paciente e o profissional de saúde devem existir no sistema."
+                    "O paciente e o profissional de saúde devem existir no sistema." +
+                    "Apenas usuários com permissão ADMIN ou MEDICO podem atualizar consultas." +
+                    "Retorna uma exceção se a consulta não for encontrada ou se ocorrer um erro ao atualizar."
     )
     public ResponseEntity<ConsultaResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody ConsultaRequestDTO requestDTO) {
         Paciente paciente = pacienteService.buscarPorId(requestDTO.getPacienteId())
@@ -166,7 +192,17 @@ public class ConsultaController {
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Profissional com ID " + requestDTO.getProfissionalId() + " não encontrado"));
 
         Consulta consultaAtualizada = consultaService.atualizarConsulta(id, requestDTO, pacienteService);
-
+        // Verifica se o usuário é ADMIN ou MEDICO
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdminOuMedico = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_MEDICO"));
+        if (!isAdminOuMedico) {
+            throw new UsuarioSemPermissaoException("Você não tem permissão para atualizar uma consulta.");
+        }
+        // Lança uma exceção se a consulta não for atualizada corretamente
+        if (consultaAtualizada == null) {
+            throw new RecursoNaoEncontradoException("Erro ao atualizar consulta. Verifique os dados fornecidos.");
+        }
         return ResponseEntity.ok(consultaMapper.toResponseDTO(consultaAtualizada));
     }
 }
