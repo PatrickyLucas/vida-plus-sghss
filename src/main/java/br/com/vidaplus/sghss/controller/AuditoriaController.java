@@ -4,6 +4,8 @@ import br.com.vidaplus.sghss.dto.response.AuditoriaResponseDTO;
 import br.com.vidaplus.sghss.exception.UsuarioSemPermissaoException;
 import br.com.vidaplus.sghss.mapper.AuditoriaMapper;
 import br.com.vidaplus.sghss.repository.AuditoriaRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/api/auditoria")
+@Tag(name = "Auditoria", description = "Operações relacionadas a Auditoria")
 public class AuditoriaController {
 
     /**
@@ -43,6 +46,11 @@ public class AuditoriaController {
      */
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
+    @Operation(
+            summary = "Listar Auditorias",
+            description = "Lista todas as auditorias registradas no sistema. " +
+                    "Apenas usuários com permissão ADMIN podem acessar este endpoint."
+    )
     public List<AuditoriaResponseDTO> listar() {
         if (!temPermissaoAdmin()) {
             throw new UsuarioSemPermissaoException("Usuário sem permissão para acessar auditoria.");
@@ -61,6 +69,11 @@ public class AuditoriaController {
      */
     @GetMapping("/usuario/{usuario}")
     @PreAuthorize("hasRole('ADMIN')")
+    @Operation(
+            summary = "Buscar Auditorias por Usuário",
+            description = "Busca todas as auditorias registradas para um usuário específico. " +
+                    "Apenas usuários com permissão ADMIN podem acessar este endpoint."
+    )
     public List<AuditoriaResponseDTO> buscarPorUsuario(@PathVariable String usuario) {
         if (!temPermissaoAdmin()) {
             throw new UsuarioSemPermissaoException("Usuário sem permissão para acessar auditoria.");
