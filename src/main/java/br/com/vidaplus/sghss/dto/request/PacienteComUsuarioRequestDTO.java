@@ -1,6 +1,7 @@
 package br.com.vidaplus.sghss.dto.request;
 
 import br.com.vidaplus.sghss.dto.UsuarioDTO;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,12 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(
+        description = "DTO para requisição de Paciente com informações de usuário",
+        title = "Paciente com Usuário Request DTO")
 public class PacienteComUsuarioRequestDTO {
+    @Schema(description = "Informações do paciente")
     private PacienteRequestDTO paciente;
+    @Schema(description = "Informações do usuário associado ao paciente")
     private UsuarioDTO usuario;
 }

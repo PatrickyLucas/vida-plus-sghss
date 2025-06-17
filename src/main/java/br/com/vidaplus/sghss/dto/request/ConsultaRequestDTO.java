@@ -1,5 +1,6 @@
 package br.com.vidaplus.sghss.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,19 +20,26 @@ import java.time.LocalDateTime;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(
+        description = "DTO para requisição de consulta médica",
+        title = "Consulta Request DTO")
 public class ConsultaRequestDTO {
 
     @NotNull(message = "O ID do paciente é obrigatório")
+    @Schema(description = "ID do paciente associado à consulta", example = "123")
     private Long pacienteId;
 
     @NotNull(message = "O ID do profissional é obrigatório")
+    @Schema(description = "ID do profissional de saúde que realizará a consulta", example = "456")
     private Long profissionalId;
 
     @NotNull(message = "A data da consulta é obrigatória")
     @Future(message = "A data da consulta deve ser no futuro")
+    @Schema(description = "Data e hora da consulta médica, deve ser uma data futura", example = "2023-12-01T10:00:00")
     private LocalDateTime data;
 
     @NotBlank(message = "O status da consulta é obrigatório")
+    @Schema(description = "Status da consulta médica", example = "AGENDADA/REALIZADA/CANCELADA")
     private String status;
 
 }
