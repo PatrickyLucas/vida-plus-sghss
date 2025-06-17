@@ -2,6 +2,7 @@ package br.com.vidaplus.sghss.controller;
 
 import br.com.vidaplus.sghss.dto.request.ProfissionalSaudeRequestDTO;
 import br.com.vidaplus.sghss.dto.response.ProfissionalSaudeResponseDTO;
+import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.mapper.ProfissionalSaudeMapper;
 import br.com.vidaplus.sghss.model.ProfissionalSaude;
 import br.com.vidaplus.sghss.service.ProfissionalSaudeService;
@@ -57,26 +58,29 @@ public class ProfissionalSaudeController {
         List<ProfissionalSaudeResponseDTO> response = profissionais.stream()
                 .map(profissionalSaudeMapper::toResponseDTO)
                 .collect(Collectors.toList());
-
+        // lança uma exceção se a lista estiver vazia
+        if (response.isEmpty()) {
+            throw new RecursoNaoEncontradoException("Nenhum profissional de saúde encontrado.");
+        }
         return ResponseEntity.ok(response);
     }
     /**
      * Busca um profissional de saúde pelo ID.
      *
      * @param id ID do profissional de saúde a ser buscado
-     * @return ProfissionalSaudeResponseDTO do profissional encontrado ou 404 Not Found se não existir
+     * @return ProfissionalSaudeResponseDTO do profissional encontrado ou uma exceção se não encontrado
      */
     @GetMapping("/{id}")
     @Operation(
             summary = "Buscar Profissional de Saúde por ID",
             description = "Busca um profissional de saúde pelo ID fornecido. " +
-                    "Retorna 404 Not Found se o profissional não existir."
+                    "Retorna uma exceção se o profissional não for encontrado."
     )
     public ResponseEntity<ProfissionalSaudeResponseDTO> buscarPorId(@PathVariable Long id) {
         return profissionalSaudeService.buscarPorId(id)
                 .map(profissionalSaudeMapper::toResponseDTO)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Profissional de saúde com ID " + id + " não encontrado."));
     }
     /**
      * Cria um novo profissional de saúde.
@@ -95,7 +99,10 @@ public class ProfissionalSaudeController {
         ProfissionalSaude profissional = profissionalSaudeMapper.toEntity(dto);
         ProfissionalSaude salvo = profissionalSaudeService.salvarProfissional(profissional);
         ProfissionalSaudeResponseDTO response = profissionalSaudeMapper.toResponseDTO(salvo);
-
+        // Lança uma exceção se o profissional não for salvo corretamente
+        if (response == null) {
+            throw new RecursoNaoEncontradoException("Erro ao salvar o profissional de saúde.");
+        }
         return ResponseEntity.ok(response);
     }
     /**
@@ -125,10 +132,14 @@ public class ProfissionalSaudeController {
     @Operation(
             summary = "Atualizar Profissional de Saúde",
             description = "Atualiza os dados de um profissional de saúde existente. " +
-                    "Retorna o profissional atualizado ou 404 Not Found se não existir."
+                    "Retorna uma exceção se o profissional não for encontrado."
     )
     public ResponseEntity<ProfissionalSaudeResponseDTO> atualizarProfissionalSaude(@PathVariable Long id, @Valid @RequestBody ProfissionalSaudeRequestDTO requestDTO) {
         ProfissionalSaude profissionalSaudeAtualizado = profissionalSaudeService.atualizarProfissionalSaude(id, requestDTO);
+        // Lança uma exceção se o profissional não for encontrado
+        if (profissionalSaudeAtualizado == null) {
+            throw new RecursoNaoEncontradoException("Profissional de saúde com ID " + id + " não encontrado.");
+        }
         return ResponseEntity.ok(profissionalSaudeMapper.toResponseDTO(profissionalSaudeAtualizado));
     }
 }
