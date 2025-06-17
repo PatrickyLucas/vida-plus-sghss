@@ -68,6 +68,10 @@ public class PacienteController {
         List<PacienteResponseDTO> dtos = pacientes.stream()
                 .map(pacienteMapper::toResponseDTO)
                 .collect(Collectors.toList());
+        // Lança uma exceção se a lista estiver vazia
+        if (dtos.isEmpty()) {
+            throw new RecursoNaoEncontradoException("Nenhum paciente encontrado.");
+        }
         return ResponseEntity.ok(dtos);
     }
     /**
@@ -116,6 +120,10 @@ public class PacienteController {
                 requestDTO.getPaciente(),
                 requestDTO.getUsuario()
         );
+        // lança uma exceção se o paciente não for criado corretamente
+        if (paciente == null) {
+            throw new RecursoNaoEncontradoException("Erro ao criar paciente. Verifique os dados fornecidos.");
+        }
         return ResponseEntity.ok(pacienteMapper.toResponseDTO(paciente));
     }
     /**
@@ -149,6 +157,10 @@ public class PacienteController {
     )
     public ResponseEntity<PacienteResponseDTO> atualizarPaciente(@PathVariable Long id, @Valid @RequestBody PacienteRequestDTO requestDTO) {
         Paciente pacienteAtualizado = pacienteService.atualizarPaciente(id, requestDTO);
+        // Lança uma exceção se o paciente não for encontrado
+        if (pacienteAtualizado == null) {
+            throw new RecursoNaoEncontradoException("Paciente com ID " + id + " não encontrado.");
+        }
         return ResponseEntity.ok(pacienteMapper.toResponseDTO(pacienteAtualizado));
     }
 }
