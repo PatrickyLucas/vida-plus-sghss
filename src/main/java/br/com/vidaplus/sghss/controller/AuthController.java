@@ -8,6 +8,7 @@ import br.com.vidaplus.sghss.dto.UsuarioDTO;
 import br.com.vidaplus.sghss.dto.response.PacienteResponseDTO;
 import br.com.vidaplus.sghss.dto.response.ProfissionalSaudeResponseDTO;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
+import br.com.vidaplus.sghss.exception.UsuarioSemPermissaoException;
 import br.com.vidaplus.sghss.mapper.PacienteMapper;
 import br.com.vidaplus.sghss.mapper.ProfissionalSaudeMapper;
 import br.com.vidaplus.sghss.model.Paciente;
@@ -68,19 +69,19 @@ public class AuthController {
      * autentica o usuário e retorna um JWT se a autenticação for bem-sucedida.
      *
      * @param usuarioDTO objeto contendo as credenciais do usuário
-     * @return ResponseEntity com o token JWT ou erro 401 se a autenticação falhar
+     * @return ResponseEntity com o token JWT ou uma excption se a autenticação falhar
      */
     @PostMapping("/login")
     @Operation(
             summary = "Login de Usuário",
             description = "Realiza o login do usuário e retorna um token JWT. " +
-                    "Se as credenciais estiverem incorretas, retorna erro 401."
+                    "Se as credenciais estiverem incorretas, retorna uma exceção de usuario sem permissão."
     )
     public ResponseEntity<JwtResponseDTO> login(@RequestBody UsuarioDTO usuarioDTO) {
         try {
             JwtResponseDTO jwt = authService.login(usuarioDTO.getUsername(), usuarioDTO.getPassword());
             return ResponseEntity.ok(jwt);
-        } catch (RecursoNaoEncontradoException e) {
+        } catch (UsuarioSemPermissaoException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
@@ -95,8 +96,8 @@ public class AuthController {
      */
     @PostMapping("/registrar-admin")
     @Operation(
-            summary = "Registrar Usuário",
-            description = "Registra um novo usuário no sistema. " +
+            summary = "Registrar Usuário Administrador",
+            description = "Registra um novo admin no sistema. " +
                     "O usuário deve fornecer um nome de usuário, senha e role."
     )
     public ResponseEntity<Usuario> registrarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
@@ -105,6 +106,10 @@ public class AuthController {
                 usuarioDTO.getPassword(),
                 usuarioDTO.getRoleNome()
         );
+        // Lança uma exceção se o usuário não for criado corretamente
+        if (novoUsuario == null) {
+            throw new RecursoNaoEncontradoException("Erro ao criar usuário. Verifique os dados fornecidos.");
+        }
         return ResponseEntity.ok(novoUsuario);
     }
 
@@ -127,6 +132,10 @@ public class AuthController {
                 requestDTO.getPaciente(),
                 requestDTO.getUsuario()
         );
+        // Lança uma exceção se o paciente não for criado corretamente
+        if (paciente == null) {
+            throw new RecursoNaoEncontradoException("Erro ao criar paciente. Verifique os dados fornecidos.");
+        }
         return ResponseEntity.ok(pacienteMapper.toResponseDTO(paciente));
     }
 
@@ -150,6 +159,10 @@ public class AuthController {
                 requestDTO.getProfissional(),
                 requestDTO.getUsuario()
         );
+        // Lança uma exceção se o profissional não for criado corretamente
+        if (profissional == null) {
+            throw new RecursoNaoEncontradoException("Erro ao criar profissional de saúde. Verifique os dados fornecidos.");
+        }
         return ResponseEntity.ok(profissionalSaudeMapper.toResponseDTO(profissional));
     }
 }
