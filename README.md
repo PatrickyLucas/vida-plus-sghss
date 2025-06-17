@@ -35,6 +35,7 @@ Sistema completo para gestão de hospitais, clínicas e profissionais de saúde,
 - MySQL
 - Lombok
 - JUnit 5 & Mockito
+- Swagger para documentação da API
 
 ---
 
