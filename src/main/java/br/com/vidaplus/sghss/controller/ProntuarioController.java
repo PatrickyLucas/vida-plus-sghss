@@ -65,6 +65,17 @@ public class ProntuarioController {
         List<ProntuarioResponseDTO> resposta = prontuarios.stream()
                 .map(prontuarioMapper::toResponseDTO)
                 .collect(Collectors.toList());
+        // Lança uma exceção se não houver prontuários
+        if (resposta.isEmpty()) {
+            throw new RecursoNaoEncontradoException("Nenhum prontuário encontrado");
+        }
+        // Lança uma exceção se o usuário não for ADMIN ou MEDICO
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdminOuMedico = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_MEDICO"));
+        if (!isAdminOuMedico) {
+            throw new UsuarioSemPermissaoException("Usuário não tem permissão para acessar os prontuários");
+        }
         return ResponseEntity.ok(resposta);
     }
     /**
@@ -115,7 +126,10 @@ public class ProntuarioController {
         Prontuario prontuario = prontuarioMapper.toEntity(dto, paciente);
         Prontuario salvo = prontuarioService.salvarProntuario(prontuario);
         ProntuarioResponseDTO resposta = prontuarioMapper.toResponseDTO(salvo);
-
+        // Lança uma exceção se algum recurso não for encontrado
+        if (resposta == null) {
+            throw new RecursoNaoEncontradoException("Erro ao salvar prontuário");
+        }
         return ResponseEntity.ok(resposta);
     }
     /**
@@ -152,6 +166,10 @@ public class ProntuarioController {
             @Valid @RequestBody ProntuarioRequestDTO dto) {
 
         Prontuario atualizado = prontuarioService.atualizarProntuario(id, dto);
+        // Lança uma exceção se o prontuário não for encontrado para atualização
+        if (atualizado == null) {
+            throw new RecursoNaoEncontradoException("Prontuário não encontrado para atualização");
+        }
         return ResponseEntity.ok(prontuarioMapper.toResponseDTO(atualizado));
     }
 }
