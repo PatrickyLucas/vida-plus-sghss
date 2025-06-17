@@ -149,6 +149,13 @@ public class ProntuarioController {
         if (!prontuarioService.existePorId(id)) {
             throw new RecursoNaoEncontradoException("Prontuário não encontrado para exclusão");
         }
+        // Verifica se o usuário tem permissão para excluir prontuários
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdminOuMedico = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_MEDICO"));
+        if (!isAdminOuMedico) {
+            throw new UsuarioSemPermissaoException("Usuário não tem permissão para excluir prontuários");
+        }
         prontuarioService.excluirProntuario(id);
         return ResponseEntity.noContent().build();
     }

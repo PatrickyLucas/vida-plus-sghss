@@ -165,6 +165,17 @@ public class ConsultaController {
                     "Retorna 204 No Content se a exclusão for bem-sucedida."
     )
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        // Verifica se o usuário é ADMIN ou MEDICO
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdminOuMedico = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_MEDICO"));
+        if (!isAdminOuMedico) {
+            throw new UsuarioSemPermissaoException("Você não tem permissão para excluir uma consulta.");
+        }
+        // Verifica se a consulta existe antes de tentar excluir
+        if (!consultaService.existePorId(id)) {
+            throw new RecursoNaoEncontradoException("Consulta com ID " + id + " não encontrada.");
+        }
         consultaService.excluirConsulta(id);
         return ResponseEntity.noContent().build();
     }

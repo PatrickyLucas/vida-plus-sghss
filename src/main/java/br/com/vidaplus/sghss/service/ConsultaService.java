@@ -106,4 +106,8 @@ public class ConsultaService {
         consulta.setData(dto.getData());
         return consultaRepository.save(consulta);
     }
+
+    public boolean existePorId(Long id) {
+        return consultaRepository.existsById(id);
+    }
 }
