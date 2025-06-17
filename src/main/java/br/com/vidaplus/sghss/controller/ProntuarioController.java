@@ -145,6 +145,10 @@ public class ProntuarioController {
                     "Retorna 204 No Content se a exclusão for bem-sucedida."
     )
     public ResponseEntity<Void> excluirProntuario(@PathVariable Long id) {
+        // Verifica se o prontuário existe antes de tentar excluir
+        if (!prontuarioService.existePorId(id)) {
+            throw new RecursoNaoEncontradoException("Prontuário não encontrado para exclusão");
+        }
         prontuarioService.excluirProntuario(id);
         return ResponseEntity.noContent().build();
     }

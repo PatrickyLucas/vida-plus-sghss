@@ -102,4 +102,8 @@ public class ProntuarioService {
         return prontuarioRepository.save(prontuario);
     }
 
+    public boolean existePorId(Long id) {
+        // Verifica se o prontuário existe pelo ID
+        return prontuarioRepository.existsById(id);
+    }
 }
