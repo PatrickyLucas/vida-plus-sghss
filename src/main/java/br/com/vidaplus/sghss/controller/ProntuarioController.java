@@ -8,6 +8,8 @@ import br.com.vidaplus.sghss.model.Paciente;
 import br.com.vidaplus.sghss.model.Prontuario;
 import br.com.vidaplus.sghss.service.PacienteService;
 import br.com.vidaplus.sghss.service.ProntuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/prontuarios")
 @PreAuthorize("hasAnyRole('MEDICO', 'ADMIN')")
+@Tag(name = "Prontuários", description = "Operações relacionadas a Prontuários")
 public class ProntuarioController {
 
     private final ProntuarioService prontuarioService;
@@ -51,6 +54,11 @@ public class ProntuarioController {
      * @return lista de ProntuarioResponseDTO
      */
     @GetMapping
+    @Operation(
+            summary = "Listar Prontuários",
+            description = "Lista todos os prontuários registrados no sistema. " +
+                    "Apenas usuários com permissão ADMIN ou MEDICO podem acessar este endpoint."
+    )
     public ResponseEntity<List<ProntuarioResponseDTO>> listarProntuarios() {
         List<Prontuario> prontuarios = prontuarioService.listarTodos();
         List<ProntuarioResponseDTO> resposta = prontuarios.stream()
@@ -65,6 +73,11 @@ public class ProntuarioController {
      * @return ProntuarioResponseDTO do prontuário encontrado ou 404 Not Found se não existir
      */
     @GetMapping("/{pacienteId}")
+    @Operation(
+            summary = "Buscar Prontuário por Paciente",
+            description = "Busca um prontuário pelo ID do paciente. " +
+                    "Apenas usuários com permissão ADMIN ou MEDICO podem acessar este endpoint."
+    )
     public ResponseEntity<ProntuarioResponseDTO> buscarPorPacienteId(@PathVariable Long pacienteId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
@@ -88,6 +101,11 @@ public class ProntuarioController {
      * @return ProntuarioResponseDTO do prontuário criado
      */
     @PostMapping
+    @Operation(
+            summary = "Criar Prontuário",
+            description = "Cria um novo prontuário com os dados fornecidos. " +
+                    "O prontuário deve estar associado a um paciente existente."
+    )
     public ResponseEntity<ProntuarioResponseDTO> salvarProntuario(@Valid @RequestBody ProntuarioRequestDTO dto) {
         Paciente paciente = pacienteService.buscarPorId(dto.getPacienteId())
                 .orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
@@ -105,6 +123,11 @@ public class ProntuarioController {
      * @return ResponseEntity com status 204 No Content se a exclusão for bem-sucedida
      */
     @DeleteMapping("/{id}")
+    @Operation(
+            summary = "Excluir Prontuário",
+            description = "Exclui um prontuário pelo ID fornecido. " +
+                    "Retorna 204 No Content se a exclusão for bem-sucedida."
+    )
     public ResponseEntity<Void> excluirProntuario(@PathVariable Long id) {
         prontuarioService.excluirProntuario(id);
         return ResponseEntity.noContent().build();
@@ -117,6 +140,11 @@ public class ProntuarioController {
      * @return ProntuarioResponseDTO do prontuário atualizado
      */
     @PutMapping("/{id}")
+    @Operation(
+            summary = "Atualizar Prontuário",
+            description = "Atualiza um prontuário existente com os dados fornecidos. " +
+                    "O prontuário deve estar associado a um paciente existente."
+    )
     public ResponseEntity<ProntuarioResponseDTO> atualizarProntuario(
             @PathVariable Long id,
             @Valid @RequestBody ProntuarioRequestDTO dto) {

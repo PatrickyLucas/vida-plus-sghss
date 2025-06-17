@@ -142,7 +142,7 @@ public class PacienteController {
      * @return PacienteResponseDTO do paciente atualizado
      */
     @PutMapping("/{id}")
-@Operation(
+    @Operation(
             summary = "Atualizar Paciente",
             description = "Atualiza um paciente existente com os dados fornecidos. " +
                     "Permite acesso apenas para usuários ADMIN."

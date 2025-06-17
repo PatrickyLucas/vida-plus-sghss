@@ -67,7 +67,7 @@ public class ProfissionalSaudeController {
      * @return ProfissionalSaudeResponseDTO do profissional encontrado ou 404 Not Found se não existir
      */
     @GetMapping("/{id}")
-@Operation(
+    @Operation(
             summary = "Buscar Profissional de Saúde por ID",
             description = "Busca um profissional de saúde pelo ID fornecido. " +
                     "Retorna 404 Not Found se o profissional não existir."
@@ -105,7 +105,7 @@ public class ProfissionalSaudeController {
      * @return ResponseEntity com status 204 No Content se a exclusão for bem-sucedida
      */
     @DeleteMapping("/{id}")
-@Operation(
+    @Operation(
             summary = "Excluir Profissional de Saúde",
             description = "Exclui um profissional de saúde pelo ID fornecido. " +
                     "Retorna 204 No Content se a exclusão for bem-sucedida."
@@ -122,7 +122,7 @@ public class ProfissionalSaudeController {
      * @return ProfissionalSaudeResponseDTO do profissional atualizado
      */
     @PutMapping("/{id}")
-@Operation(
+    @Operation(
             summary = "Atualizar Profissional de Saúde",
             description = "Atualiza os dados de um profissional de saúde existente. " +
                     "Retorna o profissional atualizado ou 404 Not Found se não existir."
