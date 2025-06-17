@@ -22,6 +22,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -165,4 +167,94 @@ public class AuthController {
         }
         return ResponseEntity.ok(profissionalSaudeMapper.toResponseDTO(profissional));
     }
+
+    /**
+     * Endpoint para excluir um usuário pelo nome de usuário.
+     * Verifica se o usuário existe antes de tentar excluir,
+     * e retorna uma resposta 204 No Content se a exclusão for bem-sucedida.
+     *
+     * @param username nome de usuário do usuário a ser excluído
+     * @return ResponseEntity<Void> com status 204 No Content
+     */
+    @DeleteMapping("/excluir-usuario/{username}")
+    @Operation(
+            summary = "Excluir Usuário",
+            description = "Exclui um usuário pelo nome de usuário fornecido. " +
+                    "Retorna 204 No Content se a exclusão for bem-sucedida."
+    )
+    public ResponseEntity<Void> excluirUsuario(@PathVariable String username) {
+        // Verifica se o usuário existe antes de tentar excluir
+        if (!usuarioService.existePorUsername(username)) {
+            throw new RecursoNaoEncontradoException("Usuário com username '" + username + "' não encontrado.");
+        }
+
+        // Verifica se o usuário tem permissão para excluir usuários
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        if (!isAdmin) {
+            throw new UsuarioSemPermissaoException("Você não tem permissão para excluir usuários.");
+        }
+
+        usuarioService.excluirUsuarioPorUsername(username);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    /**
+     * Endpoint para atualizar um usuário existente.
+     * Recebe um objeto UsuarioDTO contendo os dados atualizados do usuário,
+     * e retorna o objeto Usuario atualizado.
+     *
+     * @param username   nome de usuário do usuário a ser atualizado
+     * @param usuarioDTO objeto contendo os dados atualizados do usuário
+     * @return ResponseEntity com o usuário atualizado
+     */
+    @PutMapping("/atualizar-usuario/{username}")
+    @Operation(
+            summary = "Atualizar Usuário",
+            description = "Atualiza um usuário existente com os dados fornecidos. " +
+                    "O usuário deve fornecer um nome de usuário, senha e role."
+    )
+    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable String username, @RequestBody UsuarioDTO usuarioDTO) {
+        // Verifica se o usuário existe antes de tentar atualizar
+        if (!usuarioService.existePorUsername(username)) {
+            throw new RecursoNaoEncontradoException("Usuário com username '" + username + "' não encontrado.");
+        }
+
+        // Verifica se o usuário tem permissão para atualizar usuários
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        if (!isAdmin) {
+            throw new UsuarioSemPermissaoException("Você não tem permissão para atualizar usuários.");
+        }
+
+        Usuario usuarioAtualizado = usuarioService.atualizarUsuarioPorUsername(username, usuarioDTO);
+        return ResponseEntity.ok(usuarioAtualizado);
+    }
+
+    /**
+     * Endpoint para obter uma lista de todos os usuários registrados.
+     * Permite acesso apenas para usuários com permissão ADMIN.
+     */
+    @GetMapping("/usuarios")
+    @Operation(
+            summary = "Listar Usuários",
+            description = "Lista todos os usuários registrados no sistema. " +
+                    "Apenas usuários com permissão ADMIN podem acessar este endpoint."
+    )
+    public ResponseEntity<Iterable<Usuario>> listarUsuarios() {
+        // Verifica se o usuário tem permissão de ADMIN
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdmin = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        if (!isAdmin) {
+            throw new UsuarioSemPermissaoException("Você não tem permissão para listar usuários.");
+        }
+
+        Iterable<Usuario> usuarios = usuarioService.listarUsuarios();
+        return ResponseEntity.ok(usuarios);
+    }
+
 }

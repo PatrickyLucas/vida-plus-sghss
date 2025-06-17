@@ -1,5 +1,6 @@
 package br.com.vidaplus.sghss.service;
 
+import br.com.vidaplus.sghss.dto.UsuarioDTO;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.exception.UsuarioJaExisteException;
 import br.com.vidaplus.sghss.model.Usuario;
@@ -75,5 +76,67 @@ public class UsuarioService {
      */
     public Optional<Usuario> buscarPorUsername(String username) {
         return usuarioRepository.findByUsername(username);
+    }
+
+    public boolean existePorId(Long id) {
+        return usuarioRepository.existsById(id);
+    }
+
+    public void excluirUsuario(Long id) {
+        if (!usuarioRepository.existsById(id)) {
+            throw new RecursoNaoEncontradoException("Usuário não encontrado");
+        }
+        usuarioRepository.deleteById(id);
+    }
+
+    public Usuario atualizarUsuario(Long id, UsuarioDTO usuarioDTO) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado"));
+
+        if (usuarioDTO.getUsername() != null && !usuarioDTO.getUsername().equals(usuario.getUsername())) {
+            if (usuarioRepository.findByUsername(usuarioDTO.getUsername()).isPresent()) {
+                throw new UsuarioJaExisteException("Usuário já existe no sistema!");
+            }
+            usuario.setUsername(usuarioDTO.getUsername());
+        }
+
+        if (usuarioDTO.getPassword() != null) {
+            usuario.setPassword(passwordEncoder.encode(usuarioDTO.getPassword()));
+        }
+
+        return usuarioRepository.save(usuario);
+    }
+
+    public boolean existePorUsername(String username) {
+        return usuarioRepository.findByUsername(username).isPresent();
+    }
+
+    public Usuario atualizarUsuarioPorUsername(String username, UsuarioDTO usuarioDTO) {
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado"));
+
+        if (usuarioDTO.getUsername() != null && !usuarioDTO.getUsername().equals(usuario.getUsername())) {
+            if (usuarioRepository.findByUsername(usuarioDTO.getUsername()).isPresent()) {
+                throw new UsuarioJaExisteException("Usuário já existe no sistema!");
+            }
+            usuario.setUsername(usuarioDTO.getUsername());
+        }
+
+        if (usuarioDTO.getPassword() != null) {
+            usuario.setPassword(passwordEncoder.encode(usuarioDTO.getPassword()));
+        }
+
+        return usuarioRepository.save(usuario);
+    }
+
+    public void excluirUsuarioPorUsername(String username) {
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado"));
+
+        usuarioRepository.delete(usuario);
+    }
+
+    public Iterable<Usuario> listarUsuarios() {
+        return usuarioRepository.findAll();
     }
 }

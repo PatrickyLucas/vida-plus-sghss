@@ -115,4 +115,67 @@ class UsuarioServiceTest {
 
         assertFalse(resultado.isPresent());
     }
+
+    /**
+     * Testa a verificação de existência de um usuário por ID, verificando se retorna verdadeiro quando o usuário existe,
+     * ou falso quando não existe.
+     */
+    @Test
+    void existePorId_deveRetornarVerdadeiroQuandoUsuarioExiste() {
+        when(usuarioRepository.existsById(1L)).thenReturn(true);
+
+        boolean existe = usuarioService.existePorId(1L);
+
+        assertTrue(existe);
+    }
+
+    /**
+     * Testa a verificação de existência de um usuário por ID, verificando se retorna falso quando o usuário não existe.
+     */
+    @Test
+    void existePorId_deveRetornarFalsoQuandoUsuarioNaoExiste() {
+        when(usuarioRepository.existsById(1L)).thenReturn(false);
+
+        boolean existe = usuarioService.existePorId(1L);
+
+        assertFalse(existe);
+    }
+
+    /**
+     * Testa a exclusão de um usuário, verificando se o usuário é excluído corretamente quando existe,
+     * ou lança uma exceção quando não existe.
+     */
+    @Test
+    void excluirUsuario_deveExcluirUsuarioQuandoExiste() {
+        when(usuarioRepository.existsById(1L)).thenReturn(true);
+        doNothing().when(usuarioRepository).deleteById(1L);
+
+        usuarioService.excluirUsuario(1L);
+
+        verify(usuarioRepository, times(1)).deleteById(1L);
+    }
+
+    /**
+     * Testa a exclusão de um usuário, verificando se lança uma exceção quando o usuário não existe.
+     */
+    @Test
+    void excluirUsuario_deveLancarExcecaoQuandoUsuarioNaoExiste() {
+        when(usuarioRepository.existsById(1L)).thenReturn(false);
+
+        assertThrows(RecursoNaoEncontradoException.class, () ->
+                usuarioService.excluirUsuario(1L));
+    }
+
+    /**
+     * Testa a atualização de um usuário, verificando se o usuário é atualizado corretamente quando existe,
+     * ou lança uma exceção quando não existe.
+     */
+    @Test
+    void existePorUsername_deveRetornarVerdadeiroQuandoUsuarioExiste() {
+        when(usuarioRepository.findByUsername("user")).thenReturn(Optional.of(new Usuario()));
+
+        boolean existe = usuarioService.existePorUsername("user");
+
+        assertTrue(existe);
+    }
 }
