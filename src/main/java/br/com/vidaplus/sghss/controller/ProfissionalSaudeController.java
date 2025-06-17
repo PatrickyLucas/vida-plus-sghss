@@ -5,6 +5,8 @@ import br.com.vidaplus.sghss.dto.response.ProfissionalSaudeResponseDTO;
 import br.com.vidaplus.sghss.mapper.ProfissionalSaudeMapper;
 import br.com.vidaplus.sghss.model.ProfissionalSaude;
 import br.com.vidaplus.sghss.service.ProfissionalSaudeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/api/profissionais")
+@Tag(name = "Profissionais de Saúde", description = "Operações relacionadas a Profissionais de Saúde")
 public class ProfissionalSaudeController {
 
     /**
@@ -45,6 +48,10 @@ public class ProfissionalSaudeController {
      * @return lista de ProfissionalSaudeResponseDTO
      */
     @GetMapping
+    @Operation(
+            summary = "Listar Profissionais de Saúde",
+            description = "Lista todos os profissionais de saúde registrados no sistema."
+    )
     public ResponseEntity<List<ProfissionalSaudeResponseDTO>> listarTodos() {
         List<ProfissionalSaude> profissionais = profissionalSaudeService.listarTodos();
         List<ProfissionalSaudeResponseDTO> response = profissionais.stream()
@@ -60,6 +67,11 @@ public class ProfissionalSaudeController {
      * @return ProfissionalSaudeResponseDTO do profissional encontrado ou 404 Not Found se não existir
      */
     @GetMapping("/{id}")
+@Operation(
+            summary = "Buscar Profissional de Saúde por ID",
+            description = "Busca um profissional de saúde pelo ID fornecido. " +
+                    "Retorna 404 Not Found se o profissional não existir."
+    )
     public ResponseEntity<ProfissionalSaudeResponseDTO> buscarPorId(@PathVariable Long id) {
         return profissionalSaudeService.buscarPorId(id)
                 .map(profissionalSaudeMapper::toResponseDTO)
@@ -73,6 +85,10 @@ public class ProfissionalSaudeController {
      * @return ProfissionalSaudeResponseDTO do profissional criado
      */
     @PostMapping
+    @Operation(
+            summary = "Criar Profissional de Saúde",
+            description = "Cria um novo profissional de saúde com os dados fornecidos."
+    )
     public ResponseEntity<ProfissionalSaudeResponseDTO> salvarProfissional(
             @RequestBody @Valid ProfissionalSaudeRequestDTO dto) {
 
@@ -89,6 +105,11 @@ public class ProfissionalSaudeController {
      * @return ResponseEntity com status 204 No Content se a exclusão for bem-sucedida
      */
     @DeleteMapping("/{id}")
+@Operation(
+            summary = "Excluir Profissional de Saúde",
+            description = "Exclui um profissional de saúde pelo ID fornecido. " +
+                    "Retorna 204 No Content se a exclusão for bem-sucedida."
+    )
     public ResponseEntity<Void> excluirProfissional(@PathVariable Long id) {
         profissionalSaudeService.excluirProfissional(id);
         return ResponseEntity.noContent().build();
@@ -101,6 +122,11 @@ public class ProfissionalSaudeController {
      * @return ProfissionalSaudeResponseDTO do profissional atualizado
      */
     @PutMapping("/{id}")
+@Operation(
+            summary = "Atualizar Profissional de Saúde",
+            description = "Atualiza os dados de um profissional de saúde existente. " +
+                    "Retorna o profissional atualizado ou 404 Not Found se não existir."
+    )
     public ResponseEntity<ProfissionalSaudeResponseDTO> atualizarProfissionalSaude(@PathVariable Long id, @Valid @RequestBody ProfissionalSaudeRequestDTO requestDTO) {
         ProfissionalSaude profissionalSaudeAtualizado = profissionalSaudeService.atualizarProfissionalSaude(id, requestDTO);
         return ResponseEntity.ok(profissionalSaudeMapper.toResponseDTO(profissionalSaudeAtualizado));
