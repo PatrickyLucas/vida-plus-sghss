@@ -112,7 +112,7 @@ class ConsultaServiceTest {
         dto.setPacienteId(2L);
         dto.setProfissionalId(3L);
         dto.setStatus("Concluída");
-        dto.setData(LocalDateTime.now());
+        dto.setDataHora(LocalDateTime.now());
 
         Paciente paciente = new Paciente();
         paciente.setId(2L);
