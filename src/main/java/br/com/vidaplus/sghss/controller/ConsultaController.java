@@ -70,6 +70,13 @@ public class ConsultaController {
                     " Apenas usuários com permissão ADMIN ou MEDICO podem acessar esta lista."
     )
     public ResponseEntity<List<ConsultaResponseDTO>> listarTodas() {
+        // Verifica se o usuário é ADMIN ou MEDICO
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdminOuMedico = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_MEDICO"));
+        if (!isAdminOuMedico) {
+            throw new UsuarioSemPermissaoException("Você não tem permissão para acessar esta lista.");
+        }
         List<Consulta> consultas = consultaService.listarTodas();
         List<ConsultaResponseDTO> resposta = consultas.stream()
                 .map(consultaMapper::toResponseDTO)
@@ -77,13 +84,6 @@ public class ConsultaController {
         // Lança uma exceção se não houver consultas
         if (resposta.isEmpty()) {
             throw new RecursoNaoEncontradoException("Nenhuma consulta encontrada");
-        }
-        // Verifica se o usuário é ADMIN ou MEDICO
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        boolean isAdminOuMedico = auth.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_MEDICO"));
-        if (!isAdminOuMedico) {
-            throw new UsuarioSemPermissaoException("Você não tem permissão para acessar esta lista.");
         }
         return ResponseEntity.ok(resposta);
     }

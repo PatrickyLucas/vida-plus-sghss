@@ -63,6 +63,13 @@ public class ProntuarioController {
                     "Apenas usuários com permissão ADMIN ou MEDICO podem acessar este endpoint."
     )
     public ResponseEntity<List<ProntuarioResponseDTO>> listarProntuarios() {
+        // Lança uma exceção se o usuário não for ADMIN ou MEDICO
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAdminOuMedico = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_MEDICO"));
+        if (!isAdminOuMedico) {
+            throw new UsuarioSemPermissaoException("Usuário não tem permissão para acessar os prontuários");
+        }
         List<Prontuario> prontuarios = prontuarioService.listarTodos();
         List<ProntuarioResponseDTO> resposta = prontuarios.stream()
                 .map(prontuarioMapper::toResponseDTO)
@@ -70,13 +77,6 @@ public class ProntuarioController {
         // Lança uma exceção se não houver prontuários
         if (resposta.isEmpty()) {
             throw new RecursoNaoEncontradoException("Nenhum prontuário encontrado");
-        }
-        // Lança uma exceção se o usuário não for ADMIN ou MEDICO
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        boolean isAdminOuMedico = auth.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN") || a.getAuthority().equals("ROLE_MEDICO"));
-        if (!isAdminOuMedico) {
-            throw new UsuarioSemPermissaoException("Usuário não tem permissão para acessar os prontuários");
         }
         return ResponseEntity.ok(resposta);
     }
