@@ -1,6 +1,7 @@
 package br.com.vidaplus.sghss.controller;
 
 import br.com.vidaplus.sghss.dto.request.ProfissionalSaudeRequestDTO;
+import br.com.vidaplus.sghss.dto.response.ApiResponseDTO;
 import br.com.vidaplus.sghss.dto.response.ProfissionalSaudeResponseDTO;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.mapper.ProfissionalSaudeMapper;
@@ -9,6 +10,7 @@ import br.com.vidaplus.sghss.service.ProfissionalSaudeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -117,13 +119,19 @@ public class ProfissionalSaudeController {
             description = "Exclui um profissional de saúde pelo ID fornecido. " +
                     "Retorna 204 No Content se a exclusão for bem-sucedida."
     )
-    public ResponseEntity<Void> excluirProfissional(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDTO> excluirProfissional(@PathVariable Long id) {
         // Verifica se o profissional existe antes de tentar excluir
         if (!profissionalSaudeService.existePorId(id)) {
             throw new RecursoNaoEncontradoException("Profissional de saúde com ID " + id + " não encontrado.");
         }
         profissionalSaudeService.excluirProfissional(id);
-        return ResponseEntity.noContent().build();
+
+        ApiResponseDTO resposta = new ApiResponseDTO(
+                HttpStatus.OK.value(),
+                "Profissional de saúde com ID " + id + " excluído com sucesso."
+        );
+
+        return ResponseEntity.ok(resposta);
     }
     /**
      * Atualiza um profissional de saúde existente.

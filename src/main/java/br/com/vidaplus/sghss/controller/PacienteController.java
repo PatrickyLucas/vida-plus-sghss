@@ -2,6 +2,7 @@ package br.com.vidaplus.sghss.controller;
 
 import br.com.vidaplus.sghss.dto.request.PacienteComUsuarioRequestDTO;
 import br.com.vidaplus.sghss.dto.request.PacienteRequestDTO;
+import br.com.vidaplus.sghss.dto.response.ApiResponseDTO;
 import br.com.vidaplus.sghss.dto.response.PacienteResponseDTO;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.exception.UsuarioSemPermissaoException;
@@ -11,6 +12,7 @@ import br.com.vidaplus.sghss.service.PacienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -138,7 +140,7 @@ public class PacienteController {
             description = "Exclui um paciente pelo ID fornecido. " +
                     "Permite acesso apenas para usuários ADMIN."
     )
-    public ResponseEntity<Void> excluirPaciente(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDTO> excluirPaciente(@PathVariable Long id) {
         // Verifica se o usuário é ADMIN
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         boolean isAdmin = auth.getAuthorities().stream()
@@ -151,8 +153,15 @@ public class PacienteController {
             throw new RecursoNaoEncontradoException("Paciente com ID " + id + " não encontrado.");
         }
         pacienteService.excluirPaciente(id);
-        return ResponseEntity.noContent().build();
+
+        ApiResponseDTO resposta = new ApiResponseDTO(
+                HttpStatus.OK.value(),
+                "Paciente com ID " + id + " excluído com sucesso."
+        );
+
+        return ResponseEntity.ok(resposta);
     }
+
     /**
      * Atualiza um paciente existente.
      *

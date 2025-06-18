@@ -3,6 +3,7 @@ package br.com.vidaplus.sghss.controller;
 
 import br.com.vidaplus.sghss.dto.request.PacienteComUsuarioRequestDTO;
 import br.com.vidaplus.sghss.dto.request.ProfissionalSaudeComUsuarioRequestDTO;
+import br.com.vidaplus.sghss.dto.response.ApiResponseDTO;
 import br.com.vidaplus.sghss.dto.response.JwtResponseDTO;
 import br.com.vidaplus.sghss.dto.request.UsuarioDTO;
 import br.com.vidaplus.sghss.dto.response.PacienteResponseDTO;
@@ -182,7 +183,7 @@ public class AuthController {
             description = "Exclui um usuário pelo nome de usuário fornecido. " +
                     "Retorna 204 No Content se a exclusão for bem-sucedida."
     )
-    public ResponseEntity<Void> excluirUsuario(@PathVariable String username) {
+    public ResponseEntity<ApiResponseDTO> excluirUsuario(@PathVariable String username) {
         // Verifica se o usuário existe antes de tentar excluir
         if (!usuarioService.existePorUsername(username)) {
             throw new RecursoNaoEncontradoException("Usuário com username '" + username + "' não encontrado.");
@@ -197,7 +198,12 @@ public class AuthController {
         }
 
         usuarioService.excluirUsuarioPorUsername(username);
-        return ResponseEntity.noContent().build();
+        ApiResponseDTO resposta = new ApiResponseDTO(
+                HttpStatus.OK.value(),
+                "Usuário com username '" + username + "' excluído com sucesso."
+        );
+
+        return ResponseEntity.ok(resposta);
     }
 
 

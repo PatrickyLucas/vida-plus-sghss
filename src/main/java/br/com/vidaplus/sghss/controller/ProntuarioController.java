@@ -1,6 +1,7 @@
 package br.com.vidaplus.sghss.controller;
 
 import br.com.vidaplus.sghss.dto.request.ProntuarioRequestDTO;
+import br.com.vidaplus.sghss.dto.response.ApiResponseDTO;
 import br.com.vidaplus.sghss.dto.response.ProntuarioResponseDTO;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.exception.UsuarioSemPermissaoException;
@@ -12,6 +13,7 @@ import br.com.vidaplus.sghss.service.ProntuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -144,7 +146,7 @@ public class ProntuarioController {
             description = "Exclui um prontuário pelo ID fornecido. " +
                     "Retorna 204 No Content se a exclusão for bem-sucedida."
     )
-    public ResponseEntity<Void> excluirProntuario(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDTO> excluirProntuario(@PathVariable Long id) {
         // Verifica se o prontuário existe antes de tentar excluir
         if (!prontuarioService.existePorId(id)) {
             throw new RecursoNaoEncontradoException("Prontuário não encontrado para exclusão");
@@ -157,7 +159,13 @@ public class ProntuarioController {
             throw new UsuarioSemPermissaoException("Usuário não tem permissão para excluir prontuários");
         }
         prontuarioService.excluirProntuario(id);
-        return ResponseEntity.noContent().build();
+
+        ApiResponseDTO resposta = new ApiResponseDTO(
+                HttpStatus.OK.value(),
+                "Prontuário com ID " + id + " excluído com sucesso."
+        );
+
+        return ResponseEntity.ok(resposta);
     }
     /**
      * Atualiza um prontuário existente.

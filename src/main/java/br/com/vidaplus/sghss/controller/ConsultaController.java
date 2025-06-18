@@ -1,6 +1,7 @@
 package br.com.vidaplus.sghss.controller;
 
 import br.com.vidaplus.sghss.dto.request.ConsultaRequestDTO;
+import br.com.vidaplus.sghss.dto.response.ApiResponseDTO;
 import br.com.vidaplus.sghss.dto.response.ConsultaResponseDTO;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.exception.UsuarioSemPermissaoException;
@@ -14,6 +15,7 @@ import br.com.vidaplus.sghss.service.ProfissionalSaudeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -164,7 +166,7 @@ public class ConsultaController {
             description = "Exclui uma consulta pelo ID fornecido. " +
                     "Retorna 204 No Content se a exclusão for bem-sucedida."
     )
-    public ResponseEntity<Void> excluir(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDTO> excluir(@PathVariable Long id) {
         // Verifica se o usuário é ADMIN ou MEDICO
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         boolean isAdminOuMedico = auth.getAuthorities().stream()
@@ -177,7 +179,13 @@ public class ConsultaController {
             throw new RecursoNaoEncontradoException("Consulta com ID " + id + " não encontrada.");
         }
         consultaService.excluirConsulta(id);
-        return ResponseEntity.noContent().build();
+
+        ApiResponseDTO resposta = new ApiResponseDTO(
+                HttpStatus.OK.value(),
+                "Consulta com ID " + id + " excluída com sucesso."
+        );
+
+        return ResponseEntity.ok(resposta);
     }
 
     /**
