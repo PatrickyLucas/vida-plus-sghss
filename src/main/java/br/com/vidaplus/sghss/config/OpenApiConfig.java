@@ -32,9 +32,36 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title("VidaPlus SGHSS API")
                         .version("1.0")
-                        .description("API desenvolvida para o Projeto Multidisciplinar da Uninter do curso de Análise e Desenvolvimento de Sistemas como parte do Sistema de Gestão Hospitalar e Serviços de Saúde (SGHSS) da plataforma VidaPlus. " +
-                                "Fornece uma interface RESTful para operações críticas, incluindo autenticação com JWT, gerenciamento de usuários com controle de acesso baseado em papéis (RBAC), cadastro e manutenção de entidades como pacientes, profissionais de saúde, consultas, prontuários eletrônicos e auditorias. " +
-                                "Projetada com foco em segurança, escalabilidade e conformidade com requisitos de sistemas hospitalares modernos.")
+                        .description("\n" +
+                                "             API desenvolvida para o Projeto Multidisciplinar da Uninter do curso de Análise e Desenvolvimento de Sistemas,\n " +
+                                "            como parte do Sistema de Gestão Hospitalar e Serviços de Saúde (SGHSS) da plataforma VidaPlus. \n" +
+                                "             Fornece uma interface RESTful para operações críticas, incluindo autenticação com JWT, gerenciamento de usuários com controle de acesso baseado em papéis (RBAC), \n" +
+                                "             cadastro e manutenção de entidades como pacientes, profissionais de saúde, consultas, prontuários eletrônicos e auditorias. \n" +
+                                "             Projetada com foco em segurança, escalabilidade e conformidade com requisitos de sistemas hospitalares modernos.\n" +
+                                "\n" +
+                                "             \uD83D\uDCCC Funcionalidades principais:\n" +
+                                "            - Cadastro e autenticação de usuários (roles: ADMIN, MÉDICO, PACIENTE)\n" +
+                                "            - Gerenciamento de pacientes, profissionais da saúde, consultas e prontuários\n" +
+                                "            - Registro de auditoria para ações críticas\n" +
+                                "            - Suporte à telemedicina e geração de prescrições digitais\n" +
+                                "\n" +
+                                "            \uD83D\uDD10 Segurança:\n" +
+                                "            - Implementação de autenticação baseada em JWT com Spring Security\n" +
+                                "            - Controle de acesso por perfil\n" +
+                                "            - Conformidade com a LGPD (Lei Geral de Proteção de Dados)\n" +
+                                "\n" +
+                                "            ✅ Testes Automatizados:\n" +
+                                "            - Foram implementados testes automatizados nas camadas de serviço, autenticação, validações e segurança.\n" +
+                                "            - Frameworks utilizados: JUnit 5, Mockito e Spring Boot Test.\n" +
+                                "            - Camadas testadas:\n" +
+                                "              • Serviço de consultas e agendamento\n" +
+                                "              • Serviço de autenticação JWT\n" +
+                                "              • Gestão de prontuários e pacientes\n" +
+                                "              • Auditoria de ações sensíveis\n" +
+                                "            - Cobertura de testes: validações, exceções personalizadas, comportamento esperado das regras de negócio\n" +
+                                "            \n" +
+                                "            \uD83D\uDD27 Tecnologias:\n" +
+                                "            Java 17+, Spring Boot, Spring Security, MySQL, Lombok, Swagger, JPA (Hibernate)")
                         .contact(new Contact()
                             .name("Patricky Lucas")
                             .email("patrickylucas@hotmail.com")
