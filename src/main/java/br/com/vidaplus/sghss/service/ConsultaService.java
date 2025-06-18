@@ -103,7 +103,7 @@ public class ConsultaService {
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Profissional não encontrado"));
         consulta.setProfissional(profissional);
         consulta.setStatus(dto.getStatus());
-        consulta.setData(dto.getData());
+        consulta.setData(dto.getDataHora());
         return consultaRepository.save(consulta);
     }
 

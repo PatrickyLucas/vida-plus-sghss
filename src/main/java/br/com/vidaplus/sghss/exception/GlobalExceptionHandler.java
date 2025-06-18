@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,10 +28,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RecursoNaoEncontradoException.class)
     public ResponseEntity<Object> handleRecursoNaoEncontrado(RecursoNaoEncontradoException ex) {
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
+        String timestampFormatado = LocalDateTime.now().format(formatter);
+        body.put("dataHora", timestampFormatado);
         body.put("status", HttpStatus.NOT_FOUND.value());
-        body.put("error", "Recurso não encontrado");
-        body.put("message", ex.getMessage());
+        body.put("alerta", "Recurso não encontrado");
+        body.put("mensagem", ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
@@ -40,9 +43,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidacaoCampos(MethodArgumentNotValidException ex) {
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
+        String timestampFormatado = LocalDateTime.now().format(formatter);
+        body.put("dataHora", timestampFormatado);
         body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("error", "Erro de validação");
+        body.put("alerta", "Erro de validação");
 
         Map<String, String> erros = ex.getBindingResult().getFieldErrors().stream()
                 .collect(Collectors.toMap(
@@ -51,7 +56,7 @@ public class GlobalExceptionHandler {
                         (mensagem1, mensagem2) -> mensagem1 // se houver campos duplicados
                 ));
 
-        body.put("message", erros);
+        body.put("mensagem", erros);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
@@ -61,10 +66,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Object> handleRuntimeException(RuntimeException ex) {
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
+        String timestampFormatado = LocalDateTime.now().format(formatter);
+        body.put("dataHora", timestampFormatado);
         body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        body.put("error", "Erro inesperado");
-        body.put("message", ex.getMessage());
+        body.put("alerta", "Erro inesperado");
+        body.put("mensagem", ex.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -73,10 +80,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UsuarioJaExisteException.class)
     public ResponseEntity<Object> handleUsuarioJaExiste(UsuarioJaExisteException ex) {
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
+        String timestampFormatado = LocalDateTime.now().format(formatter);
+        body.put("dataHora", timestampFormatado);
         body.put("status", HttpStatus.CONFLICT.value());
-        body.put("error", "Usuário já existe");
-        body.put("message", ex.getMessage());
+        body.put("alerta", "Usuário já existe");
+        body.put("mensagem", ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 
@@ -84,10 +93,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(OperacaoNaoPermitidaException.class)
     public ResponseEntity<Object> handleOperacaoNaoPermitida(OperacaoNaoPermitidaException ex) {
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
+        String timestampFormatado = LocalDateTime.now().format(formatter);
+        body.put("dataHora", timestampFormatado);
         body.put("status", HttpStatus.FORBIDDEN.value());
-        body.put("error", "Operação não permitida");
-        body.put("message", ex.getMessage());
+        body.put("alerta", "Operação não permitida");
+        body.put("mensagem", ex.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
     }
 
@@ -95,10 +106,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CpfJaCadastradoException.class)
     public ResponseEntity<Object> handleCpfJaCadastrado(CpfJaCadastradoException ex) {
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
+        String timestampFormatado = LocalDateTime.now().format(formatter);
+        body.put("dataHora", timestampFormatado);
         body.put("status", HttpStatus.CONFLICT.value());
-        body.put("error", "CPF já cadastrado");
-        body.put("message", ex.getMessage());
+        body.put("alerta", "CPF já cadastrado");
+        body.put("mensagem", ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 
@@ -106,10 +119,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ProntuarioJaExisteException.class)
     public ResponseEntity<Object> handleProntuarioJaExiste(ProntuarioJaExisteException ex) {
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
+        String timestampFormatado = LocalDateTime.now().format(formatter);
+        body.put("dataHora", timestampFormatado);
         body.put("status", HttpStatus.CONFLICT.value());
-        body.put("error", "Prontuário já cadastrado");
-        body.put("message", ex.getMessage());
+        body.put("alerta", "Prontuário já cadastrado");
+        body.put("mensagem", ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
 
     }
@@ -118,10 +133,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UsuarioSemPermissaoException.class)
     public ResponseEntity<Object> handleUsuarioSemPermissao(UsuarioSemPermissaoException ex) {
         Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
+        String timestampFormatado = LocalDateTime.now().format(formatter);
+        body.put("dataHora", timestampFormatado);
         body.put("status", HttpStatus.FORBIDDEN.value());
-        body.put("error", "Usuário sem permissão");
-        body.put("message", ex.getMessage());
+        body.put("alerta", "Usuário sem permissão");
+        body.put("mensagem", ex.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
     }
 }

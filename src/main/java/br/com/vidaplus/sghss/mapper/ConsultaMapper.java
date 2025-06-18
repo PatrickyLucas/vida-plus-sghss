@@ -45,7 +45,7 @@ public class ConsultaMapper {
     public Consulta toEntity(ConsultaRequestDTO dto, Paciente paciente, ProfissionalSaude profissional) {
         Consulta consulta = new Consulta();
         consulta.setStatus(dto.getStatus());
-        consulta.setData(dto.getData());
+        consulta.setData(dto.getDataHora());
         consulta.setPaciente(paciente);
         consulta.setProfissional(profissional);
         return consulta;
@@ -60,7 +60,7 @@ public class ConsultaMapper {
     public  Consulta toEntity(ConsultaRequestDTO dto) {
         Consulta consulta = new Consulta();
         consulta.setStatus(dto.getStatus());
-        consulta.setData(dto.getData());
+        consulta.setData(dto.getDataHora());
         return consulta;
     }
 }

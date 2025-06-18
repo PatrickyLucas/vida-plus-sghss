@@ -1,10 +1,12 @@
 package br.com.vidaplus.sghss.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -24,10 +26,12 @@ public class ConsultaResponseDTO {
 
     @Schema(description = "ID da consulta", example = "1")
     private Long id;
-    @Schema(description = "Status da consulta", example = "AGENDADA/REALIZADA/CANCELADA")
+    @Schema(description = "Status da consulta", example = "AGENDADA/CONCLUIDA/CANCELADA")
     private String status;
-    @Schema(description = "Data e hora da consulta", example = "2023-12-01T10:00:00")
-    private LocalDateTime data;
+    @Schema(description = "Data e hora da consulta", example = "01/12/2023 - 10:00:00")
+    @JsonFormat(pattern = "dd/MM/yyyy - HH:mm:ss") // saída JSON
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime dataHora;
     @Schema(description = "ID do paciente associado à consulta", example = "123")
     private Long pacienteId;
     @Schema(description = "Nome do paciente associado à consulta", example = "João da Silva")
