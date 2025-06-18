@@ -1,10 +1,8 @@
 package br.com.vidaplus.sghss.service;
 
-import br.com.vidaplus.sghss.dto.UsuarioDTO;
-import br.com.vidaplus.sghss.dto.request.PacienteRequestDTO;
+import br.com.vidaplus.sghss.dto.request.UsuarioDTO;
 import br.com.vidaplus.sghss.dto.request.ProfissionalSaudeRequestDTO;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
-import br.com.vidaplus.sghss.model.Paciente;
 import br.com.vidaplus.sghss.model.ProfissionalSaude;
 import br.com.vidaplus.sghss.model.Usuario;
 import br.com.vidaplus.sghss.repository.ProfissionalSaudeRepository;

@@ -4,7 +4,7 @@ package br.com.vidaplus.sghss.controller;
 import br.com.vidaplus.sghss.dto.request.PacienteComUsuarioRequestDTO;
 import br.com.vidaplus.sghss.dto.request.ProfissionalSaudeComUsuarioRequestDTO;
 import br.com.vidaplus.sghss.dto.response.JwtResponseDTO;
-import br.com.vidaplus.sghss.dto.UsuarioDTO;
+import br.com.vidaplus.sghss.dto.request.UsuarioDTO;
 import br.com.vidaplus.sghss.dto.response.PacienteResponseDTO;
 import br.com.vidaplus.sghss.dto.response.ProfissionalSaudeResponseDTO;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;

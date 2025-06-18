@@ -1,15 +1,12 @@
 package br.com.vidaplus.sghss.service;
 
-import br.com.vidaplus.sghss.dto.UsuarioDTO;
+import br.com.vidaplus.sghss.dto.request.UsuarioDTO;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.exception.UsuarioJaExisteException;
 import br.com.vidaplus.sghss.model.Usuario;
 import br.com.vidaplus.sghss.model.Role;
 import br.com.vidaplus.sghss.repository.UsuarioRepository;
 import br.com.vidaplus.sghss.repository.RoleRepository;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;

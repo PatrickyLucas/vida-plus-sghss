@@ -1,6 +1,6 @@
 package br.com.vidaplus.sghss.service;
 
-import br.com.vidaplus.sghss.dto.UsuarioDTO;
+import br.com.vidaplus.sghss.dto.request.UsuarioDTO;
 import br.com.vidaplus.sghss.dto.request.PacienteRequestDTO;
 import br.com.vidaplus.sghss.exception.CpfJaCadastradoException;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;

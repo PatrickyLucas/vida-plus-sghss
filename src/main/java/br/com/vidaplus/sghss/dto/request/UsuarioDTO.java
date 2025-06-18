@@ -1,4 +1,4 @@
-package br.com.vidaplus.sghss.dto;
+package br.com.vidaplus.sghss.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
