@@ -26,6 +26,11 @@ public class Role {
     @Column(unique = true)
     private String nome;
 
+    /**
+     * Construtor para criar uma nova Role com um nome específico.
+     *
+     * @param nome o nome da role
+     */
     public Role(String nome) {
         this.nome = nome;
     }
