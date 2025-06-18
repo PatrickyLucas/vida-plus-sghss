@@ -24,7 +24,7 @@ public class PacienteMapper {
         PacienteResponseDTO dto = new PacienteResponseDTO();
         dto.setId(paciente.getId());
         dto.setNome(paciente.getNome());
-        dto.setCpf(paciente.getCpf());
+        dto.setCpf(formatarCpf(paciente.getCpf()));
         dto.setDataNascimento(paciente.getDataNascimento());
         dto.setHistoricoClinico(paciente.getHistoricoClinico());
         if (paciente.getUsuario() != null) {
@@ -46,5 +46,15 @@ public class PacienteMapper {
         paciente.setDataNascimento(dto.getDataNascimento());
         paciente.setHistoricoClinico(dto.getHistoricoClinico());
         return paciente;
+    }
+
+    /**
+     * Formata o CPF do paciente para o padrão XXX.XXX.XXX-XX.
+     * @param cpf
+     * @return
+     */
+    private String formatarCpf(String cpf) {
+        if (cpf == null || cpf.length() != 11) return cpf;
+        return cpf.replaceAll("(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
     }
 }
