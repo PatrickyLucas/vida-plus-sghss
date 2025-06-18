@@ -3,15 +3,13 @@ package br.com.vidaplus.sghss.controller;
 
 import br.com.vidaplus.sghss.dto.request.PacienteComUsuarioRequestDTO;
 import br.com.vidaplus.sghss.dto.request.ProfissionalSaudeComUsuarioRequestDTO;
-import br.com.vidaplus.sghss.dto.response.ApiResponseDTO;
-import br.com.vidaplus.sghss.dto.response.JwtResponseDTO;
+import br.com.vidaplus.sghss.dto.response.*;
 import br.com.vidaplus.sghss.dto.request.UsuarioDTO;
-import br.com.vidaplus.sghss.dto.response.PacienteResponseDTO;
-import br.com.vidaplus.sghss.dto.response.ProfissionalSaudeResponseDTO;
 import br.com.vidaplus.sghss.exception.RecursoNaoEncontradoException;
 import br.com.vidaplus.sghss.exception.UsuarioSemPermissaoException;
 import br.com.vidaplus.sghss.mapper.PacienteMapper;
 import br.com.vidaplus.sghss.mapper.ProfissionalSaudeMapper;
+import br.com.vidaplus.sghss.mapper.UsuarioMapper;
 import br.com.vidaplus.sghss.model.Paciente;
 import br.com.vidaplus.sghss.model.ProfissionalSaude;
 import br.com.vidaplus.sghss.model.Usuario;
@@ -103,7 +101,7 @@ public class AuthController {
             description = "Registra um novo admin no sistema. " +
                     "O usuário deve fornecer um nome de usuário, senha e role."
     )
-    public ResponseEntity<Usuario> registrarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<UsuarioResponseDTO> registrarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
         Usuario novoUsuario = usuarioService.criarUsuario(
                 usuarioDTO.getUsername(),
                 usuarioDTO.getPassword(),
@@ -113,7 +111,8 @@ public class AuthController {
         if (novoUsuario == null) {
             throw new RecursoNaoEncontradoException("Erro ao criar usuário. Verifique os dados fornecidos.");
         }
-        return ResponseEntity.ok(novoUsuario);
+        UsuarioResponseDTO resposta = UsuarioMapper.toResponseDTO(novoUsuario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
     }
 
     /**
@@ -222,7 +221,7 @@ public class AuthController {
             description = "Atualiza um usuário existente com os dados fornecidos. " +
                     "O usuário deve fornecer um nome de usuário, senha e role."
     )
-    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable String username, @RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable String username, @RequestBody UsuarioDTO usuarioDTO) {
         // Verifica se o usuário existe antes de tentar atualizar
         if (!usuarioService.existePorUsername(username)) {
             throw new RecursoNaoEncontradoException("Usuário com username '" + username + "' não encontrado.");
@@ -237,7 +236,9 @@ public class AuthController {
         }
 
         Usuario usuarioAtualizado = usuarioService.atualizarUsuarioPorUsername(username, usuarioDTO);
-        return ResponseEntity.ok(usuarioAtualizado);
+        UsuarioResponseDTO resposta = UsuarioMapper.toResponseDTO(usuarioAtualizado);
+
+        return ResponseEntity.ok(resposta);
     }
 
     /**

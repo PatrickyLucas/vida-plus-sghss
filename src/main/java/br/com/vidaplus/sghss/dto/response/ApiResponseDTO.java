@@ -5,6 +5,12 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+/**
+ * DTO para resposta de API.
+ * Contém informações sobre o status, mensagem e data/hora da resposta.
+ *
+ * @author Patricky Lucas
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
