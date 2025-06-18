@@ -25,6 +25,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 /**
  *  Controller para autenticação e registro de usuários.
  * Fornece endpoints para login e registro de novos usuários.
@@ -251,7 +255,7 @@ public class AuthController {
             description = "Lista todos os usuários registrados no sistema. " +
                     "Apenas usuários com permissão ADMIN podem acessar este endpoint."
     )
-    public ResponseEntity<Iterable<Usuario>> listarUsuarios() {
+    public ResponseEntity<List<UsuarioResponseDTO>> listarUsuarios() {
         // Verifica se o usuário tem permissão de ADMIN
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         boolean isAdmin = auth.getAuthorities().stream()
@@ -260,8 +264,15 @@ public class AuthController {
             throw new UsuarioSemPermissaoException("Você não tem permissão para listar usuários.");
         }
 
-        Iterable<Usuario> usuarios = usuarioService.listarUsuarios();
-        return ResponseEntity.ok(usuarios);
+        List<Usuario> usuarios = StreamSupport
+                .stream(usuarioService.listarUsuarios().spliterator(), false)
+                .toList();
+
+        List<UsuarioResponseDTO> resposta = usuarios.stream()
+                .map(UsuarioMapper::toResponseDTO)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(resposta);
     }
 
 }
