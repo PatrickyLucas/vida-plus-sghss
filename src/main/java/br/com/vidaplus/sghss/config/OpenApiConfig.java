@@ -43,7 +43,6 @@ public class OpenApiConfig {
                                 "            - Cadastro e autenticação de usuários (roles: ADMIN, MÉDICO, PACIENTE)\n" +
                                 "            - Gerenciamento de pacientes, profissionais da saúde, consultas e prontuários\n" +
                                 "            - Registro de auditoria para ações críticas\n" +
-                                "            - Suporte à telemedicina e geração de prescrições digitais\n" +
                                 "\n" +
                                 "            \uD83D\uDD10 Segurança:\n" +
                                 "            - Implementação de autenticação baseada em JWT com Spring Security\n" +
@@ -51,17 +50,20 @@ public class OpenApiConfig {
                                 "            - Conformidade com a LGPD (Lei Geral de Proteção de Dados)\n" +
                                 "\n" +
                                 "            ✅ Testes Automatizados:\n" +
-                                "            - Foram implementados testes automatizados nas camadas de serviço, autenticação, validações e segurança.\n" +
-                                "            - Frameworks utilizados: JUnit 5, Mockito e Spring Boot Test.\n" +
-                                "            - Camadas testadas:\n" +
-                                "              • Serviço de consultas e agendamento\n" +
-                                "              • Serviço de autenticação JWT\n" +
-                                "              • Gestão de prontuários e pacientes\n" +
-                                "              • Auditoria de ações sensíveis\n" +
-                                "            - Cobertura de testes: validações, exceções personalizadas, comportamento esperado das regras de negócio\n" +
+                                "            - Foram desenvolvidos testes unitários focados na camada de serviços\n" +
+                                "            - Objetivo: validar regras de negócio, comportamento esperado e tratamento de exceções.\n" +
+                                "            - Tecnologias utilizadas: JUnit 5 e Mockito\n" +
+                                "            - Exemplos de classes testadas:\n" +
+                                "              • `PacienteService`\n" +
+                                "              • `ConsultaService\n" +
+                                "              • `ProntuarioService`\n" +
+                                "              • `AuthService`\n" +
+                                "              • `UsuarioService`\n" +
+                                "              • `ProfissionalSaudeService`\n" +
+                                "            - Esses testes garantem a integridade da lógica do sistema e apoiam a evolução segura do código.\n" +
                                 "            \n" +
                                 "            \uD83D\uDD27 Tecnologias:\n" +
-                                "            Java 17+, Spring Boot, Spring Security, MySQL, Lombok, Swagger, JPA (Hibernate)")
+                                "            Java 17+, Spring Boot, Spring Data JPA (Hibernate), Spring Security (JWT), MySQL, Lombok, Swagger")
                         .contact(new Contact()
                             .name("Patricky Lucas")
                             .email("patrickylucas@hotmail.com")
