@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 
@@ -42,5 +44,6 @@ public class Paciente {
 
     @OneToOne
     @JoinColumn(name = "usuario_id", unique = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Usuario usuario;
 }

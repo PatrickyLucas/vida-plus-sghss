@@ -57,7 +57,7 @@ public class UsuarioService {
         }
 
         String senhaCriptografada = passwordEncoder.encode(password);
-        Role role = roleRepository.findByNome(roleNome).orElseThrow(() -> new RecursoNaoEncontradoException("Role não encontrada" + roleNome));
+        Role role = roleRepository.findByNome(roleNome).orElseThrow(() -> new RecursoNaoEncontradoException("Role não encontrada " + roleNome));
 
         Usuario usuario = new Usuario(username, senhaCriptografada);
         usuario.setRoles(Set.of(role));

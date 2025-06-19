@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
         String timestampFormatado = LocalDateTime.now().format(formatter);
         body.put("dataHora", timestampFormatado);
         body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        body.put("alerta", "Erro inesperado");
+        body.put("alerta", "Comportamento inesperado");
         body.put("mensagem", ex.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);

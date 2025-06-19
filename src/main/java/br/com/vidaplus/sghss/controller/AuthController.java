@@ -86,8 +86,8 @@ public class AuthController {
         try {
             JwtResponseDTO jwt = authService.login(usuarioDTO.getUsername(), usuarioDTO.getPassword());
             return ResponseEntity.ok(jwt);
-        } catch (UsuarioSemPermissaoException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (RecursoNaoEncontradoException e) {
+            throw new RecursoNaoEncontradoException("Usuário ou senha inválidos.");
         }
     }
 
