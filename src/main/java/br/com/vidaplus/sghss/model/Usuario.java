@@ -30,8 +30,9 @@ public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(nullable = false, unique = true)
     private String username;
+    @Column(nullable = false)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER) // Garante que roles sejam carregadas automaticamente
