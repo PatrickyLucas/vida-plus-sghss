@@ -188,3 +188,4 @@ Consulte o arquivo [`LICENSE`](./LICENSE) para mais detalhes.
 ---
 
 <p align="center"><em>Dúvidas ou sugestões? Abra uma issue ou entre em contato!</em></p>
+<p align="center"><em>Contribuições são bem-vindas!</em></p>
